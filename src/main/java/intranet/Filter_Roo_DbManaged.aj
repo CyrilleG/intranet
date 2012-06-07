@@ -4,7 +4,7 @@
 package intranet;
 
 import intranet.Filter;
-import intranet.GroupFilter;
+import intranet.GroupFilters;
 import intranet.UserFilters;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 privileged aspect Filter_Roo_DbManaged {
     
     @OneToMany(mappedBy = "idfilter", cascade = CascadeType.ALL)
-    private Set<GroupFilter> Filter.groupFilters;
+    private Set<GroupFilters> Filter.groupFilterss;
     
     @OneToMany(mappedBy = "idfilter", cascade = CascadeType.ALL)
     private Set<UserFilters> Filter.userFilterss;
@@ -28,12 +28,12 @@ privileged aspect Filter_Roo_DbManaged {
     @Column(name = "class", length = 75)
     private String Filter.class1;
     
-    public Set<GroupFilter> Filter.getGroupFilters() {
-        return groupFilters;
+    public Set<GroupFilters> Filter.getGroupFilterss() {
+        return groupFilterss;
     }
     
-    public void Filter.setGroupFilters(Set<GroupFilter> groupFilters) {
-        this.groupFilters = groupFilters;
+    public void Filter.setGroupFilterss(Set<GroupFilters> groupFilterss) {
+        this.groupFilterss = groupFilterss;
     }
     
     public Set<UserFilters> Filter.getUserFilterss() {

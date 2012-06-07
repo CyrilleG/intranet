@@ -5,7 +5,7 @@ package intranet.controllers;
 
 import intranet.Action;
 import intranet.Module;
-import intranet.ModuleAccess;
+import intranet.ModuleGroups;
 import intranet.controllers.ModuleController;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
@@ -89,7 +89,7 @@ privileged aspect ModuleController_Roo_Controller {
     void ModuleController.populateEditForm(Model uiModel, Module module) {
         uiModel.addAttribute("module", module);
         uiModel.addAttribute("actions", Action.findAllActions());
-        uiModel.addAttribute("moduleaccesses", ModuleAccess.findAllModuleAccesses());
+        uiModel.addAttribute("modulegroupses", ModuleGroups.findAllModuleGroupses());
     }
     
     String ModuleController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

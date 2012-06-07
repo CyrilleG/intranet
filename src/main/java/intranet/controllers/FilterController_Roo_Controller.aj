@@ -4,7 +4,7 @@
 package intranet.controllers;
 
 import intranet.Filter;
-import intranet.GroupFilter;
+import intranet.GroupFilters;
 import intranet.UserFilters;
 import intranet.controllers.FilterController;
 import java.io.UnsupportedEncodingException;
@@ -88,7 +88,7 @@ privileged aspect FilterController_Roo_Controller {
     
     void FilterController.populateEditForm(Model uiModel, Filter filter) {
         uiModel.addAttribute("filter", filter);
-        uiModel.addAttribute("groupfilters", GroupFilter.findAllGroupFilters());
+        uiModel.addAttribute("groupfilterses", GroupFilters.findAllGroupFilterses());
         uiModel.addAttribute("userfilterses", UserFilters.findAllUserFilterses());
     }
     

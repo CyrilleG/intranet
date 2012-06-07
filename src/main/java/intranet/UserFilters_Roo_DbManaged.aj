@@ -12,20 +12,12 @@ import javax.persistence.ManyToOne;
 privileged aspect UserFilters_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
-    private User UserFilters.iduser;
-    
-    @ManyToOne
     @JoinColumn(name = "idfilter", referencedColumnName = "idfilter", nullable = false)
     private Filter UserFilters.idfilter;
     
-    public User UserFilters.getIduser() {
-        return iduser;
-    }
-    
-    public void UserFilters.setIduser(User iduser) {
-        this.iduser = iduser;
-    }
+    @ManyToOne
+    @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
+    private User UserFilters.iduser;
     
     public Filter UserFilters.getIdfilter() {
         return idfilter;
@@ -33,6 +25,14 @@ privileged aspect UserFilters_Roo_DbManaged {
     
     public void UserFilters.setIdfilter(Filter idfilter) {
         this.idfilter = idfilter;
+    }
+    
+    public User UserFilters.getIduser() {
+        return iduser;
+    }
+    
+    public void UserFilters.setIduser(User iduser) {
+        this.iduser = iduser;
     }
     
 }

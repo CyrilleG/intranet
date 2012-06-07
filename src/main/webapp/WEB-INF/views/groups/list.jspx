@@ -3,8 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_intranet_Group" items="${groups}" z="uu7dttJmqOZXRNhVWxbWzDxEESo=">
-        <table:table data="${groups}" id="l_intranet_Group" path="/groups" typeIdFieldName="idgroup" z="TZlt/Q2eRkqfMW9iokySuLytO2M=">
-            <table:column id="c_intranet_Group_name" property="name" z="/bCsmJHGZd0cqJpDVXJmrZVRdkA="/>
-        </table:table>
+        <table:table data="${groups}" id="l_intranet_Group" path="/groups" typeIdFieldName="idgroup" z="TZlt/Q2eRkqfMW9iokySuLytO2M="/>
     </page:list>
 </div>

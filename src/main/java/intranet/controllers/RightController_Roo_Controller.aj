@@ -3,7 +3,9 @@
 
 package intranet.controllers;
 
+import intranet.ActionRights;
 import intranet.GroupRights;
+import intranet.ModuleRights;
 import intranet.Right;
 import intranet.UserRights;
 import intranet.controllers.RightController;
@@ -88,7 +90,9 @@ privileged aspect RightController_Roo_Controller {
     
     void RightController.populateEditForm(Model uiModel, Right right) {
         uiModel.addAttribute("right", right);
+        uiModel.addAttribute("actionrightses", ActionRights.findAllActionRightses());
         uiModel.addAttribute("grouprightses", GroupRights.findAllGroupRightses());
+        uiModel.addAttribute("modulerightses", ModuleRights.findAllModuleRightses());
         uiModel.addAttribute("userrightses", UserRights.findAllUserRightses());
     }
     

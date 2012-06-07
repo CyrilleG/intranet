@@ -5,7 +5,7 @@ package intranet;
 
 import intranet.Action;
 import intranet.Module;
-import intranet.ModuleAccess;
+import intranet.ModuleGroups;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +17,7 @@ privileged aspect Module_Roo_DbManaged {
     private Set<Action> Module.actions;
     
     @OneToMany(mappedBy = "idmodule", cascade = CascadeType.ALL)
-    private Set<ModuleAccess> Module.moduleAccesses;
+    private Set<ModuleGroups> Module.moduleGroupss;
     
     @Column(name = "name", length = 100)
     private String Module.name;
@@ -36,12 +36,12 @@ privileged aspect Module_Roo_DbManaged {
         this.actions = actions;
     }
     
-    public Set<ModuleAccess> Module.getModuleAccesses() {
-        return moduleAccesses;
+    public Set<ModuleGroups> Module.getModuleGroupss() {
+        return moduleGroupss;
     }
     
-    public void Module.setModuleAccesses(Set<ModuleAccess> moduleAccesses) {
-        this.moduleAccesses = moduleAccesses;
+    public void Module.setModuleGroupss(Set<ModuleGroups> moduleGroupss) {
+        this.moduleGroupss = moduleGroupss;
     }
     
     public String Module.getName() {

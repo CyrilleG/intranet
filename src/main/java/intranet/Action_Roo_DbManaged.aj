@@ -4,13 +4,24 @@
 package intranet;
 
 import intranet.Action;
+import intranet.ActionGroups;
+import intranet.ActionRights;
 import intranet.Module;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 privileged aspect Action_Roo_DbManaged {
+    
+    @OneToMany(mappedBy = "idaction", cascade = CascadeType.ALL)
+    private Set<ActionGroups> Action.actionGroupss;
+    
+    @OneToMany(mappedBy = "idaction", cascade = CascadeType.ALL)
+    private Set<ActionRights> Action.actionRightss;
     
     @ManyToOne
     @JoinColumn(name = "idmodule", referencedColumnName = "idmodule", nullable = false)
@@ -22,6 +33,22 @@ privileged aspect Action_Roo_DbManaged {
     
     @Column(name = "template", length = 100)
     private String Action.template;
+    
+    public Set<ActionGroups> Action.getActionGroupss() {
+        return actionGroupss;
+    }
+    
+    public void Action.setActionGroupss(Set<ActionGroups> actionGroupss) {
+        this.actionGroupss = actionGroupss;
+    }
+    
+    public Set<ActionRights> Action.getActionRightss() {
+        return actionRightss;
+    }
+    
+    public void Action.setActionRightss(Set<ActionRights> actionRightss) {
+        this.actionRightss = actionRightss;
+    }
     
     public Module Action.getIdmodule() {
         return idmodule;

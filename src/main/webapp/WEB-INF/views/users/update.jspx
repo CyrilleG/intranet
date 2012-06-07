@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_intranet_User" idField="iduser" modelAttribute="user" path="/users" versionField="none" z="23VyIWxbImgm1ywfijZbGQw+B0E=">
         <field:simple field="objectss" id="c_intranet_User_objectss" messageCode="entity_reference_not_managed" messageCodeAttribute="Objects" z="57z1jBYXWKVPLTuwegbEh3xlZFM="/>
-        <field:simple field="privacities" id="c_intranet_User_privacities" messageCode="entity_reference_not_managed" messageCodeAttribute="Privacity" z="KpJK529qw5sSZtcBJoR7An1NE8g="/>
+        <field:simple field="privacitieses" id="c_intranet_User_privacitieses" messageCode="entity_reference_not_managed" messageCodeAttribute="Privacities" z="zRG6BEw4PUyBsQkxtQFsfgAd5OQ="/>
         <field:simple field="sessions" id="c_intranet_User_sessions" messageCode="entity_reference_not_managed" messageCodeAttribute="Session" z="3OMJNbhaTofRGdLVi6iMT0VQVLs="/>
         <field:simple field="userFilterss" id="c_intranet_User_userFilterss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Filters" z="GHodgNInXF7WHPEIy/J5D2L837M="/>
         <field:simple field="userGroupss" id="c_intranet_User_userGroupss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Groups" z="aG9lPm26mvcHcW7QwrZ80dUzMdM="/>

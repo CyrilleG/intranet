@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_intranet_Module" modelAttribute="module" path="/modules" render="${empty dependencies}" z="6/63Qo7DZkeORfueQXuy9u85tGo=">
         <field:simple field="actions" id="c_intranet_Module_actions" messageCode="entity_reference_not_managed" messageCodeAttribute="Action" z="+zmUotqIdQYL3p0CxxlXDK0aD04="/>
-        <field:simple field="moduleAccesses" id="c_intranet_Module_moduleAccesses" messageCode="entity_reference_not_managed" messageCodeAttribute="Module Access" z="iCweP/8cSnKKqcRtYkm881MhhMw="/>
+        <field:simple field="moduleGroupss" id="c_intranet_Module_moduleGroupss" messageCode="entity_reference_not_managed" messageCodeAttribute="Module Groups" z="LrMannN+BfrM/Gis9LF712mmflc="/>
         <field:input field="name" id="c_intranet_Module_name" z="31I07agLSbtaz89fB3E6leqcq2c="/>
         <field:input field="description" id="c_intranet_Module_description" z="rpzQkqQA1NfehfUFKClaXqgHwPM="/>
         <field:input field="class1" id="c_intranet_Module_class1" z="IYgjiF7YiOOJdlHKSfvM23kf7AA="/>

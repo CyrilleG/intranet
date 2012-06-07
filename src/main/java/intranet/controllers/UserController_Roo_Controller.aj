@@ -4,7 +4,7 @@
 package intranet.controllers;
 
 import intranet.Objects;
-import intranet.Privacity;
+import intranet.Privacities;
 import intranet.Session;
 import intranet.User;
 import intranet.UserFilters;
@@ -94,7 +94,7 @@ privileged aspect UserController_Roo_Controller {
     void UserController.populateEditForm(Model uiModel, User user) {
         uiModel.addAttribute("user", user);
         uiModel.addAttribute("objectses", Objects.findAllObjectses());
-        uiModel.addAttribute("privacitys", Privacity.findAllPrivacitys());
+        uiModel.addAttribute("privacitieses", Privacities.findAllPrivacitieses());
         uiModel.addAttribute("sessions", Session.findAllSessions());
         uiModel.addAttribute("userfilterses", UserFilters.findAllUserFilterses());
         uiModel.addAttribute("usergroupses", UserGroups.findAllUserGroupses());

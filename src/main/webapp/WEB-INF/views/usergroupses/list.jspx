@@ -4,8 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_intranet_UserGroups" items="${usergroupses}" z="OuFMJ/VFlvjzIpc5rlh58QRUiMI=">
         <table:table data="${usergroupses}" id="l_intranet_UserGroups" path="/usergroupses" typeIdFieldName="iduserGroups" z="OQ62XNvjghD7Qm3qUKwvk82E/d8=">
-            <table:column id="c_intranet_UserGroups_iduser" property="iduser" z="7DUNsK3a8/F7p9r5lp17Ktwm1Fs="/>
             <table:column id="c_intranet_UserGroups_idgroup" property="idgroup" z="aMiMyb9kqm4nRp4xYyR4ehpaXs4="/>
+            <table:column id="c_intranet_UserGroups_iduser" property="iduser" z="7DUNsK3a8/F7p9r5lp17Ktwm1Fs="/>
         </table:table>
     </page:list>
 </div>

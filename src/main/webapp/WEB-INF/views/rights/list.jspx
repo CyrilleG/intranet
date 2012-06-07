@@ -6,7 +6,6 @@
         <table:table data="${rights}" id="l_intranet_Right" path="/rights" typeIdFieldName="idright" z="exEsxGhn8IxRccDLOlIxpdqJUqw=">
             <table:column id="c_intranet_Right_ident" property="ident" z="DFMFKKm8p2xtwE1NdTlp1E0LTfU="/>
             <table:column id="c_intranet_Right_name" property="name" z="C6cPKwYeGyR0GgqYBBc9Ey2+cvY="/>
-            <table:column id="c_intranet_Right_description" property="description" z="sQdXD3cyjXVgfFzl9ZrTAwpGDCk="/>
         </table:table>
     </page:list>
 </div>

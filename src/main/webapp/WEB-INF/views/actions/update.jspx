@@ -3,6 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_intranet_Action" idField="idaction" modelAttribute="action" path="/actions" versionField="none" z="mJuPVs1owfLYLur6xxobxldYRnQ=">
+        <field:simple field="actionGroupss" id="c_intranet_Action_actionGroupss" messageCode="entity_reference_not_managed" messageCodeAttribute="Action Groups" z="wfPRaR6gpOvnKbpCMc8nOAr2R4E="/>
+        <field:simple field="actionRightss" id="c_intranet_Action_actionRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Action Rights" z="2MJEa7hxwQobfaA/RsTALj3/IcQ="/>
         <field:select field="idmodule" id="c_intranet_Action_idmodule" itemValue="idmodule" items="${modules}" path="/modules" z="jFGUGt01EN7U2HPTVJdjlqMTt10="/>
         <field:input field="method" id="c_intranet_Action_method" required="true" z="EBwg2CCi5Qzz5c9zq+UFhHLrZAU="/>
         <field:input field="template" id="c_intranet_Action_template" z="p63SqtMKVxZsklcl3RXXCnXzQEc="/>

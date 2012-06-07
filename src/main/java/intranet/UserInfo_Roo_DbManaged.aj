@@ -3,7 +3,7 @@
 
 package intranet;
 
-import intranet.Privacity;
+import intranet.Privacities;
 import intranet.User;
 import intranet.UserInfo;
 import java.util.Set;
@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 privileged aspect UserInfo_Roo_DbManaged {
     
     @OneToMany(mappedBy = "idinfo", cascade = CascadeType.ALL)
-    private Set<Privacity> UserInfo.privacities;
+    private Set<Privacities> UserInfo.privacitieses;
     
     @ManyToOne
     @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
@@ -30,12 +30,12 @@ privileged aspect UserInfo_Roo_DbManaged {
     @Column(name = "value")
     private String UserInfo.value;
     
-    public Set<Privacity> UserInfo.getPrivacities() {
-        return privacities;
+    public Set<Privacities> UserInfo.getPrivacitieses() {
+        return privacitieses;
     }
     
-    public void UserInfo.setPrivacities(Set<Privacity> privacities) {
-        this.privacities = privacities;
+    public void UserInfo.setPrivacitieses(Set<Privacities> privacitieses) {
+        this.privacitieses = privacitieses;
     }
     
     public User UserInfo.getIduser() {

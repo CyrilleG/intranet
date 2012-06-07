@@ -3,7 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_intranet_Right" idField="idright" modelAttribute="right" path="/rights" versionField="none" z="OPYPLvKb5HSF1PMQZ/yDHg0kF3Q=">
+        <field:simple field="actionRightss" id="c_intranet_Right_actionRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Action Rights" z="uubFaUgjzargiYYAju9uqFNKIWo="/>
         <field:simple field="groupRightss" id="c_intranet_Right_groupRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Group Rights" z="L5AJoNO1ieAvJSkZuPcL0Y54phI="/>
+        <field:simple field="moduleRightss" id="c_intranet_Right_moduleRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Module Rights" z="ldVhqpH/2qwyVDR7Z8y0J9ytL9g="/>
         <field:simple field="userRightss" id="c_intranet_Right_userRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Rights" z="xy0QBRQpntnphZ12kI2g3JVV4yc="/>
         <field:input field="ident" id="c_intranet_Right_ident" required="true" z="DnzZY+bcfA8ohd0es6p0SE9xgus="/>
         <field:input field="name" id="c_intranet_Right_name" required="true" z="UdymwgD0NDJnI12I3+k8fryMqu4="/>

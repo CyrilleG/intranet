@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_intranet_UserFilters" modelAttribute="userFilters" path="/userfilterses" render="${empty dependencies}" z="aKEKkSvaJZu4tt9AbRtiGW4C2hE=">
-        <field:select field="iduser" id="c_intranet_UserFilters_iduser" itemValue="iduser" items="${users}" path="/users" z="o8AA9YtBrHR9I50/HCmPDnvYd9A="/>
         <field:select field="idfilter" id="c_intranet_UserFilters_idfilter" itemValue="idfilter" items="${filters}" path="/filters" z="Lm1jxYYb5ySx2nEQ7T4tp0c9x80="/>
+        <field:select field="iduser" id="c_intranet_UserFilters_iduser" itemValue="iduser" items="${users}" path="/users" z="o8AA9YtBrHR9I50/HCmPDnvYd9A="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_intranet_UserFilters" render="${not empty dependencies}" z="tKDYiP6UtUSqSbsCnZIjYwWUWLY="/>
 </div>

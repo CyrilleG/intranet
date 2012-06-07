@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_intranet_UserInfo" modelAttribute="userInfo" path="/userinfoes" render="${empty dependencies}" z="Ze3fyyBP2v4n1lK+RzUR6EoMWJQ=">
-        <field:simple field="privacities" id="c_intranet_UserInfo_privacities" messageCode="entity_reference_not_managed" messageCodeAttribute="Privacity" z="gtF5vRN4L+M1C4V2UPER9nTq3IM="/>
+        <field:simple field="privacitieses" id="c_intranet_UserInfo_privacitieses" messageCode="entity_reference_not_managed" messageCodeAttribute="Privacities" z="4Jyl0WdzqvSW4ioBRUwkabBt48s="/>
         <field:select field="iduser" id="c_intranet_UserInfo_iduser" itemValue="iduser" items="${users}" path="/users" z="worDLSE/JahrnKF2FJdktk6y6Dk="/>
         <field:input field="key" id="c_intranet_UserInfo_key" required="true" z="Zh0t6bYYmI6Wf25YzMGyebezS28="/>
         <field:input field="value" id="c_intranet_UserInfo_value" z="nurdmuEdox6YkIQ+i6O+BhlzimI="/>

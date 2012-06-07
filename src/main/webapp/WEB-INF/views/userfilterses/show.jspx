@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_intranet_UserFilters" object="${userfilters}" path="/userfilterses" z="mj/jn8fEG/+Hacms23Twf64ErzM=">
-        <field:display field="iduser" id="s_intranet_UserFilters_iduser" object="${userfilters}" z="ou9MF4J7TLANGjIdPk5gXONcRJ4="/>
         <field:display field="idfilter" id="s_intranet_UserFilters_idfilter" object="${userfilters}" z="il9eZHUD4dRXMttXOVJ0MMjxn5M="/>
+        <field:display field="iduser" id="s_intranet_UserFilters_iduser" object="${userfilters}" z="ou9MF4J7TLANGjIdPk5gXONcRJ4="/>
     </page:show>
 </div>

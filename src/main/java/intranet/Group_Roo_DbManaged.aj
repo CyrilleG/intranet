@@ -3,11 +3,13 @@
 
 package intranet;
 
+import intranet.ActionGroups;
 import intranet.Group;
-import intranet.GroupFilter;
+import intranet.GroupFilters;
 import intranet.GroupRights;
-import intranet.ModuleAccess;
-import intranet.Privacity;
+import intranet.ModuleGroups;
+import intranet.ModuleRights;
+import intranet.Privacities;
 import intranet.UserGroups;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -18,16 +20,22 @@ import javax.validation.constraints.NotNull;
 privileged aspect Group_Roo_DbManaged {
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-    private Set<GroupFilter> Group.groupFilters;
+    private Set<ActionGroups> Group.actionGroupss;
+    
+    @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
+    private Set<GroupFilters> Group.groupFilterss;
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
     private Set<GroupRights> Group.groupRightss;
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-    private Set<ModuleAccess> Group.moduleAccesses;
+    private Set<ModuleGroups> Group.moduleGroupss;
+    
+    @OneToMany(mappedBy = "idmodule", cascade = CascadeType.ALL)
+    private Set<ModuleRights> Group.moduleRightss;
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-    private Set<Privacity> Group.privacities;
+    private Set<Privacities> Group.privacitieses;
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
     private Set<UserGroups> Group.userGroupss;
@@ -39,12 +47,20 @@ privileged aspect Group_Roo_DbManaged {
     @Column(name = "description")
     private String Group.description;
     
-    public Set<GroupFilter> Group.getGroupFilters() {
-        return groupFilters;
+    public Set<ActionGroups> Group.getActionGroupss() {
+        return actionGroupss;
     }
     
-    public void Group.setGroupFilters(Set<GroupFilter> groupFilters) {
-        this.groupFilters = groupFilters;
+    public void Group.setActionGroupss(Set<ActionGroups> actionGroupss) {
+        this.actionGroupss = actionGroupss;
+    }
+    
+    public Set<GroupFilters> Group.getGroupFilterss() {
+        return groupFilterss;
+    }
+    
+    public void Group.setGroupFilterss(Set<GroupFilters> groupFilterss) {
+        this.groupFilterss = groupFilterss;
     }
     
     public Set<GroupRights> Group.getGroupRightss() {
@@ -55,20 +71,28 @@ privileged aspect Group_Roo_DbManaged {
         this.groupRightss = groupRightss;
     }
     
-    public Set<ModuleAccess> Group.getModuleAccesses() {
-        return moduleAccesses;
+    public Set<ModuleGroups> Group.getModuleGroupss() {
+        return moduleGroupss;
     }
     
-    public void Group.setModuleAccesses(Set<ModuleAccess> moduleAccesses) {
-        this.moduleAccesses = moduleAccesses;
+    public void Group.setModuleGroupss(Set<ModuleGroups> moduleGroupss) {
+        this.moduleGroupss = moduleGroupss;
     }
     
-    public Set<Privacity> Group.getPrivacities() {
-        return privacities;
+    public Set<ModuleRights> Group.getModuleRightss() {
+        return moduleRightss;
     }
     
-    public void Group.setPrivacities(Set<Privacity> privacities) {
-        this.privacities = privacities;
+    public void Group.setModuleRightss(Set<ModuleRights> moduleRightss) {
+        this.moduleRightss = moduleRightss;
+    }
+    
+    public Set<Privacities> Group.getPrivacitieses() {
+        return privacitieses;
+    }
+    
+    public void Group.setPrivacitieses(Set<Privacities> privacitieses) {
+        this.privacitieses = privacitieses;
     }
     
     public Set<UserGroups> Group.getUserGroupss() {

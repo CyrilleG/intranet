@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_intranet_Privacities" idField="idprivacity" modelAttribute="privacities" path="/privacitieses" versionField="none" z="/MtkjoHSOCogXQAS9ZjJ6VN9NQ8=">
+        <field:select field="idgroup" id="c_intranet_Privacities_idgroup" itemValue="idgroup" items="${groups}" path="/groups" z="H5Ld1s9SSHuRX8M+ftbMSJMr3nM="/>
+        <field:select field="idinfo" id="c_intranet_Privacities_idinfo" itemValue="idinfo" items="${userinfoes}" path="/userinfoes" z="vFQB5J/Uk0U4hz50TzS9UVC725E="/>
+        <field:select field="iduser" id="c_intranet_Privacities_iduser" itemValue="iduser" items="${users}" path="/users" z="+YlKi9ogMPblgB62+BEnn/xWacA="/>
+    </form:update>
+</div>

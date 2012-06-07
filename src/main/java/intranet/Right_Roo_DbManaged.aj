@@ -3,7 +3,9 @@
 
 package intranet;
 
+import intranet.ActionRights;
 import intranet.GroupRights;
+import intranet.ModuleRights;
 import intranet.Right;
 import intranet.UserRights;
 import java.util.Set;
@@ -15,7 +17,13 @@ import javax.validation.constraints.NotNull;
 privileged aspect Right_Roo_DbManaged {
     
     @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
+    private Set<ActionRights> Right.actionRightss;
+    
+    @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
     private Set<GroupRights> Right.groupRightss;
+    
+    @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
+    private Set<ModuleRights> Right.moduleRightss;
     
     @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
     private Set<UserRights> Right.userRightss;
@@ -31,12 +39,28 @@ privileged aspect Right_Roo_DbManaged {
     @Column(name = "description")
     private String Right.description;
     
+    public Set<ActionRights> Right.getActionRightss() {
+        return actionRightss;
+    }
+    
+    public void Right.setActionRightss(Set<ActionRights> actionRightss) {
+        this.actionRightss = actionRightss;
+    }
+    
     public Set<GroupRights> Right.getGroupRightss() {
         return groupRightss;
     }
     
     public void Right.setGroupRightss(Set<GroupRights> groupRightss) {
         this.groupRightss = groupRightss;
+    }
+    
+    public Set<ModuleRights> Right.getModuleRightss() {
+        return moduleRightss;
+    }
+    
+    public void Right.setModuleRightss(Set<ModuleRights> moduleRightss) {
+        this.moduleRightss = moduleRightss;
     }
     
     public Set<UserRights> Right.getUserRightss() {

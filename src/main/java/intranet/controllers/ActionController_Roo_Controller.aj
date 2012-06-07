@@ -4,6 +4,8 @@
 package intranet.controllers;
 
 import intranet.Action;
+import intranet.ActionGroups;
+import intranet.ActionRights;
 import intranet.Module;
 import intranet.controllers.ActionController;
 import java.io.UnsupportedEncodingException;
@@ -87,6 +89,8 @@ privileged aspect ActionController_Roo_Controller {
     
     void ActionController.populateEditForm(Model uiModel, Action action) {
         uiModel.addAttribute("action", action);
+        uiModel.addAttribute("actiongroupses", ActionGroups.findAllActionGroupses());
+        uiModel.addAttribute("actionrightses", ActionRights.findAllActionRightses());
         uiModel.addAttribute("modules", Module.findAllModules());
     }
     

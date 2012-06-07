@@ -3,11 +3,13 @@
 
 package intranet.controllers;
 
+import intranet.ActionGroups;
 import intranet.Group;
-import intranet.GroupFilter;
+import intranet.GroupFilters;
 import intranet.GroupRights;
-import intranet.ModuleAccess;
-import intranet.Privacity;
+import intranet.ModuleGroups;
+import intranet.ModuleRights;
+import intranet.Privacities;
 import intranet.UserGroups;
 import intranet.controllers.GroupController;
 import java.io.UnsupportedEncodingException;
@@ -91,10 +93,12 @@ privileged aspect GroupController_Roo_Controller {
     
     void GroupController.populateEditForm(Model uiModel, Group group) {
         uiModel.addAttribute("group", group);
-        uiModel.addAttribute("groupfilters", GroupFilter.findAllGroupFilters());
+        uiModel.addAttribute("actiongroupses", ActionGroups.findAllActionGroupses());
+        uiModel.addAttribute("groupfilterses", GroupFilters.findAllGroupFilterses());
         uiModel.addAttribute("grouprightses", GroupRights.findAllGroupRightses());
-        uiModel.addAttribute("moduleaccesses", ModuleAccess.findAllModuleAccesses());
-        uiModel.addAttribute("privacitys", Privacity.findAllPrivacitys());
+        uiModel.addAttribute("modulegroupses", ModuleGroups.findAllModuleGroupses());
+        uiModel.addAttribute("modulerightses", ModuleRights.findAllModuleRightses());
+        uiModel.addAttribute("privacitieses", Privacities.findAllPrivacitieses());
         uiModel.addAttribute("usergroupses", UserGroups.findAllUserGroupses());
     }
     

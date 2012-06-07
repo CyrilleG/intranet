@@ -4,7 +4,7 @@
 package intranet;
 
 import intranet.Objects;
-import intranet.Privacity;
+import intranet.Privacities;
 import intranet.Session;
 import intranet.User;
 import intranet.UserFilters;
@@ -23,7 +23,7 @@ privileged aspect User_Roo_DbManaged {
     private Set<Objects> User.objectss;
     
     @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
-    private Set<Privacity> User.privacities;
+    private Set<Privacities> User.privacitieses;
     
     @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
     private Set<Session> User.sessions;
@@ -56,12 +56,12 @@ privileged aspect User_Roo_DbManaged {
         this.objectss = objectss;
     }
     
-    public Set<Privacity> User.getPrivacities() {
-        return privacities;
+    public Set<Privacities> User.getPrivacitieses() {
+        return privacitieses;
     }
     
-    public void User.setPrivacities(Set<Privacity> privacities) {
-        this.privacities = privacities;
+    public void User.setPrivacitieses(Set<Privacities> privacitieses) {
+        this.privacitieses = privacitieses;
     }
     
     public Set<Session> User.getSessions() {

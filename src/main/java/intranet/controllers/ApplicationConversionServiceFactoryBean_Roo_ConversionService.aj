@@ -4,15 +4,18 @@
 package intranet.controllers;
 
 import intranet.Action;
+import intranet.ActionGroups;
+import intranet.ActionRights;
 import intranet.Fields;
 import intranet.Filter;
 import intranet.Group;
-import intranet.GroupFilter;
+import intranet.GroupFilters;
 import intranet.GroupRights;
 import intranet.Module;
-import intranet.ModuleAccess;
+import intranet.ModuleGroups;
+import intranet.ModuleRights;
 import intranet.Objects;
-import intranet.Privacity;
+import intranet.Privacities;
 import intranet.Right;
 import intranet.Session;
 import intranet.User;
@@ -49,6 +52,54 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.Action>() {
             public intranet.Action convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), Action.class);
+            }
+        };
+    }
+    
+    public Converter<ActionGroups, String> ApplicationConversionServiceFactoryBean.getActionGroupsToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<intranet.ActionGroups, java.lang.String>() {
+            public String convert(ActionGroups actionGroups) {
+                return new StringBuilder().toString();
+            }
+        };
+    }
+    
+    public Converter<Integer, ActionGroups> ApplicationConversionServiceFactoryBean.getIdToActionGroupsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ActionGroups>() {
+            public intranet.ActionGroups convert(java.lang.Integer id) {
+                return ActionGroups.findActionGroups(id);
+            }
+        };
+    }
+    
+    public Converter<String, ActionGroups> ApplicationConversionServiceFactoryBean.getStringToActionGroupsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.ActionGroups>() {
+            public intranet.ActionGroups convert(String id) {
+                return getObject().convert(getObject().convert(id, Integer.class), ActionGroups.class);
+            }
+        };
+    }
+    
+    public Converter<ActionRights, String> ApplicationConversionServiceFactoryBean.getActionRightsToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<intranet.ActionRights, java.lang.String>() {
+            public String convert(ActionRights actionRights) {
+                return new StringBuilder().toString();
+            }
+        };
+    }
+    
+    public Converter<Integer, ActionRights> ApplicationConversionServiceFactoryBean.getIdToActionRightsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ActionRights>() {
+            public intranet.ActionRights convert(java.lang.Integer id) {
+                return ActionRights.findActionRights(id);
+            }
+        };
+    }
+    
+    public Converter<String, ActionRights> ApplicationConversionServiceFactoryBean.getStringToActionRightsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.ActionRights>() {
+            public intranet.ActionRights convert(String id) {
+                return getObject().convert(getObject().convert(id, Integer.class), ActionRights.class);
             }
         };
     }
@@ -125,26 +176,26 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<GroupFilter, String> ApplicationConversionServiceFactoryBean.getGroupFilterToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.GroupFilter, java.lang.String>() {
-            public String convert(GroupFilter groupFilter) {
+    public Converter<GroupFilters, String> ApplicationConversionServiceFactoryBean.getGroupFiltersToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<intranet.GroupFilters, java.lang.String>() {
+            public String convert(GroupFilters groupFilters) {
                 return new StringBuilder().toString();
             }
         };
     }
     
-    public Converter<Integer, GroupFilter> ApplicationConversionServiceFactoryBean.getIdToGroupFilterConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.GroupFilter>() {
-            public intranet.GroupFilter convert(java.lang.Integer id) {
-                return GroupFilter.findGroupFilter(id);
+    public Converter<Integer, GroupFilters> ApplicationConversionServiceFactoryBean.getIdToGroupFiltersConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.GroupFilters>() {
+            public intranet.GroupFilters convert(java.lang.Integer id) {
+                return GroupFilters.findGroupFilters(id);
             }
         };
     }
     
-    public Converter<String, GroupFilter> ApplicationConversionServiceFactoryBean.getStringToGroupFilterConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.GroupFilter>() {
-            public intranet.GroupFilter convert(String id) {
-                return getObject().convert(getObject().convert(id, Integer.class), GroupFilter.class);
+    public Converter<String, GroupFilters> ApplicationConversionServiceFactoryBean.getStringToGroupFiltersConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.GroupFilters>() {
+            public intranet.GroupFilters convert(String id) {
+                return getObject().convert(getObject().convert(id, Integer.class), GroupFilters.class);
             }
         };
     }
@@ -197,26 +248,50 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<ModuleAccess, String> ApplicationConversionServiceFactoryBean.getModuleAccessToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.ModuleAccess, java.lang.String>() {
-            public String convert(ModuleAccess moduleAccess) {
+    public Converter<ModuleGroups, String> ApplicationConversionServiceFactoryBean.getModuleGroupsToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<intranet.ModuleGroups, java.lang.String>() {
+            public String convert(ModuleGroups moduleGroups) {
                 return new StringBuilder().toString();
             }
         };
     }
     
-    public Converter<Integer, ModuleAccess> ApplicationConversionServiceFactoryBean.getIdToModuleAccessConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ModuleAccess>() {
-            public intranet.ModuleAccess convert(java.lang.Integer id) {
-                return ModuleAccess.findModuleAccess(id);
+    public Converter<Integer, ModuleGroups> ApplicationConversionServiceFactoryBean.getIdToModuleGroupsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ModuleGroups>() {
+            public intranet.ModuleGroups convert(java.lang.Integer id) {
+                return ModuleGroups.findModuleGroups(id);
             }
         };
     }
     
-    public Converter<String, ModuleAccess> ApplicationConversionServiceFactoryBean.getStringToModuleAccessConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.ModuleAccess>() {
-            public intranet.ModuleAccess convert(String id) {
-                return getObject().convert(getObject().convert(id, Integer.class), ModuleAccess.class);
+    public Converter<String, ModuleGroups> ApplicationConversionServiceFactoryBean.getStringToModuleGroupsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.ModuleGroups>() {
+            public intranet.ModuleGroups convert(String id) {
+                return getObject().convert(getObject().convert(id, Integer.class), ModuleGroups.class);
+            }
+        };
+    }
+    
+    public Converter<ModuleRights, String> ApplicationConversionServiceFactoryBean.getModuleRightsToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<intranet.ModuleRights, java.lang.String>() {
+            public String convert(ModuleRights moduleRights) {
+                return new StringBuilder().toString();
+            }
+        };
+    }
+    
+    public Converter<Integer, ModuleRights> ApplicationConversionServiceFactoryBean.getIdToModuleRightsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ModuleRights>() {
+            public intranet.ModuleRights convert(java.lang.Integer id) {
+                return ModuleRights.findModuleRights(id);
+            }
+        };
+    }
+    
+    public Converter<String, ModuleRights> ApplicationConversionServiceFactoryBean.getStringToModuleRightsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.ModuleRights>() {
+            public intranet.ModuleRights convert(String id) {
+                return getObject().convert(getObject().convert(id, Integer.class), ModuleRights.class);
             }
         };
     }
@@ -245,26 +320,26 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<Privacity, String> ApplicationConversionServiceFactoryBean.getPrivacityToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.Privacity, java.lang.String>() {
-            public String convert(Privacity privacity) {
+    public Converter<Privacities, String> ApplicationConversionServiceFactoryBean.getPrivacitiesToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<intranet.Privacities, java.lang.String>() {
+            public String convert(Privacities privacities) {
                 return new StringBuilder().toString();
             }
         };
     }
     
-    public Converter<Integer, Privacity> ApplicationConversionServiceFactoryBean.getIdToPrivacityConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.Privacity>() {
-            public intranet.Privacity convert(java.lang.Integer id) {
-                return Privacity.findPrivacity(id);
+    public Converter<Integer, Privacities> ApplicationConversionServiceFactoryBean.getIdToPrivacitiesConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.Privacities>() {
+            public intranet.Privacities convert(java.lang.Integer id) {
+                return Privacities.findPrivacities(id);
             }
         };
     }
     
-    public Converter<String, Privacity> ApplicationConversionServiceFactoryBean.getStringToPrivacityConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.Privacity>() {
-            public intranet.Privacity convert(String id) {
-                return getObject().convert(getObject().convert(id, Integer.class), Privacity.class);
+    public Converter<String, Privacities> ApplicationConversionServiceFactoryBean.getStringToPrivacitiesConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.Privacities>() {
+            public intranet.Privacities convert(String id) {
+                return getObject().convert(getObject().convert(id, Integer.class), Privacities.class);
             }
         };
     }
@@ -433,6 +508,12 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getActionToStringConverter());
         registry.addConverter(getIdToActionConverter());
         registry.addConverter(getStringToActionConverter());
+        registry.addConverter(getActionGroupsToStringConverter());
+        registry.addConverter(getIdToActionGroupsConverter());
+        registry.addConverter(getStringToActionGroupsConverter());
+        registry.addConverter(getActionRightsToStringConverter());
+        registry.addConverter(getIdToActionRightsConverter());
+        registry.addConverter(getStringToActionRightsConverter());
         registry.addConverter(getFieldsToStringConverter());
         registry.addConverter(getIdToFieldsConverter());
         registry.addConverter(getStringToFieldsConverter());
@@ -442,24 +523,27 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getGroupToStringConverter());
         registry.addConverter(getIdToGroupConverter());
         registry.addConverter(getStringToGroupConverter());
-        registry.addConverter(getGroupFilterToStringConverter());
-        registry.addConverter(getIdToGroupFilterConverter());
-        registry.addConverter(getStringToGroupFilterConverter());
+        registry.addConverter(getGroupFiltersToStringConverter());
+        registry.addConverter(getIdToGroupFiltersConverter());
+        registry.addConverter(getStringToGroupFiltersConverter());
         registry.addConverter(getGroupRightsToStringConverter());
         registry.addConverter(getIdToGroupRightsConverter());
         registry.addConverter(getStringToGroupRightsConverter());
         registry.addConverter(getModuleToStringConverter());
         registry.addConverter(getIdToModuleConverter());
         registry.addConverter(getStringToModuleConverter());
-        registry.addConverter(getModuleAccessToStringConverter());
-        registry.addConverter(getIdToModuleAccessConverter());
-        registry.addConverter(getStringToModuleAccessConverter());
+        registry.addConverter(getModuleGroupsToStringConverter());
+        registry.addConverter(getIdToModuleGroupsConverter());
+        registry.addConverter(getStringToModuleGroupsConverter());
+        registry.addConverter(getModuleRightsToStringConverter());
+        registry.addConverter(getIdToModuleRightsConverter());
+        registry.addConverter(getStringToModuleRightsConverter());
         registry.addConverter(getObjectsToStringConverter());
         registry.addConverter(getIdToObjectsConverter());
         registry.addConverter(getStringToObjectsConverter());
-        registry.addConverter(getPrivacityToStringConverter());
-        registry.addConverter(getIdToPrivacityConverter());
-        registry.addConverter(getStringToPrivacityConverter());
+        registry.addConverter(getPrivacitiesToStringConverter());
+        registry.addConverter(getIdToPrivacitiesConverter());
+        registry.addConverter(getStringToPrivacitiesConverter());
         registry.addConverter(getRightToStringConverter());
         registry.addConverter(getIdToRightConverter());
         registry.addConverter(getStringToRightConverter());

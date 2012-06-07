@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_intranet_Filter" idField="idfilter" modelAttribute="filter" path="/filters" versionField="none" z="iCTkghuxYyirGr02f+EaG6yRvhE=">
-        <field:simple field="groupFilters" id="c_intranet_Filter_groupFilters" messageCode="entity_reference_not_managed" messageCodeAttribute="Group Filter" z="4dkg5jcBVWbv98duazq4S1/ok+s="/>
+        <field:simple field="groupFilterss" id="c_intranet_Filter_groupFilterss" messageCode="entity_reference_not_managed" messageCodeAttribute="Group Filters" z="eF+58WdJKjKQFBZMDEmbWe7i/Kg="/>
         <field:simple field="userFilterss" id="c_intranet_Filter_userFilterss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Filters" z="wsXevhC48n/bRF1biVbj6KVfv3E="/>
         <field:input field="name" id="c_intranet_Filter_name" z="cu3tVHV/dMYgSDOq7i3TIPqku2s="/>
         <field:input field="description" id="c_intranet_Filter_description" z="SSChz+/6BMuDIzAyEA2DpNYjqCI="/>

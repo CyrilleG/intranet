@@ -3,7 +3,7 @@
 
 package intranet.controllers;
 
-import intranet.Privacity;
+import intranet.Privacities;
 import intranet.User;
 import intranet.UserInfo;
 import intranet.controllers.UserInfoController;
@@ -88,7 +88,7 @@ privileged aspect UserInfoController_Roo_Controller {
     
     void UserInfoController.populateEditForm(Model uiModel, UserInfo userInfo) {
         uiModel.addAttribute("userInfo", userInfo);
-        uiModel.addAttribute("privacitys", Privacity.findAllPrivacitys());
+        uiModel.addAttribute("privacitieses", Privacities.findAllPrivacitieses());
         uiModel.addAttribute("users", User.findAllUsers());
     }
     
