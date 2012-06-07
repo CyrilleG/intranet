@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_intranet_Module" idField="idmodule" modelAttribute="module" path="/modules" versionField="none" z="jJqc9SVeAHpC5pQK5tPVDV86Hic=">
+        <field:simple field="actions" id="c_intranet_Module_actions" messageCode="entity_reference_not_managed" messageCodeAttribute="Action" z="+zmUotqIdQYL3p0CxxlXDK0aD04="/>
+        <field:simple field="moduleAccesses" id="c_intranet_Module_moduleAccesses" messageCode="entity_reference_not_managed" messageCodeAttribute="Module Access" z="iCweP/8cSnKKqcRtYkm881MhhMw="/>
+        <field:input field="name" id="c_intranet_Module_name" z="31I07agLSbtaz89fB3E6leqcq2c="/>
+        <field:input field="description" id="c_intranet_Module_description" z="rpzQkqQA1NfehfUFKClaXqgHwPM="/>
+        <field:input field="class1" id="c_intranet_Module_class1" z="IYgjiF7YiOOJdlHKSfvM23kf7AA="/>
+    </form:update>
+</div>

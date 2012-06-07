@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_intranet_GroupFilter" items="${groupfilters}" z="KWzK3M4q4mj8vUkyCOq4L9scJ/c=">
+        <table:table data="${groupfilters}" id="l_intranet_GroupFilter" path="/groupfilters" typeIdFieldName="idgroupFilter" z="npCSpaSv8v4xqbiSS/QAaOo/i0U=">
+            <table:column id="c_intranet_GroupFilter_idfilter" property="idfilter" z="BMRxXlXqmBZYhb/UvYbNK57e8Mc="/>
+            <table:column id="c_intranet_GroupFilter_idgroup" property="idgroup" z="JFKRfywVpFy/HNBe6+PHBYL8Cdc="/>
+        </table:table>
+    </page:list>
+</div>
