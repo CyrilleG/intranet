@@ -51,6 +51,9 @@ privileged aspect UserInfoDataOnDemand_Roo_DataOnDemand {
     
     public void UserInfoDataOnDemand.setValue(UserInfo obj, int index) {
         String value = "value_" + index;
+        if (value.length() > 255) {
+            value = value.substring(0, 255);
+        }
         obj.setValue(value);
     }
     

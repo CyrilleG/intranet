@@ -44,7 +44,7 @@ privileged aspect Group_Roo_DbManaged {
     @NotNull
     private String Group.name;
     
-    @Column(name = "description")
+    @Column(name = "description", length = 255)
     private String Group.description;
     
     public Set<ActionGroups> Group.getActionGroupss() {

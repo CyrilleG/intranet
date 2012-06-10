@@ -22,7 +22,7 @@ privileged aspect Module_Roo_DbManaged {
     @Column(name = "name", length = 100)
     private String Module.name;
     
-    @Column(name = "description")
+    @Column(name = "description", length = 255)
     private String Module.description;
     
     @Column(name = "class", length = 100)

@@ -40,6 +40,9 @@ privileged aspect ModuleDataOnDemand_Roo_DataOnDemand {
     
     public void ModuleDataOnDemand.setDescription(Module obj, int index) {
         String description = "description_" + index;
+        if (description.length() > 255) {
+            description = description.substring(0, 255);
+        }
         obj.setDescription(description);
     }
     

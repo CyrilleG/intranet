@@ -27,7 +27,7 @@ privileged aspect UserInfo_Roo_DbManaged {
     @NotNull
     private String UserInfo.key;
     
-    @Column(name = "value")
+    @Column(name = "value", length = 255)
     private String UserInfo.value;
     
     public Set<Privacities> UserInfo.getPrivacitieses() {

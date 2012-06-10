@@ -20,7 +20,7 @@ privileged aspect Fields_Roo_DbManaged {
     @NotNull
     private String Fields.name;
     
-    @Column(name = "value")
+    @Column(name = "value", length = 255)
     private String Fields.value;
     
     public Objects Fields.getIdobject() {

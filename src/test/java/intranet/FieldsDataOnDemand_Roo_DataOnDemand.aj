@@ -51,6 +51,9 @@ privileged aspect FieldsDataOnDemand_Roo_DataOnDemand {
     
     public void FieldsDataOnDemand.setValue(Fields obj, int index) {
         String value = "value_" + index;
+        if (value.length() > 255) {
+            value = value.substring(0, 255);
+        }
         obj.setValue(value);
     }
     

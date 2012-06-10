@@ -22,7 +22,7 @@ privileged aspect Filter_Roo_DbManaged {
     @Column(name = "name", length = 100)
     private String Filter.name;
     
-    @Column(name = "description")
+    @Column(name = "description", length = 255)
     private String Filter.description;
     
     @Column(name = "class", length = 75)

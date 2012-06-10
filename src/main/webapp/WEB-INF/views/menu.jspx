@@ -3,69 +3,77 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
-        <menu:category id="c_groupfilters" z="43J9jD/rzfI//8H34uZUlEpJGeQ=">
-            <menu:item id="i_groupfilters_new" messageCode="global_menu_new" url="/groupfilterses?form" z="DxDOMQw849lndrS4hmanGI2azc0="/>
-            <menu:item id="i_groupfilters_list" messageCode="global_menu_list" url="/groupfilterses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0yTQPuOhAgZg24zagiqp0jk/6HM="/>
-        </menu:category>
-        <menu:category id="c_right" z="xR7oJ3OXBqsuvN3J0v58KQcCyzY=">
-            <menu:item id="i_right_new" messageCode="global_menu_new" url="/rights?form" z="uk2En5gQhK5VuyHfJv/Cknpli5M="/>
-            <menu:item id="i_right_list" messageCode="global_menu_list" url="/rights?page=1&amp;size=${empty param.size ? 10 : param.size}" z="pw0CPsjtkDCj4VHVmavBsG/Sa04="/>
-        </menu:category>
-        <menu:category id="c_group" z="IzsiYJAVMvw1MYB2rS012W6p/sQ=">
-            <menu:item id="i_group_new" messageCode="global_menu_new" url="/groups?form" z="NplgVuxbIfib+TWeBYdtVVPJyuU="/>
-            <menu:item id="i_group_list" messageCode="global_menu_list" url="/groups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="+yB7q/lCvKVAK6joKjX6uJqct/A="/>
-        </menu:category>
-        <menu:category id="c_userrights" z="D/jkevZVUI0fTUbdgcSFF1+9ew8=">
-            <menu:item id="i_userrights_new" messageCode="global_menu_new" url="/userrightses?form" z="y6tstQge0G+Fw3z9uTWBTi9LHeU="/>
-            <menu:item id="i_userrights_list" messageCode="global_menu_list" url="/userrightses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Nry7MJkLJsJ0vcdp1SqcS1v+JUA="/>
-        </menu:category>
-        <menu:category id="c_grouprights" z="hcwWoASLXlC6VWEWhMVdq5r7Jno=">
-            <menu:item id="i_grouprights_new" messageCode="global_menu_new" url="/grouprightses?form" z="a2VTQiShtfiz6XZeW5mcz7KdJQ8="/>
-            <menu:item id="i_grouprights_list" messageCode="global_menu_list" url="/grouprightses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0t1e4jMknjrbpv4QgE+NtMw1Ctk="/>
-        </menu:category>
-        <menu:category id="c_userinfo" z="wp5yFzdbyDI+Dtuj/pSBCxK3UHA=">
-            <menu:item id="i_userinfo_new" messageCode="global_menu_new" url="/userinfoes?form" z="jGpK8Q3EcXGhijBcCm+M83p+7PM="/>
-            <menu:item id="i_userinfo_list" messageCode="global_menu_list" url="/userinfoes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="wTZf/0/g2xvsX1MjMAQwgE/LJmM="/>
-        </menu:category>
-        <menu:category id="c_privacities" z="pL53I70+/dRjIPbJ4Itjk6UE2ik=">
-            <menu:item id="i_privacities_new" messageCode="global_menu_new" url="/privacitieses?form" z="Q5vHK76Cmdg6Hw8YNLV/otSaptE="/>
-            <menu:item id="i_privacities_list" messageCode="global_menu_list" url="/privacitieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="/nNNMKy8OypD70x3Cnam2tyu3KA="/>
-        </menu:category>
-        <menu:category id="c_action" z="B8brGblFScy00b3KTrQaXixCPjQ=">
-            <menu:item id="i_action_new" messageCode="global_menu_new" url="/actions?form" z="MDrMB1G5SQAY5Q1wR7+lnanOI+Y="/>
-            <menu:item id="i_action_list" messageCode="global_menu_list" url="/actions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="xtcOg1a4bMYG9erutdsLQd8qe+I="/>
-        </menu:category>
-        <menu:category id="c_module" z="u0mRqU70rcV+LrRVSbNqkd/Zl9o=">
-            <menu:item id="i_module_new" messageCode="global_menu_new" url="/modules?form" z="rGnXvs29V/Xxd39tg91pfx/mEtw="/>
-            <menu:item id="i_module_list" messageCode="global_menu_list" url="/modules?page=1&amp;size=${empty param.size ? 10 : param.size}" z="8Tj6kaQJSuWzOpLBDPE043c09Vk="/>
-        </menu:category>
-        <menu:category id="c_userfilters" z="8jzufQ36GAVp5olOkfzExxjHwbs=">
-            <menu:item id="i_userfilters_new" messageCode="global_menu_new" url="/userfilterses?form" z="xR41oVQV9To+eGRCWaeLf5F3EV4="/>
-            <menu:item id="i_userfilters_list" messageCode="global_menu_list" url="/userfilterses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="nZOD2eKi9LcDjX1opcykB2v1H3o="/>
-        </menu:category>
-        <menu:category id="c_actiongroups" z="vDQ7/NOaTldnEkdVT2AZ+1XWMI0=">
-            <menu:item id="i_actiongroups_new" messageCode="global_menu_new" url="/actiongroupses?form" z="uhVQDg8f5FKLVlP2mB4zC0QnWBQ="/>
-            <menu:item id="i_actiongroups_list" messageCode="global_menu_list" url="/actiongroupses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="k8BLt1sNFUg9fqCOVAwilAFGU5A="/>
-        </menu:category>
-        <menu:category id="c_fields" z="7BQZgc9sx97WhTgZtZjm2IkkiDE=">
-            <menu:item id="i_fields_new" messageCode="global_menu_new" url="/fieldses?form" z="TJ5GxyLDK+vPntsmZX8+GvIQ0DU="/>
-            <menu:item id="i_fields_list" messageCode="global_menu_list" url="/fieldses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="LUgABYRl4gqNA9KHclmxVwUy2zw="/>
-        </menu:category>
-        <menu:category id="c_actionrights" z="8VYG9dMdLOXWCb+rSuyGwviT1ao=">
-            <menu:item id="i_actionrights_new" messageCode="global_menu_new" url="/actionrightses?form" z="cYy1Onw2sIKZphTCGaa7lz0zltY="/>
-            <menu:item id="i_actionrights_list" messageCode="global_menu_list" url="/actionrightses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="bXwPLbZq3dze759SAtYTSUkWdBk="/>
+        <menu:category id="c_session" z="eAOcbamZlFKVGjCYaNKL7SSUsno=">
+            <menu:item id="i_session_new" messageCode="global_menu_new" url="/sessions?form" z="p2EPHJp/SSeUnSo/+jf4KBhaoMs="/>
+            <menu:item id="i_session_list" messageCode="global_menu_list" url="/sessions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="vH0n2WGOZkiCOMKTmEQSH2aksZ4="/>
         </menu:category>
         <menu:category id="c_objects" z="MtY264RyTw57tgC8qcy2tnq/5Ms=">
             <menu:item id="i_objects_new" messageCode="global_menu_new" url="/objectses?form" z="m6AYoQl5k4EMnweTxCktu98VwMk="/>
             <menu:item id="i_objects_list" messageCode="global_menu_list" url="/objectses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="UaUw0Eh2TnNkDcdw/bRiXcnXYFU="/>
         </menu:category>
+        <menu:category id="c_actionrights" z="8VYG9dMdLOXWCb+rSuyGwviT1ao=">
+            <menu:item id="i_actionrights_new" messageCode="global_menu_new" url="/actionrightses?form" z="cYy1Onw2sIKZphTCGaa7lz0zltY="/>
+            <menu:item id="i_actionrights_list" messageCode="global_menu_list" url="/actionrightses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="bXwPLbZq3dze759SAtYTSUkWdBk="/>
+        </menu:category>
+        <menu:category id="c_filter" z="+M8TKLLnTktd85u1BMHH26ETC1Y=">
+            <menu:item id="i_filter_new" messageCode="global_menu_new" url="/filters?form" z="D7iqw/k8kHK1V++AQWHjFGN/V2M="/>
+            <menu:item id="i_filter_list" messageCode="global_menu_list" url="/filters?page=1&amp;size=${empty param.size ? 10 : param.size}" z="UhtmA95sDOxWulaJ5qfkvkNhGYE="/>
+        </menu:category>
+        <menu:category id="c_userinfo" z="wp5yFzdbyDI+Dtuj/pSBCxK3UHA=">
+            <menu:item id="i_userinfo_new" messageCode="global_menu_new" url="/userinfoes?form" z="jGpK8Q3EcXGhijBcCm+M83p+7PM="/>
+            <menu:item id="i_userinfo_list" messageCode="global_menu_list" url="/userinfoes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="wTZf/0/g2xvsX1MjMAQwgE/LJmM="/>
+        </menu:category>
+        <menu:category id="c_groupfilters" z="43J9jD/rzfI//8H34uZUlEpJGeQ=">
+            <menu:item id="i_groupfilters_new" messageCode="global_menu_new" url="/groupfilterses?form" z="DxDOMQw849lndrS4hmanGI2azc0="/>
+            <menu:item id="i_groupfilters_list" messageCode="global_menu_list" url="/groupfilterses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0yTQPuOhAgZg24zagiqp0jk/6HM="/>
+        </menu:category>
+        <menu:category id="c_grouprights" z="hcwWoASLXlC6VWEWhMVdq5r7Jno=">
+            <menu:item id="i_grouprights_new" messageCode="global_menu_new" url="/grouprightses?form" z="a2VTQiShtfiz6XZeW5mcz7KdJQ8="/>
+            <menu:item id="i_grouprights_list" messageCode="global_menu_list" url="/grouprightses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0t1e4jMknjrbpv4QgE+NtMw1Ctk="/>
+        </menu:category>
+        <menu:category id="c_group" z="IzsiYJAVMvw1MYB2rS012W6p/sQ=">
+            <menu:item id="i_group_new" messageCode="global_menu_new" url="/groups?form" z="NplgVuxbIfib+TWeBYdtVVPJyuU="/>
+            <menu:item id="i_group_list" messageCode="global_menu_list" url="/groups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="+yB7q/lCvKVAK6joKjX6uJqct/A="/>
+        </menu:category>
+        <menu:category id="c_fields" z="7BQZgc9sx97WhTgZtZjm2IkkiDE=">
+            <menu:item id="i_fields_new" messageCode="global_menu_new" url="/fieldses?form" z="TJ5GxyLDK+vPntsmZX8+GvIQ0DU="/>
+            <menu:item id="i_fields_list" messageCode="global_menu_list" url="/fieldses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="LUgABYRl4gqNA9KHclmxVwUy2zw="/>
+        </menu:category>
+        <menu:category id="c_userfilters" z="8jzufQ36GAVp5olOkfzExxjHwbs=">
+            <menu:item id="i_userfilters_new" messageCode="global_menu_new" url="/userfilterses?form" z="xR41oVQV9To+eGRCWaeLf5F3EV4="/>
+            <menu:item id="i_userfilters_list" messageCode="global_menu_list" url="/userfilterses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="nZOD2eKi9LcDjX1opcykB2v1H3o="/>
+        </menu:category>
+        <menu:category id="c_privacities" z="pL53I70+/dRjIPbJ4Itjk6UE2ik=">
+            <menu:item id="i_privacities_new" messageCode="global_menu_new" url="/privacitieses?form" z="Q5vHK76Cmdg6Hw8YNLV/otSaptE="/>
+            <menu:item id="i_privacities_list" messageCode="global_menu_list" url="/privacitieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="/nNNMKy8OypD70x3Cnam2tyu3KA="/>
+        </menu:category>
+        <menu:category id="c_userrights" z="D/jkevZVUI0fTUbdgcSFF1+9ew8=">
+            <menu:item id="i_userrights_new" messageCode="global_menu_new" url="/userrightses?form" z="y6tstQge0G+Fw3z9uTWBTi9LHeU="/>
+            <menu:item id="i_userrights_list" messageCode="global_menu_list" url="/userrightses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Nry7MJkLJsJ0vcdp1SqcS1v+JUA="/>
+        </menu:category>
+        <menu:category id="c_right" z="xR7oJ3OXBqsuvN3J0v58KQcCyzY=">
+            <menu:item id="i_right_new" messageCode="global_menu_new" url="/rights?form" z="uk2En5gQhK5VuyHfJv/Cknpli5M="/>
+            <menu:item id="i_right_list" messageCode="global_menu_list" url="/rights?page=1&amp;size=${empty param.size ? 10 : param.size}" z="pw0CPsjtkDCj4VHVmavBsG/Sa04="/>
+        </menu:category>
+        <menu:category id="c_module" z="u0mRqU70rcV+LrRVSbNqkd/Zl9o=">
+            <menu:item id="i_module_new" messageCode="global_menu_new" url="/modules?form" z="rGnXvs29V/Xxd39tg91pfx/mEtw="/>
+            <menu:item id="i_module_list" messageCode="global_menu_list" url="/modules?page=1&amp;size=${empty param.size ? 10 : param.size}" z="8Tj6kaQJSuWzOpLBDPE043c09Vk="/>
+        </menu:category>
+        <menu:category id="c_action" z="B8brGblFScy00b3KTrQaXixCPjQ=">
+            <menu:item id="i_action_new" messageCode="global_menu_new" url="/actions?form" z="MDrMB1G5SQAY5Q1wR7+lnanOI+Y="/>
+            <menu:item id="i_action_list" messageCode="global_menu_list" url="/actions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="xtcOg1a4bMYG9erutdsLQd8qe+I="/>
+        </menu:category>
+        <menu:category id="c_user" z="uoTSf/uIZ821ZppidzS9aO776yk=">
+            <menu:item id="i_user_new" messageCode="global_menu_new" url="/users?form" z="Zv1m8u2rG+JFKcvJ+AHVVK0ey24="/>
+            <menu:item id="i_user_list" messageCode="global_menu_list" url="/users?page=1&amp;size=${empty param.size ? 10 : param.size}" z="4MY4uybxa60Q1G2rlI5bOwg+sm0="/>
+        </menu:category>
+        <menu:category id="c_actiongroups" z="vDQ7/NOaTldnEkdVT2AZ+1XWMI0=">
+            <menu:item id="i_actiongroups_new" messageCode="global_menu_new" url="/actiongroupses?form" z="uhVQDg8f5FKLVlP2mB4zC0QnWBQ="/>
+            <menu:item id="i_actiongroups_list" messageCode="global_menu_list" url="/actiongroupses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="k8BLt1sNFUg9fqCOVAwilAFGU5A="/>
+        </menu:category>
         <menu:category id="c_usergroups" z="D+G+fwNTMCq8D+wBC5MkJbiWAX4=">
             <menu:item id="i_usergroups_new" messageCode="global_menu_new" url="/usergroupses?form" z="rPykQsZ6LKGsaOXtTFWonZSkjMA="/>
             <menu:item id="i_usergroups_list" messageCode="global_menu_list" url="/usergroupses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="nFM+1FndP6u34ugmc4eJdBcBNeE="/>
-        </menu:category>
-        <menu:category id="c_session" z="eAOcbamZlFKVGjCYaNKL7SSUsno=">
-            <menu:item id="i_session_new" messageCode="global_menu_new" url="/sessions?form" z="p2EPHJp/SSeUnSo/+jf4KBhaoMs="/>
-            <menu:item id="i_session_list" messageCode="global_menu_list" url="/sessions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="vH0n2WGOZkiCOMKTmEQSH2aksZ4="/>
         </menu:category>
         <menu:category id="c_modulerights" z="0giWiQFOFUSLUHY5WGayvI7dbRM=">
             <menu:item id="i_modulerights_new" messageCode="global_menu_new" url="/modulerightses?form" z="aegUF5hpkFgf+u+cMZ1azO8DfC0="/>
@@ -74,14 +82,6 @@
         <menu:category id="c_modulegroups" z="ERY6jDJ85e4txJ1xSUlGLi3gNhQ=">
             <menu:item id="i_modulegroups_new" messageCode="global_menu_new" url="/modulegroupses?form" z="nSH2vs6DHbtMSW4s4e07zDTU1UI="/>
             <menu:item id="i_modulegroups_list" messageCode="global_menu_list" url="/modulegroupses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="L/684wPuukFodHWyXu6uXXHQbXE="/>
-        </menu:category>
-        <menu:category id="c_filter" z="+M8TKLLnTktd85u1BMHH26ETC1Y=">
-            <menu:item id="i_filter_new" messageCode="global_menu_new" url="/filters?form" z="D7iqw/k8kHK1V++AQWHjFGN/V2M="/>
-            <menu:item id="i_filter_list" messageCode="global_menu_list" url="/filters?page=1&amp;size=${empty param.size ? 10 : param.size}" z="UhtmA95sDOxWulaJ5qfkvkNhGYE="/>
-        </menu:category>
-        <menu:category id="c_user" z="uoTSf/uIZ821ZppidzS9aO776yk=">
-            <menu:item id="i_user_new" messageCode="global_menu_new" url="/users?form" z="Zv1m8u2rG+JFKcvJ+AHVVK0ey24="/>
-            <menu:item id="i_user_list" messageCode="global_menu_list" url="/users?page=1&amp;size=${empty param.size ? 10 : param.size}" z="4MY4uybxa60Q1G2rlI5bOwg+sm0="/>
         </menu:category>
     </menu:menu>
 </div>

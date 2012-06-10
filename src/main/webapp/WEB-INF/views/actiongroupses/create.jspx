@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_intranet_ActionGroups" modelAttribute="actionGroups" path="/actiongroupses" render="${empty dependencies}" z="jxOn5DRfwsDh9K4/fPz/RBOsyRI=">
-        <field:select field="idgroup" id="c_intranet_ActionGroups_idgroup" itemValue="idgroup" items="${groups}" path="/groups" z="3YBIEHot71i1GZZxzxeJAElWWvo="/>
         <field:select field="idaction" id="c_intranet_ActionGroups_idaction" itemValue="idaction" items="${actions}" path="/actions" z="TO3Dr/E9vmVpFBQdL25G5ITHRRg="/>
+        <field:select field="idgroup" id="c_intranet_ActionGroups_idgroup" itemValue="idgroup" items="${groups}" path="/groups" z="3YBIEHot71i1GZZxzxeJAElWWvo="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_intranet_ActionGroups" render="${not empty dependencies}" z="1swv54jfdZwDlsOQOBadld94jHo="/>
 </div>

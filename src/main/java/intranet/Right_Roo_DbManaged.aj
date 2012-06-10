@@ -36,7 +36,7 @@ privileged aspect Right_Roo_DbManaged {
     @NotNull
     private String Right.name;
     
-    @Column(name = "description")
+    @Column(name = "description", length = 255)
     private String Right.description;
     
     public Set<ActionRights> Right.getActionRightss() {

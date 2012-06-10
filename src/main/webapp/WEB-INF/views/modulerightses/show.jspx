@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_intranet_ModuleRights" object="${modulerights}" path="/modulerightses" z="6gBG9ikOQjJqNJCaoGbpKw5Me5c=">
-        <field:display field="idmodule" id="s_intranet_ModuleRights_idmodule" object="${modulerights}" z="MBP2EyJ3NkNKwtNsI9uYGH6b3HM="/>
         <field:display field="idright" id="s_intranet_ModuleRights_idright" object="${modulerights}" z="rg+0KE4pxMvzxzdEsyPsF5k74r4="/>
+        <field:display field="idmodule" id="s_intranet_ModuleRights_idmodule" object="${modulerights}" z="MBP2EyJ3NkNKwtNsI9uYGH6b3HM="/>
     </page:show>
 </div>

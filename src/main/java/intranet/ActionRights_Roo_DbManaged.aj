@@ -12,20 +12,12 @@ import javax.persistence.ManyToOne;
 privileged aspect ActionRights_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "idaction", referencedColumnName = "idaction", nullable = false)
-    private Action ActionRights.idaction;
-    
-    @ManyToOne
     @JoinColumn(name = "idright", referencedColumnName = "idright", nullable = false)
     private Right ActionRights.idright;
     
-    public Action ActionRights.getIdaction() {
-        return idaction;
-    }
-    
-    public void ActionRights.setIdaction(Action idaction) {
-        this.idaction = idaction;
-    }
+    @ManyToOne
+    @JoinColumn(name = "idaction", referencedColumnName = "idaction", nullable = false)
+    private Action ActionRights.idaction;
     
     public Right ActionRights.getIdright() {
         return idright;
@@ -33,6 +25,14 @@ privileged aspect ActionRights_Roo_DbManaged {
     
     public void ActionRights.setIdright(Right idright) {
         this.idright = idright;
+    }
+    
+    public Action ActionRights.getIdaction() {
+        return idaction;
+    }
+    
+    public void ActionRights.setIdaction(Action idaction) {
+        this.idaction = idaction;
     }
     
 }

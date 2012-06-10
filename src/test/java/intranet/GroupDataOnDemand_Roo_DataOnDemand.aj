@@ -31,6 +31,9 @@ privileged aspect GroupDataOnDemand_Roo_DataOnDemand {
     
     public void GroupDataOnDemand.setDescription(Group obj, int index) {
         String description = "description_" + index;
+        if (description.length() > 255) {
+            description = description.substring(0, 255);
+        }
         obj.setDescription(description);
     }
     
