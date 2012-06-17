@@ -6,7 +6,6 @@ package intranet;
 import intranet.Action;
 import intranet.ActionDataOnDemand;
 import intranet.Module;
-import intranet.ModuleDataOnDemand;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect ActionDataOnDemand_Roo_DataOnDemand {
@@ -25,9 +23,6 @@ privileged aspect ActionDataOnDemand_Roo_DataOnDemand {
     
     private List<Action> ActionDataOnDemand.data;
     
-    @Autowired
-    private ModuleDataOnDemand ActionDataOnDemand.moduleDataOnDemand;
-    
     public Action ActionDataOnDemand.getNewTransientAction(int index) {
         Action obj = new Action();
         setIdmodule(obj, index);
@@ -37,7 +32,7 @@ privileged aspect ActionDataOnDemand_Roo_DataOnDemand {
     }
     
     public void ActionDataOnDemand.setIdmodule(Action obj, int index) {
-        Module idmodule = moduleDataOnDemand.getRandomModule();
+        Module idmodule = null;
         obj.setIdmodule(idmodule);
     }
     

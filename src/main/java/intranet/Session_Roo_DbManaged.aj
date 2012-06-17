@@ -19,12 +19,12 @@ privileged aspect Session_Roo_DbManaged {
     @JoinColumn(name = "iduser", referencedColumnName = "iduser")
     private User Session.iduser;
     
-    @Column(name = "login_date")
+    @Column(name = "login_date", columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(style = "M-")
     private Date Session.loginDate;
     
-    @Column(name = "last_action")
+    @Column(name = "last_action", columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(style = "M-")
     private Date Session.lastAction;

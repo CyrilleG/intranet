@@ -27,11 +27,11 @@ privileged aspect Action_Roo_DbManaged {
     @JoinColumn(name = "idmodule", referencedColumnName = "idmodule", nullable = false)
     private Module Action.idmodule;
     
-    @Column(name = "method", length = 100)
+    @Column(name = "method", columnDefinition = "VARCHAR", length = 100)
     @NotNull
     private String Action.method;
     
-    @Column(name = "template", length = 100)
+    @Column(name = "template", columnDefinition = "VARCHAR", length = 100)
     private String Action.template;
     
     public Set<ActionGroups> Action.getActionGroupss() {

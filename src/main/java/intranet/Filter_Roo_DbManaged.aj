@@ -19,13 +19,13 @@ privileged aspect Filter_Roo_DbManaged {
     @OneToMany(mappedBy = "idfilter", cascade = CascadeType.ALL)
     private Set<UserFilters> Filter.userFilterss;
     
-    @Column(name = "name", length = 100)
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
     private String Filter.name;
     
-    @Column(name = "description", length = 255)
+    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
     private String Filter.description;
     
-    @Column(name = "class", length = 75)
+    @Column(name = "class", columnDefinition = "VARCHAR", length = 75)
     private String Filter.class1;
     
     public Set<GroupFilters> Filter.getGroupFilterss() {

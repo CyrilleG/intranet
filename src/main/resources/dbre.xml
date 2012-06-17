@@ -3,7 +3,7 @@
 <database name="deprecated">
     <option key="moduleName" value=""/>
     <option key="activeRecord" value="true"/>
-    <option key="includeNonPortableAttributes" value="false"/>
+    <option key="includeNonPortableAttributes" value="true"/>
     <option key="testAutomatically" value="true"/>
     <table name="action">
         <column name="idaction" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>

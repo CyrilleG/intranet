@@ -23,7 +23,7 @@ privileged aspect Objects_Roo_DbManaged {
     @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
     private User Objects.iduser;
     
-    @Column(name = "name", length = 100)
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
     @NotNull
     private String Objects.name;
     

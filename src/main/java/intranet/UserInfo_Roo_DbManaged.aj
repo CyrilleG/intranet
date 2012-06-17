@@ -23,11 +23,11 @@ privileged aspect UserInfo_Roo_DbManaged {
     @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
     private User UserInfo.iduser;
     
-    @Column(name = "key", length = 100, unique = true)
+    @Column(name = "key", columnDefinition = "VARCHAR", length = 100, unique = true)
     @NotNull
     private String UserInfo.key;
     
-    @Column(name = "value", length = 255)
+    @Column(name = "value", columnDefinition = "VARCHAR", length = 255)
     private String UserInfo.value;
     
     public Set<Privacities> UserInfo.getPrivacitieses() {

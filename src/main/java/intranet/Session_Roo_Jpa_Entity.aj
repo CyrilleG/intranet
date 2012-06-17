@@ -19,7 +19,7 @@ privileged aspect Session_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idsession", length = 100)
+    @Column(name = "idsession", columnDefinition = "VARCHAR", length = 100)
     private String Session.idsession;
     
     public String Session.getIdsession() {

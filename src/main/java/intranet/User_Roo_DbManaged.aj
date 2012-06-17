@@ -40,11 +40,11 @@ privileged aspect User_Roo_DbManaged {
     @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
     private Set<UserRights> User.userRightss;
     
-    @Column(name = "login", length = 45, unique = true)
+    @Column(name = "login", columnDefinition = "VARCHAR", length = 45, unique = true)
     @NotNull
     private String User.login;
     
-    @Column(name = "password", length = 100)
+    @Column(name = "password", columnDefinition = "VARCHAR", length = 100)
     @NotNull
     private String User.password;
     

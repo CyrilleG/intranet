@@ -19,7 +19,7 @@ privileged aspect GroupFilters_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idgroup_filter")
+    @Column(name = "idgroup_filter", columnDefinition = "INT")
     private Integer GroupFilters.idgroupFilter;
     
     public Integer GroupFilters.getIdgroupFilter() {

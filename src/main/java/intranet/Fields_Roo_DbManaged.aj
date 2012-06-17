@@ -16,11 +16,11 @@ privileged aspect Fields_Roo_DbManaged {
     @JoinColumn(name = "idobject", referencedColumnName = "idobject", nullable = false)
     private Objects Fields.idobject;
     
-    @Column(name = "name", length = 100)
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
     @NotNull
     private String Fields.name;
     
-    @Column(name = "value", length = 255)
+    @Column(name = "value", columnDefinition = "VARCHAR", length = 255)
     private String Fields.value;
     
     public Objects Fields.getIdobject() {
