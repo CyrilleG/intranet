@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RooWebScaffold(path = "users", formBackingObject = User.class)
 public class UserController {
+	
 }
