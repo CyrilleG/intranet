@@ -23,12 +23,16 @@ privileged aspect UserInfo_Roo_DbManaged {
     @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
     private User UserInfo.iduser;
     
-    @Column(name = "key", columnDefinition = "VARCHAR", length = 100, unique = true)
+    @Column(name = "key", length = 100, unique = true)
     @NotNull
     private String UserInfo.key;
     
-    @Column(name = "value", columnDefinition = "VARCHAR", length = 255)
+    @Column(name = "value", length = 255)
     private String UserInfo.value;
+    
+    @Column(name = "show")
+    @NotNull
+    private boolean UserInfo.show;
     
     public Set<Privacities> UserInfo.getPrivacitieses() {
         return privacitieses;
@@ -60,6 +64,14 @@ privileged aspect UserInfo_Roo_DbManaged {
     
     public void UserInfo.setValue(String value) {
         this.value = value;
+    }
+    
+    public boolean UserInfo.isShow() {
+        return show;
+    }
+    
+    public void UserInfo.setShow(boolean show) {
+        this.show = show;
     }
     
 }

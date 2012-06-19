@@ -6,9 +6,12 @@ package controllers;
 import controllers.FieldsController;
 import intranet.Fields;
 import intranet.Objects;
+
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -19,7 +19,7 @@ privileged aspect Group_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idgroup", columnDefinition = "INT")
+    @Column(name = "idgroup")
     private Integer Group.idgroup;
     
     public Integer Group.getIdgroup() {

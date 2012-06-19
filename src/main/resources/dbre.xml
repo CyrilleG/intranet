@@ -3,13 +3,14 @@
 <database name="deprecated">
     <option key="moduleName" value=""/>
     <option key="activeRecord" value="true"/>
-    <option key="includeNonPortableAttributes" value="true"/>
-    <option key="testAutomatically" value="true"/>
+    <option key="includeNonPortableAttributes" value="false"/>
+    <option key="testAutomatically" value="false"/>
     <table name="action">
         <column name="idaction" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idmodule" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="method" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
         <column name="template" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
         <foreign-key foreignTable="module" name="action_module" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idmodule" local="idmodule"/>
@@ -194,6 +195,7 @@
         <column name="name" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
         <column name="description" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
         <column name="class" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
         <foreign-key foreignTable="action" name="action_module" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="idmodule" local="idmodule"/>
@@ -350,6 +352,7 @@
         <column name="iduser" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="login" primaryKey="false" required="true" scale="0" size="45" type="12,VARCHAR"/>
         <column name="password" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
         <foreign-key foreignTable="objects" name="param_user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="iduser" local="iduser"/>
@@ -434,6 +437,7 @@
         <column name="key" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
         <column name="value" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
         <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="show" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
         <foreign-key foreignTable="user" name="user_id" onDelete="none" onUpdate="none">
             <option key="exported" value="false"/>
             <reference foreign="iduser" local="iduser"/>

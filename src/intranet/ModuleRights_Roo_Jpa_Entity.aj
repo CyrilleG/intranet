@@ -19,7 +19,7 @@ privileged aspect ModuleRights_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idmodule_right", columnDefinition = "INT")
+    @Column(name = "idmodule_right")
     private Integer ModuleRights.idmoduleRight;
     
     public Integer ModuleRights.getIdmoduleRight() {

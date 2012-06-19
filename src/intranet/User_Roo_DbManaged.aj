@@ -40,13 +40,17 @@ privileged aspect User_Roo_DbManaged {
     @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
     private Set<UserRights> User.userRightss;
     
-    @Column(name = "login", columnDefinition = "VARCHAR", length = 45, unique = true)
+    @Column(name = "login", length = 45, unique = true)
     @NotNull
     private String User.login;
     
-    @Column(name = "password", columnDefinition = "VARCHAR", length = 100)
+    @Column(name = "password", length = 100)
     @NotNull
     private String User.password;
+    
+    @Column(name = "enabled")
+    @NotNull
+    private boolean User.enabled;
     
     public Set<Objects> User.getObjectss() {
         return objectss;
@@ -118,6 +122,14 @@ privileged aspect User_Roo_DbManaged {
     
     public void User.setPassword(String password) {
         this.password = password;
+    }
+    
+    public boolean User.isEnabled() {
+        return enabled;
+    }
+    
+    public void User.setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
     
 }

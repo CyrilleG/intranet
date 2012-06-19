@@ -27,12 +27,16 @@ privileged aspect Action_Roo_DbManaged {
     @JoinColumn(name = "idmodule", referencedColumnName = "idmodule", nullable = false)
     private Module Action.idmodule;
     
-    @Column(name = "method", columnDefinition = "VARCHAR", length = 100)
+    @Column(name = "method", length = 100)
     @NotNull
     private String Action.method;
     
-    @Column(name = "template", columnDefinition = "VARCHAR", length = 100)
+    @Column(name = "template", length = 100)
     private String Action.template;
+    
+    @Column(name = "enabled")
+    @NotNull
+    private boolean Action.enabled;
     
     public Set<ActionGroups> Action.getActionGroupss() {
         return actionGroupss;
@@ -72,6 +76,14 @@ privileged aspect Action_Roo_DbManaged {
     
     public void Action.setTemplate(String template) {
         this.template = template;
+    }
+    
+    public boolean Action.isEnabled() {
+        return enabled;
+    }
+    
+    public void Action.setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
     
 }

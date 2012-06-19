@@ -28,15 +28,15 @@ privileged aspect Right_Roo_DbManaged {
     @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
     private Set<UserRights> Right.userRightss;
     
-    @Column(name = "ident", columnDefinition = "VARCHAR", length = 70, unique = true)
+    @Column(name = "ident", length = 70, unique = true)
     @NotNull
     private String Right.ident;
     
-    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
+    @Column(name = "name", length = 100)
     @NotNull
     private String Right.name;
     
-    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    @Column(name = "description", length = 255)
     private String Right.description;
     
     public Set<ActionRights> Right.getActionRightss() {

@@ -7,9 +7,12 @@ import controllers.UserGroupsController;
 import intranet.Group;
 import intranet.User;
 import intranet.UserGroups;
+
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;

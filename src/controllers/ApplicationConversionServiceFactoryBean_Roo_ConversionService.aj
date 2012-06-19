@@ -3,7 +3,6 @@
 
 package controllers;
 
-import controllers.ApplicationConversionServiceFactoryBean;
 import intranet.Action;
 import intranet.ActionGroups;
 import intranet.ActionRights;
@@ -24,6 +23,8 @@ import intranet.UserFilters;
 import intranet.UserGroups;
 import intranet.UserInfo;
 import intranet.UserRights;
+import controllers.ApplicationConversionServiceFactoryBean;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;

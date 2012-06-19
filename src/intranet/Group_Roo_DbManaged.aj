@@ -40,11 +40,11 @@ privileged aspect Group_Roo_DbManaged {
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
     private Set<UserGroups> Group.userGroupss;
     
-    @Column(name = "name", columnDefinition = "VARCHAR", length = 100, unique = true)
+    @Column(name = "name", length = 100, unique = true)
     @NotNull
     private String Group.name;
     
-    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    @Column(name = "description", length = 255)
     private String Group.description;
     
     public Set<ActionGroups> Group.getActionGroupss() {

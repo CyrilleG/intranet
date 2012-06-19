@@ -19,7 +19,7 @@ privileged aspect Privacities_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idprivacity", columnDefinition = "INT")
+    @Column(name = "idprivacity")
     private Integer Privacities.idprivacity;
     
     public Integer Privacities.getIdprivacity() {

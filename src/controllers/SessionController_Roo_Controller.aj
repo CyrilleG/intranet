@@ -6,9 +6,12 @@ package controllers;
 import controllers.SessionController;
 import intranet.Session;
 import intranet.User;
+
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
