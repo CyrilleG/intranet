@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_intranet_AppGroup" object="${appgroup}" path="/appgroups" z="BvM2Ip/QrALp8ys2dOK+Oc5owB0=">
+        <field:display field="name" id="s_intranet_AppGroup_name" object="${appgroup}" z="3gh3hb0c2S8jCyzciV7t7kf3Lyo="/>
+        <field:display field="description" id="s_intranet_AppGroup_description" object="${appgroup}" z="5BGetsl/v9DE2W3YKluvPcb8Zqs="/>
+    </page:show>
+</div>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_intranet_DataField" object="${datafield}" path="/datafields" z="peAfoKDhDlG48A0YHrDRkwD/JJA=">
+        <field:display field="idobject" id="s_intranet_DataField_idobject" object="${datafield}" z="cmiUXqRL/9PeWB2S2tzySorAkJ8="/>
+        <field:display field="name" id="s_intranet_DataField_name" object="${datafield}" z="AlI/cGTKFgIS/FLANEkhHM8U9Zw="/>
+        <field:display field="value" id="s_intranet_DataField_value" object="${datafield}" z="UctjfyUlRsaYIB3kEuMJJEFDXro="/>
+    </page:show>
+</div>

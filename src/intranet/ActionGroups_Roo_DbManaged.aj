@@ -3,9 +3,9 @@
 
 package intranet;
 
-import intranet.Action;
 import intranet.ActionGroups;
-import intranet.Group;
+import intranet.AppGroup;
+import intranet.ModuleAction;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -13,25 +13,25 @@ privileged aspect ActionGroups_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "idaction", referencedColumnName = "idaction", nullable = false)
-    private Action ActionGroups.idaction;
+    private ModuleAction ActionGroups.idaction;
     
     @ManyToOne
     @JoinColumn(name = "idgroup", referencedColumnName = "idgroup", nullable = false)
-    private Group ActionGroups.idgroup;
+    private AppGroup ActionGroups.idgroup;
     
-    public Action ActionGroups.getIdaction() {
+    public ModuleAction ActionGroups.getIdaction() {
         return idaction;
     }
     
-    public void ActionGroups.setIdaction(Action idaction) {
+    public void ActionGroups.setIdaction(ModuleAction idaction) {
         this.idaction = idaction;
     }
     
-    public Group ActionGroups.getIdgroup() {
+    public AppGroup ActionGroups.getIdgroup() {
         return idgroup;
     }
     
-    public void ActionGroups.setIdgroup(Group idgroup) {
+    public void ActionGroups.setIdgroup(AppGroup idgroup) {
         this.idgroup = idgroup;
     }
     

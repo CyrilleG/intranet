@@ -3,8 +3,8 @@
 
 package intranet;
 
-import intranet.Filter;
-import intranet.Group;
+import intranet.AppFilter;
+import intranet.AppGroup;
 import intranet.GroupFilters;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,25 +13,25 @@ privileged aspect GroupFilters_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "idfilter", referencedColumnName = "idfilter", nullable = false)
-    private Filter GroupFilters.idfilter;
+    private AppFilter GroupFilters.idfilter;
     
     @ManyToOne
     @JoinColumn(name = "idgroup", referencedColumnName = "idgroup", nullable = false)
-    private Group GroupFilters.idgroup;
+    private AppGroup GroupFilters.idgroup;
     
-    public Filter GroupFilters.getIdfilter() {
+    public AppFilter GroupFilters.getIdfilter() {
         return idfilter;
     }
     
-    public void GroupFilters.setIdfilter(Filter idfilter) {
+    public void GroupFilters.setIdfilter(AppFilter idfilter) {
         this.idfilter = idfilter;
     }
     
-    public Group GroupFilters.getIdgroup() {
+    public AppGroup GroupFilters.getIdgroup() {
         return idgroup;
     }
     
-    public void GroupFilters.setIdgroup(Group idgroup) {
+    public void GroupFilters.setIdgroup(AppGroup idgroup) {
         this.idgroup = idgroup;
     }
     

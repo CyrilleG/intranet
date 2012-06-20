@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_intranet_AppUser" idField="iduser" modelAttribute="appUser" path="/appusers" versionField="none" z="FgN9v/5gDPXcE8Zc/kT3/K+qJ3w=">
+        <field:simple field="userFilterss" id="c_intranet_AppUser_userFilterss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Filters" z="WFxigRAecNh0JIXjv6YrmTGtOB8="/>
+        <field:simple field="userGroupss" id="c_intranet_AppUser_userGroupss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Groups" z="/bizkNTnWMPjPktZQIvLoL10S5s="/>
+        <field:simple field="userInfoes" id="c_intranet_AppUser_userInfoes" messageCode="entity_reference_not_managed" messageCodeAttribute="User Info" z="QgeW8uWRlDwQzFtxljGcCA6vzOk="/>
+        <field:simple field="userRightss" id="c_intranet_AppUser_userRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Rights" z="scRnodWNRvJV41b28C066o3ndUQ="/>
+        <field:input field="login" id="c_intranet_AppUser_login" required="true" z="HcBwRqNLjinVx4XluR2eFKIdyNw="/>
+        <field:input field="password" id="c_intranet_AppUser_password" required="true" z="+6Tm5EATQGvRwcgTKGB9sb2Cboo="/>
+        <field:checkbox field="enabled" id="c_intranet_AppUser_enabled" z="bBNITlqOUrBgKrJEKhx17E45+BA="/>
+        <field:simple field="appSessions" id="c_intranet_AppUser_appSessions" messageCode="entity_reference_not_managed" messageCodeAttribute="App Session" z="BWzpYkqMcUzNCiQgV0iPISZriXo="/>
+        <field:simple field="infoPrivacitieses" id="c_intranet_AppUser_infoPrivacitieses" messageCode="entity_reference_not_managed" messageCodeAttribute="Info Privacities" z="uJtcnPIZGanJcaMSo/NWU7fhQNE="/>
+        <field:simple field="userDatas" id="c_intranet_AppUser_userDatas" messageCode="entity_reference_not_managed" messageCodeAttribute="User Data" z="dWcXYPMcM4BySrq7fQ3twovcGcM="/>
+    </form:update>
+</div>

@@ -3,9 +3,9 @@
 
 package intranet;
 
-import intranet.Action;
 import intranet.ActionRights;
-import intranet.Right;
+import intranet.AppRight;
+import intranet.ModuleAction;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -13,25 +13,25 @@ privileged aspect ActionRights_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "idright", referencedColumnName = "idright", nullable = false)
-    private Right ActionRights.idright;
+    private AppRight ActionRights.idright;
     
     @ManyToOne
     @JoinColumn(name = "idaction", referencedColumnName = "idaction", nullable = false)
-    private Action ActionRights.idaction;
+    private ModuleAction ActionRights.idaction;
     
-    public Right ActionRights.getIdright() {
+    public AppRight ActionRights.getIdright() {
         return idright;
     }
     
-    public void ActionRights.setIdright(Right idright) {
+    public void ActionRights.setIdright(AppRight idright) {
         this.idright = idright;
     }
     
-    public Action ActionRights.getIdaction() {
+    public ModuleAction ActionRights.getIdaction() {
         return idaction;
     }
     
-    public void ActionRights.setIdaction(Action idaction) {
+    public void ActionRights.setIdaction(ModuleAction idaction) {
         this.idaction = idaction;
     }
     

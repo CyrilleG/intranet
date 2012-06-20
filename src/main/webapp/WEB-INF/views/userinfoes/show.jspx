@@ -6,5 +6,6 @@
         <field:display field="iduser" id="s_intranet_UserInfo_iduser" object="${userinfo}" z="UgyAjI12CD3cdpUYEUHteaomLuU="/>
         <field:display field="key" id="s_intranet_UserInfo_key" object="${userinfo}" z="m/+C6V9ijJ4SAOL7mxbMrwHqrQY="/>
         <field:display field="value" id="s_intranet_UserInfo_value" object="${userinfo}" z="MdMiG7yuYb63H9CaIAMpmEgb9gw="/>
+        <field:display field="show" id="s_intranet_UserInfo_show" object="${userinfo}" z="7ZK8yd9iQwwAFhG7ywXh4ciB8yk="/>
     </page:show>
 </div>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_intranet_ModuleAction" items="${moduleactions}" z="NE8eRcBYkjlOPv4JWYrKPv1ku+Y=">
+        <table:table data="${moduleactions}" id="l_intranet_ModuleAction" path="/moduleactions" typeIdFieldName="idaction" z="SlP2A00GfmFKiNhM1YOjwQymVT8=">
+            <table:column id="c_intranet_ModuleAction_idmodule" property="idmodule" z="rvuSOgdeuhw8qdMpUIJME5B1R6A="/>
+            <table:column id="c_intranet_ModuleAction_method" property="method" z="l0qkwZSMOnUtc/oLf+BHrDsz7r8="/>
+            <table:column id="c_intranet_ModuleAction_template" property="template" z="ky29DGNy/xtCbZrN2qrf4mTglDY="/>
+            <table:column id="c_intranet_ModuleAction_enabled" property="enabled" z="71i8yfEqeAm8hwR6x9tTnZqBTFU="/>
+        </table:table>
+    </page:list>
+</div>

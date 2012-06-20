@@ -5,40 +5,15 @@
     <option key="activeRecord" value="true"/>
     <option key="includeNonPortableAttributes" value="false"/>
     <option key="testAutomatically" value="false"/>
-    <table name="action">
-        <column name="idaction" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idmodule" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="method" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
-        <column name="template" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
-        <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
-        <foreign-key foreignTable="module" name="action_module" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idmodule" local="idmodule"/>
-        </foreign-key>
-        <foreign-key foreignTable="action_groups" name="action_groups_ibfk_1" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="idaction" local="idaction"/>
-        </foreign-key>
-        <foreign-key foreignTable="action_rights" name="action_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="idaction" local="idaction"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idaction"/>
-        </unique>
-        <index name="action_module">
-            <index-column name="idmodule"/>
-        </index>
-    </table>
     <table name="action_groups">
         <column name="idaction_group" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idaction" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="action" name="action_groups_ibfk_1" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="module_action" name="action_groups_ibfk_1" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idaction" local="idaction"/>
         </foreign-key>
-        <foreign-key foreignTable="group" name="action_groups_ibfk_2" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_group" name="action_groups_ibfk_2" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idgroup" local="idgroup"/>
         </foreign-key>
@@ -56,11 +31,11 @@
         <column name="idaction_rights" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idright" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idaction" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="right" name="action_rights_ibfk_1" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_right" name="action_rights_ibfk_1" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idright" local="idright"/>
         </foreign-key>
-        <foreign-key foreignTable="action" name="action_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="module_action" name="action_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idaction" local="idaction"/>
         </foreign-key>
@@ -74,23 +49,7 @@
             <index-column name="idaction"/>
         </index>
     </table>
-    <table name="fields">
-        <column name="idfields" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idobject" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="name" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
-        <column name="value" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
-        <foreign-key foreignTable="objects" name="fields_has_object" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idobject" local="idobject"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idfields"/>
-        </unique>
-        <index name="fields_has_object">
-            <index-column name="idobject"/>
-        </index>
-    </table>
-    <table name="filter">
+    <table name="app_filter">
         <column name="idfilter" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="name" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
         <column name="description" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
@@ -107,7 +66,7 @@
             <unique-column name="idfilter"/>
         </unique>
     </table>
-    <table name="group">
+    <table name="app_group">
         <column name="idgroup" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="name" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
         <column name="description" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
@@ -123,6 +82,10 @@
             <option key="exported" value="true"/>
             <reference foreign="idgroup" local="idgroup"/>
         </foreign-key>
+        <foreign-key foreignTable="info_privacities" name="group" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="true"/>
+            <reference foreign="idgroup" local="idgroup"/>
+        </foreign-key>
         <foreign-key foreignTable="module_groups" name="module_access_group" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="idgroup" local="idgroup"/>
@@ -130,10 +93,6 @@
         <foreign-key foreignTable="module_rights" name="module_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="idmodule" local="idgroup"/>
-        </foreign-key>
-        <foreign-key foreignTable="privacities" name="group" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="idgroup" local="idgroup"/>
         </foreign-key>
         <foreign-key foreignTable="user_groups" name="idgroup" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
@@ -146,57 +105,13 @@
             <unique-column name="name"/>
         </unique>
     </table>
-    <table name="group_filters">
-        <column name="idgroup_filter" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idfilter" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="filter" name="group_filters_filter" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idfilter" local="idfilter"/>
-        </foreign-key>
-        <foreign-key foreignTable="group" name="group_filters_group" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idgroup" local="idgroup"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idgroup_filter"/>
-        </unique>
-        <index name="group_filters_filter">
-            <index-column name="idfilter"/>
-        </index>
-        <index name="group_filters_group">
-            <index-column name="idgroup"/>
-        </index>
-    </table>
-    <table name="group_rights">
-        <column name="idgroup_rights" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idright" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="group" name="group_rights_group" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idgroup" local="idgroup"/>
-        </foreign-key>
-        <foreign-key foreignTable="right" name="group_rights_right" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idright" local="idright"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idgroup_rights"/>
-        </unique>
-        <index name="group_rights_group">
-            <index-column name="idgroup"/>
-        </index>
-        <index name="group_rights_right">
-            <index-column name="idright"/>
-        </index>
-    </table>
-    <table name="module">
+    <table name="app_module">
         <column name="idmodule" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="name" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
         <column name="description" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
         <column name="class" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
         <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
-        <foreign-key foreignTable="action" name="action_module" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="module_action" name="action_module" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="idmodule" local="idmodule"/>
         </foreign-key>
@@ -208,103 +123,7 @@
             <unique-column name="idmodule"/>
         </unique>
     </table>
-    <table name="module_groups">
-        <column name="idmodule_access" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idmodule" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="group" name="module_access_group" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idgroup" local="idgroup"/>
-        </foreign-key>
-        <foreign-key foreignTable="module" name="module_access_module" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idmodule" local="idmodule"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idmodule_access"/>
-        </unique>
-        <index name="module_access_module">
-            <index-column name="idmodule"/>
-        </index>
-        <index name="module_access_group">
-            <index-column name="idgroup"/>
-        </index>
-    </table>
-    <table name="module_rights">
-        <column name="idmodule_right" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idright" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idmodule" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="right" name="module_rights_ibfk_1" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idright" local="idright"/>
-        </foreign-key>
-        <foreign-key foreignTable="group" name="module_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idgroup" local="idmodule"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idmodule_right"/>
-        </unique>
-        <index name="idmodule">
-            <index-column name="idmodule"/>
-        </index>
-        <index name="idright">
-            <index-column name="idright"/>
-        </index>
-        <index name="idright_2">
-            <index-column name="idright"/>
-        </index>
-    </table>
-    <table name="objects">
-        <column name="idobject" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="name" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
-        <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="user" name="param_user" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="iduser" local="iduser"/>
-        </foreign-key>
-        <foreign-key foreignTable="fields" name="fields_has_object" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="idobject" local="idobject"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idobject"/>
-        </unique>
-        <index name="param_user">
-            <index-column name="iduser"/>
-        </index>
-    </table>
-    <table name="privacities">
-        <column name="idprivacity" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idinfo" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="group" name="group" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idgroup" local="idgroup"/>
-        </foreign-key>
-        <foreign-key foreignTable="user_info" name="info" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="idinfo" local="idinfo"/>
-        </foreign-key>
-        <foreign-key foreignTable="user" name="user" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="iduser" local="iduser"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="idprivacity"/>
-        </unique>
-        <index name="group">
-            <index-column name="idgroup"/>
-        </index>
-        <index name="info">
-            <index-column name="idinfo"/>
-        </index>
-        <index name="user">
-            <index-column name="iduser"/>
-        </index>
-    </table>
-    <table name="right">
+    <table name="app_right">
         <column name="idright" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="ident" primaryKey="false" required="true" scale="0" size="70" type="12,VARCHAR"/>
         <column name="name" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
@@ -332,12 +151,12 @@
             <unique-column name="ident"/>
         </unique>
     </table>
-    <table name="session">
+    <table name="app_session">
         <column name="idsession" primaryKey="true" required="true" scale="0" size="100" type="12,VARCHAR"/>
         <column name="iduser" primaryKey="false" required="false" scale="0" size="10" type="4,INT"/>
         <column name="login_date" primaryKey="false" required="false" scale="0" size="10" type="91,DATE"/>
         <column name="last_action" primaryKey="false" required="false" scale="0" size="10" type="91,DATE"/>
-        <foreign-key foreignTable="user" name="session_user" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_user" name="session_user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>
@@ -348,20 +167,20 @@
             <index-column name="iduser"/>
         </index>
     </table>
-    <table name="user">
+    <table name="app_user">
         <column name="iduser" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="login" primaryKey="false" required="true" scale="0" size="45" type="12,VARCHAR"/>
         <column name="password" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
         <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
-        <foreign-key foreignTable="objects" name="param_user" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_session" name="session_user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>
-        <foreign-key foreignTable="privacities" name="user" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="info_privacities" name="user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>
-        <foreign-key foreignTable="session" name="session_user" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="user_data" name="param_user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>
@@ -388,15 +207,196 @@
             <unique-column name="login"/>
         </unique>
     </table>
+    <table name="data_field">
+        <column name="idfields" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idobject" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="name" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="value" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
+        <foreign-key foreignTable="user_data" name="fields_has_object" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idobject" local="idobject"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idfields"/>
+        </unique>
+        <index name="fields_has_object">
+            <index-column name="idobject"/>
+        </index>
+    </table>
+    <table name="group_filters">
+        <column name="idgroup_filter" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idfilter" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <foreign-key foreignTable="app_filter" name="group_filters_filter" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idfilter" local="idfilter"/>
+        </foreign-key>
+        <foreign-key foreignTable="app_group" name="group_filters_group" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idgroup" local="idgroup"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idgroup_filter"/>
+        </unique>
+        <index name="group_filters_filter">
+            <index-column name="idfilter"/>
+        </index>
+        <index name="group_filters_group">
+            <index-column name="idgroup"/>
+        </index>
+    </table>
+    <table name="group_rights">
+        <column name="idgroup_rights" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idright" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <foreign-key foreignTable="app_group" name="group_rights_group" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idgroup" local="idgroup"/>
+        </foreign-key>
+        <foreign-key foreignTable="app_right" name="group_rights_right" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idright" local="idright"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idgroup_rights"/>
+        </unique>
+        <index name="group_rights_group">
+            <index-column name="idgroup"/>
+        </index>
+        <index name="group_rights_right">
+            <index-column name="idright"/>
+        </index>
+    </table>
+    <table name="info_privacities">
+        <column name="idprivacity" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idinfo" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <foreign-key foreignTable="app_group" name="group" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idgroup" local="idgroup"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_info" name="info" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idinfo" local="idinfo"/>
+        </foreign-key>
+        <foreign-key foreignTable="app_user" name="user" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="iduser" local="iduser"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idprivacity"/>
+        </unique>
+        <index name="group">
+            <index-column name="idgroup"/>
+        </index>
+        <index name="info">
+            <index-column name="idinfo"/>
+        </index>
+        <index name="user">
+            <index-column name="iduser"/>
+        </index>
+    </table>
+    <table name="module_action">
+        <column name="idaction" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idmodule" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="method" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="template" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
+        <foreign-key foreignTable="app_module" name="action_module" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idmodule" local="idmodule"/>
+        </foreign-key>
+        <foreign-key foreignTable="action_groups" name="action_groups_ibfk_1" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="true"/>
+            <reference foreign="idaction" local="idaction"/>
+        </foreign-key>
+        <foreign-key foreignTable="action_rights" name="action_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="true"/>
+            <reference foreign="idaction" local="idaction"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idaction"/>
+        </unique>
+        <index name="action_module">
+            <index-column name="idmodule"/>
+        </index>
+    </table>
+    <table name="module_groups">
+        <column name="idmodule_access" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idmodule" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <foreign-key foreignTable="app_group" name="module_access_group" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idgroup" local="idgroup"/>
+        </foreign-key>
+        <foreign-key foreignTable="app_module" name="module_access_module" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idmodule" local="idmodule"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idmodule_access"/>
+        </unique>
+        <index name="module_access_module">
+            <index-column name="idmodule"/>
+        </index>
+        <index name="module_access_group">
+            <index-column name="idgroup"/>
+        </index>
+    </table>
+    <table name="module_rights">
+        <column name="idmodule_right" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idright" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="idmodule" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <foreign-key foreignTable="app_right" name="module_rights_ibfk_1" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idright" local="idright"/>
+        </foreign-key>
+        <foreign-key foreignTable="app_group" name="module_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="idgroup" local="idmodule"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idmodule_right"/>
+        </unique>
+        <index name="idmodule">
+            <index-column name="idmodule"/>
+        </index>
+        <index name="idright">
+            <index-column name="idright"/>
+        </index>
+        <index name="idright_2">
+            <index-column name="idright"/>
+        </index>
+    </table>
+    <table name="user_data">
+        <column name="idobject" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="name" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <foreign-key foreignTable="app_user" name="param_user" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="iduser" local="iduser"/>
+        </foreign-key>
+        <foreign-key foreignTable="data_field" name="fields_has_object" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="true"/>
+            <reference foreign="idobject" local="idobject"/>
+        </foreign-key>
+        <unique name="PRIMARY">
+            <unique-column name="idobject"/>
+        </unique>
+        <index name="param_user">
+            <index-column name="iduser"/>
+        </index>
+    </table>
     <table name="user_filters">
         <column name="iduser_filters" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idfilter" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="filter" name="user_filter_filter" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_filter" name="user_filter_filter" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idfilter" local="idfilter"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="user_filter_user" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_user" name="user_filter_user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>
@@ -414,11 +414,11 @@
         <column name="iduser_groups" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idgroup" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="group" name="idgroup" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_group" name="idgroup" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idgroup" local="idgroup"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="iduser" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_user" name="iduser" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>
@@ -438,11 +438,11 @@
         <column name="value" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
         <column name="iduser" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="show" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
-        <foreign-key foreignTable="user" name="user_id" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="app_user" name="user_id" onDelete="none" onUpdate="none">
             <option key="exported" value="false"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>
-        <foreign-key foreignTable="privacities" name="info" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="info_privacities" name="info" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="idinfo" local="idinfo"/>
         </foreign-key>
@@ -460,11 +460,11 @@
         <column name="iduser_rights" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="iduser" primaryKey="false" required="false" scale="0" size="10" type="4,INT"/>
         <column name="idright" primaryKey="false" required="false" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="right" name="user_rights_idright" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_right" name="user_rights_idright" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="idright" local="idright"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="user_rights_iduser" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_user" name="user_rights_iduser" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="iduser" local="iduser"/>
         </foreign-key>

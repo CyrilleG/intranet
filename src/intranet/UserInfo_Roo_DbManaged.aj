@@ -3,8 +3,8 @@
 
 package intranet;
 
-import intranet.Privacities;
-import intranet.User;
+import intranet.AppUser;
+import intranet.InfoPrivacities;
 import intranet.UserInfo;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -17,11 +17,11 @@ import javax.validation.constraints.NotNull;
 privileged aspect UserInfo_Roo_DbManaged {
     
     @OneToMany(mappedBy = "idinfo", cascade = CascadeType.ALL)
-    private Set<Privacities> UserInfo.privacitieses;
+    private Set<InfoPrivacities> UserInfo.infoPrivacitieses;
     
     @ManyToOne
     @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
-    private User UserInfo.iduser;
+    private AppUser UserInfo.iduser;
     
     @Column(name = "key", length = 100, unique = true)
     @NotNull
@@ -34,19 +34,19 @@ privileged aspect UserInfo_Roo_DbManaged {
     @NotNull
     private boolean UserInfo.show;
     
-    public Set<Privacities> UserInfo.getPrivacitieses() {
-        return privacitieses;
+    public Set<InfoPrivacities> UserInfo.getInfoPrivacitieses() {
+        return infoPrivacitieses;
     }
     
-    public void UserInfo.setPrivacitieses(Set<Privacities> privacitieses) {
-        this.privacitieses = privacitieses;
+    public void UserInfo.setInfoPrivacitieses(Set<InfoPrivacities> infoPrivacitieses) {
+        this.infoPrivacitieses = infoPrivacitieses;
     }
     
-    public User UserInfo.getIduser() {
+    public AppUser UserInfo.getIduser() {
         return iduser;
     }
     
-    public void UserInfo.setIduser(User iduser) {
+    public void UserInfo.setIduser(AppUser iduser) {
         this.iduser = iduser;
     }
     

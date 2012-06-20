@@ -3,16 +3,13 @@
 
 package controllers;
 
-import controllers.ActionRightsController;
-import intranet.Action;
 import intranet.ActionRights;
-import intranet.Right;
-
+import intranet.AppRight;
+import intranet.ModuleAction;
+import controllers.ActionRightsController;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,8 +88,8 @@ privileged aspect ActionRightsController_Roo_Controller {
     
     void ActionRightsController.populateEditForm(Model uiModel, ActionRights actionRights) {
         uiModel.addAttribute("actionRights", actionRights);
-        uiModel.addAttribute("actions", Action.findAllActions());
-        uiModel.addAttribute("rights", Right.findAllRights());
+        uiModel.addAttribute("apprights", AppRight.findAllAppRights());
+        uiModel.addAttribute("moduleactions", ModuleAction.findAllModuleActions());
     }
     
     String ActionRightsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

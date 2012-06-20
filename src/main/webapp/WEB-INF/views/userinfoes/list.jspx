@@ -7,6 +7,7 @@
             <table:column id="c_intranet_UserInfo_iduser" property="iduser" z="9BAWY9T0QjLGixmNjdXn80ebVZs="/>
             <table:column id="c_intranet_UserInfo_key" property="key" z="9r/1AJ7TrDyZFGUIjK/HGSeZKHs="/>
             <table:column id="c_intranet_UserInfo_value" property="value" z="+29wK8XVGwey2c+mgvtdHe4zrxU="/>
+            <table:column id="c_intranet_UserInfo_show" property="show" z="MdIY3RGJ5Oj8aZNoNH2oti/NqSo="/>
         </table:table>
     </page:list>
 </div>

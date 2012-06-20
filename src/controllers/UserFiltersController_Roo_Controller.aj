@@ -3,16 +3,13 @@
 
 package controllers;
 
-import controllers.UserFiltersController;
-import intranet.Filter;
-import intranet.User;
+import intranet.AppFilter;
+import intranet.AppUser;
 import intranet.UserFilters;
-
+import controllers.UserFiltersController;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,8 +88,8 @@ privileged aspect UserFiltersController_Roo_Controller {
     
     void UserFiltersController.populateEditForm(Model uiModel, UserFilters userFilters) {
         uiModel.addAttribute("userFilters", userFilters);
-        uiModel.addAttribute("filters", Filter.findAllFilters());
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("appfilters", AppFilter.findAllAppFilters());
+        uiModel.addAttribute("appusers", AppUser.findAllAppUsers());
     }
     
     String UserFiltersController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

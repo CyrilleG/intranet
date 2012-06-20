@@ -1,8 +1,8 @@
 package intranet;
 
 public class UserParameters {
-	private Session session;
-	private User user;
+	private AppSession session;
+	private AppUser user;
 	private static UserParameters instance;
 	
 	
@@ -16,24 +16,24 @@ public class UserParameters {
 		return instance;
 	}
 	
-	public Session getSession() throws Exception{
+	public AppSession getSession() throws Exception{
 		if(session != null)
 			return session;
 		throw new Exception("Session not defined");
 	}
-	public void setSession(Session session) {
+	public void setSession(AppSession session) {
 		if (this.session == null)
 		{
 			this.session = session;
 			session.persist();
 		}
 	}
-	public User getUser() throws Exception{
+	public AppUser getUser() throws Exception{
 		if(user != null)
 			return user;
 		throw new Exception("User not defined");
 	}
-	public void setUser(User user) {
+	public void setUser(AppUser user) {
 		if (this.user == null)
 			this.user = user;
 	}

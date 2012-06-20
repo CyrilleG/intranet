@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_intranet_AppGroup" idField="idgroup" modelAttribute="appGroup" path="/appgroups" versionField="none" z="18KDgyOHfR9OgNHs1Z5k8UOpM6s=">
+        <field:simple field="actionGroupss" id="c_intranet_AppGroup_actionGroupss" messageCode="entity_reference_not_managed" messageCodeAttribute="Action Groups" z="NzL8TE1wTnGPe7S790avewiyJwo="/>
+        <field:simple field="groupFilterss" id="c_intranet_AppGroup_groupFilterss" messageCode="entity_reference_not_managed" messageCodeAttribute="Group Filters" z="XDUBYzXcS9aAgv9eKSyRTyt6g6w="/>
+        <field:simple field="groupRightss" id="c_intranet_AppGroup_groupRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Group Rights" z="JKdxS2Io6i2+9F3zLIFjl9M0gNU="/>
+        <field:simple field="infoPrivacitieses" id="c_intranet_AppGroup_infoPrivacitieses" messageCode="entity_reference_not_managed" messageCodeAttribute="Info Privacities" z="V/0tBpeKnsldc32uwHGNGjQMq9Y="/>
+        <field:simple field="moduleGroupss" id="c_intranet_AppGroup_moduleGroupss" messageCode="entity_reference_not_managed" messageCodeAttribute="Module Groups" z="9cCv8hnSui9mKrlFTkxNq0UwDN8="/>
+        <field:simple field="moduleRightss" id="c_intranet_AppGroup_moduleRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Module Rights" z="ywsYs2gLw5duA6vE6SMqEGx3daI="/>
+        <field:simple field="userGroupss" id="c_intranet_AppGroup_userGroupss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Groups" z="VSHpwtjAcB7B/ccO+IDJ19fuZhc="/>
+        <field:input field="name" id="c_intranet_AppGroup_name" required="true" z="HGK9buNfnmU/kzXHBOeFuFUP2wM="/>
+        <field:input field="description" id="c_intranet_AppGroup_description" z="9i2mO0utV892G/vs3WQfquG0PXk="/>
+    </form:update>
+</div>

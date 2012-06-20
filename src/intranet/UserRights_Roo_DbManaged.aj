@@ -3,8 +3,8 @@
 
 package intranet;
 
-import intranet.Right;
-import intranet.User;
+import intranet.AppRight;
+import intranet.AppUser;
 import intranet.UserRights;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,25 +13,25 @@ privileged aspect UserRights_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "idright", referencedColumnName = "idright")
-    private Right UserRights.idright;
+    private AppRight UserRights.idright;
     
     @ManyToOne
     @JoinColumn(name = "iduser", referencedColumnName = "iduser")
-    private User UserRights.iduser;
+    private AppUser UserRights.iduser;
     
-    public Right UserRights.getIdright() {
+    public AppRight UserRights.getIdright() {
         return idright;
     }
     
-    public void UserRights.setIdright(Right idright) {
+    public void UserRights.setIdright(AppRight idright) {
         this.idright = idright;
     }
     
-    public User UserRights.getIduser() {
+    public AppUser UserRights.getIduser() {
         return iduser;
     }
     
-    public void UserRights.setIduser(User iduser) {
+    public void UserRights.setIduser(AppUser iduser) {
         this.iduser = iduser;
     }
     

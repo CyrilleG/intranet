@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_intranet_AppModule" items="${appmodules}" z="pe8seYDDflfnQcQ0cRalg64vPFM=">
+        <table:table data="${appmodules}" id="l_intranet_AppModule" path="/appmodules" typeIdFieldName="idmodule" z="+qPHgXpfRuD4ubHEa5R8oSGH5iA=">
+            <table:column id="c_intranet_AppModule_name" property="name" z="pIWL2WhAoS1wBIogu3LqecPMkyg="/>
+            <table:column id="c_intranet_AppModule_description" property="description" z="iyMvQI1GC/OeDzOipd9IEqAz/IQ="/>
+            <table:column id="c_intranet_AppModule_class1" property="class1" z="9qUIoRXdweJfmkK8WN/xCm50PS8="/>
+            <table:column id="c_intranet_AppModule_enabled" property="enabled" z="pxlpHW7ORV0/G97zPVBIXJPtpzE="/>
+        </table:table>
+    </page:list>
+</div>

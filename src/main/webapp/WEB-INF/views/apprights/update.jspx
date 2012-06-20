@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_intranet_AppRight" idField="idright" modelAttribute="appRight" path="/apprights" versionField="none" z="VjP5qIzP8AlXh7iM6Jr/+79hwD8=">
+        <field:simple field="actionRightss" id="c_intranet_AppRight_actionRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Action Rights" z="T2WzDml9keY+wcVeKxCw+YhWiqs="/>
+        <field:simple field="groupRightss" id="c_intranet_AppRight_groupRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Group Rights" z="lzORvJX+IGZrWR/a37xj8KOKxzM="/>
+        <field:simple field="moduleRightss" id="c_intranet_AppRight_moduleRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="Module Rights" z="bp+aR7LmZtxTwTiBVjTKRWGRXyA="/>
+        <field:simple field="userRightss" id="c_intranet_AppRight_userRightss" messageCode="entity_reference_not_managed" messageCodeAttribute="User Rights" z="P3xgpEhwdku9LvsmKDdHR1Jg9FY="/>
+        <field:input field="ident" id="c_intranet_AppRight_ident" required="true" z="HLtkT9UzYzO8NIh0MFDTIZrgo6k="/>
+        <field:input field="name" id="c_intranet_AppRight_name" required="true" z="SVsMdrbkX5EbWtCuvki3NaJlgJE="/>
+        <field:input field="description" id="c_intranet_AppRight_description" z="JstIyDyAOJhn7AYbPVCTQdujRH8="/>
+    </form:update>
+</div>

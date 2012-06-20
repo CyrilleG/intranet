@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_intranet_ModuleGroups" idField="idmoduleAccess" modelAttribute="moduleGroups" path="/modulegroupses" versionField="none" z="sSYoRqLYmqmRmhXRI1UbH0RACfs=">
-        <field:select field="idgroup" id="c_intranet_ModuleGroups_idgroup" itemValue="idgroup" items="${groups}" path="/groups" z="RMysEc3S8Xh6KUeV8EIr9cUM7Is="/>
-        <field:select field="idmodule" id="c_intranet_ModuleGroups_idmodule" itemValue="idmodule" items="${modules}" path="/modules" z="ymb0ehtLirgtHuyMHrHFcMzwtiI="/>
+        <field:select field="idgroup" id="c_intranet_ModuleGroups_idgroup" itemValue="idgroup" items="${appgroups}" path="/appgroups" z="c+WLW+HSuc1YV8ctjvPKwajWoUM="/>
+        <field:select field="idmodule" id="c_intranet_ModuleGroups_idmodule" itemValue="idmodule" items="${appmodules}" path="/appmodules" z="5OqFZHzaocRVT+13gO96u5iO+9Y="/>
     </form:update>
 </div>

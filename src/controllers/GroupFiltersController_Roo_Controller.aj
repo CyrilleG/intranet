@@ -3,16 +3,13 @@
 
 package controllers;
 
-import controllers.GroupFiltersController;
-import intranet.Filter;
-import intranet.Group;
+import intranet.AppFilter;
+import intranet.AppGroup;
 import intranet.GroupFilters;
-
+import controllers.GroupFiltersController;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,8 +88,8 @@ privileged aspect GroupFiltersController_Roo_Controller {
     
     void GroupFiltersController.populateEditForm(Model uiModel, GroupFilters groupFilters) {
         uiModel.addAttribute("groupFilters", groupFilters);
-        uiModel.addAttribute("filters", Filter.findAllFilters());
-        uiModel.addAttribute("groups", Group.findAllGroups());
+        uiModel.addAttribute("appfilters", AppFilter.findAllAppFilters());
+        uiModel.addAttribute("appgroups", AppGroup.findAllAppGroups());
     }
     
     String GroupFiltersController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

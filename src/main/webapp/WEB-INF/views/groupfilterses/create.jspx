@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_intranet_GroupFilters" modelAttribute="groupFilters" path="/groupfilterses" render="${empty dependencies}" z="6kMcU6nkZbomsm9V2nPVsvguRe0=">
-        <field:select field="idfilter" id="c_intranet_GroupFilters_idfilter" itemValue="idfilter" items="${filters}" path="/filters" z="0wGgjVqv2s4kHqqk0pwG4B2XwIs="/>
-        <field:select field="idgroup" id="c_intranet_GroupFilters_idgroup" itemValue="idgroup" items="${groups}" path="/groups" z="RcPyc12LjC2ZGVn2QGtHSwSPjOQ="/>
+        <field:select field="idfilter" id="c_intranet_GroupFilters_idfilter" itemValue="idfilter" items="${appfilters}" path="/appfilters" z="OaHEmKCcaXya+Gk7hVlaq6Sbqbw="/>
+        <field:select field="idgroup" id="c_intranet_GroupFilters_idgroup" itemValue="idgroup" items="${appgroups}" path="/appgroups" z="5CDk6ycciPcdhHwtAr4D0FhQuQo="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_intranet_GroupFilters" render="${not empty dependencies}" z="eyl+0TAZ+ZkoQAEbjJdkG8eJyQA="/>
 </div>
