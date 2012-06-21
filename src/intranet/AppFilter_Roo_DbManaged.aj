@@ -13,59 +13,6 @@ import javax.persistence.OneToMany;
 
 privileged aspect AppFilter_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "idfilter", cascade = CascadeType.ALL)
-    private Set<GroupFilters> AppFilter.groupFilterss;
-    
-    @OneToMany(mappedBy = "idfilter", cascade = CascadeType.ALL)
-    private Set<UserFilters> AppFilter.userFilterss;
-    
-    @Column(name = "name", length = 100)
-    private String AppFilter.name;
-    
-    @Column(name = "description", length = 255)
-    private String AppFilter.description;
-    
-    @Column(name = "class", length = 75)
-    private String AppFilter.class1;
-    
-    public Set<GroupFilters> AppFilter.getGroupFilterss() {
-        return groupFilterss;
-    }
-    
-    public void AppFilter.setGroupFilterss(Set<GroupFilters> groupFilterss) {
-        this.groupFilterss = groupFilterss;
-    }
-    
-    public Set<UserFilters> AppFilter.getUserFilterss() {
-        return userFilterss;
-    }
-    
-    public void AppFilter.setUserFilterss(Set<UserFilters> userFilterss) {
-        this.userFilterss = userFilterss;
-    }
-    
-    public String AppFilter.getName() {
-        return name;
-    }
-    
-    public void AppFilter.setName(String name) {
-        this.name = name;
-    }
-    
-    public String AppFilter.getDescription() {
-        return description;
-    }
-    
-    public void AppFilter.setDescription(String description) {
-        this.description = description;
-    }
-    
-    public String AppFilter.getClass1() {
-        return class1;
-    }
-    
-    public void AppFilter.setClass1(String class1) {
-        this.class1 = class1;
-    }
+
     
 }

@@ -16,39 +16,6 @@ import javax.validation.constraints.NotNull;
 
 privileged aspect UserData_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "idobject", cascade = CascadeType.ALL)
-    private Set<DataField> UserData.dataFields;
-    
-    @ManyToOne
-    @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
-    private AppUser UserData.iduser;
-    
-    @Column(name = "name", length = 100)
-    @NotNull
-    private String UserData.name;
-    
-    public Set<DataField> UserData.getDataFields() {
-        return dataFields;
-    }
-    
-    public void UserData.setDataFields(Set<DataField> dataFields) {
-        this.dataFields = dataFields;
-    }
-    
-    public AppUser UserData.getIduser() {
-        return iduser;
-    }
-    
-    public void UserData.setIduser(AppUser iduser) {
-        this.iduser = iduser;
-    }
-    
-    public String UserData.getName() {
-        return name;
-    }
-    
-    public void UserData.setName(String name) {
-        this.name = name;
-    }
+   
     
 }

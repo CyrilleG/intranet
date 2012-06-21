@@ -3,8 +3,8 @@
 <database name="deprecated">
     <option key="moduleName" value=""/>
     <option key="activeRecord" value="true"/>
-    <option key="includeNonPortableAttributes" value="false"/>
-    <option key="testAutomatically" value="false"/>
+    <option key="includeNonPortableAttributes" value="true"/>
+    <option key="testAutomatically" value="true"/>
     <table name="action_groups">
         <column name="idaction_group" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="idaction" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
@@ -90,10 +90,6 @@
             <option key="exported" value="true"/>
             <reference foreign="idgroup" local="idgroup"/>
         </foreign-key>
-        <foreign-key foreignTable="module_rights" name="module_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="idmodule" local="idgroup"/>
-        </foreign-key>
         <foreign-key foreignTable="user_groups" name="idgroup" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="idgroup" local="idgroup"/>
@@ -116,6 +112,10 @@
             <reference foreign="idmodule" local="idmodule"/>
         </foreign-key>
         <foreign-key foreignTable="module_groups" name="module_access_module" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="true"/>
+            <reference foreign="idmodule" local="idmodule"/>
+        </foreign-key>
+        <foreign-key foreignTable="module_rights" name="module_rights_ibfk_3" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="idmodule" local="idmodule"/>
         </foreign-key>
@@ -153,18 +153,14 @@
     </table>
     <table name="app_session">
         <column name="idsession" primaryKey="true" required="true" scale="0" size="100" type="12,VARCHAR"/>
-        <column name="iduser" primaryKey="false" required="false" scale="0" size="10" type="4,INT"/>
+        <column name="login" primaryKey="false" required="false" scale="0" size="70" type="12,VARCHAR"/>
         <column name="login_date" primaryKey="false" required="false" scale="0" size="10" type="91,DATE"/>
         <column name="last_action" primaryKey="false" required="false" scale="0" size="10" type="91,DATE"/>
-        <foreign-key foreignTable="app_user" name="session_user" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="iduser" local="iduser"/>
-        </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="idsession"/>
         </unique>
         <index name="session_user">
-            <index-column name="iduser"/>
+            <index-column name="login"/>
         </index>
     </table>
     <table name="app_user">
@@ -172,10 +168,6 @@
         <column name="login" primaryKey="false" required="true" scale="0" size="45" type="12,VARCHAR"/>
         <column name="password" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
         <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
-        <foreign-key foreignTable="app_session" name="session_user" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="iduser" local="iduser"/>
-        </foreign-key>
         <foreign-key foreignTable="info_privacities" name="user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="iduser" local="iduser"/>
@@ -352,9 +344,9 @@
             <option key="exported" value="false"/>
             <reference foreign="idright" local="idright"/>
         </foreign-key>
-        <foreign-key foreignTable="app_group" name="module_rights_ibfk_2" onDelete="cascade" onUpdate="cascade">
+        <foreign-key foreignTable="app_module" name="module_rights_ibfk_3" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
-            <reference foreign="idgroup" local="idmodule"/>
+            <reference foreign="idmodule" local="idmodule"/>
         </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="idmodule_right"/>

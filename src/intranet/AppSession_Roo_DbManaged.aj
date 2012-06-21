@@ -4,53 +4,14 @@
 package intranet;
 
 import intranet.AppSession;
-import intranet.AppUser;
 import java.util.Date;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 privileged aspect AppSession_Roo_DbManaged {
     
-    @ManyToOne
-    @JoinColumn(name = "iduser", referencedColumnName = "iduser")
-    private AppUser AppSession.iduser;
-    
-    @Column(name = "login_date")
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(style = "M-")
-    private Date AppSession.loginDate;
-    
-    @Column(name = "last_action")
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(style = "M-")
-    private Date AppSession.lastAction;
-    
-    public AppUser AppSession.getIduser() {
-        return iduser;
-    }
-    
-    public void AppSession.setIduser(AppUser iduser) {
-        this.iduser = iduser;
-    }
-    
-    public Date AppSession.getLoginDate() {
-        return loginDate;
-    }
-    
-    public void AppSession.setLoginDate(Date loginDate) {
-        this.loginDate = loginDate;
-    }
-    
-    public Date AppSession.getLastAction() {
-        return lastAction;
-    }
-    
-    public void AppSession.setLastAction(Date lastAction) {
-        this.lastAction = lastAction;
-    }
+
     
 }

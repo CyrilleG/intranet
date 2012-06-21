@@ -9,5 +9,5 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "group_rights")
 @RooDbManaged(automaticallyDelete = true)
-public class GroupRights {
+class GroupRights {
 }

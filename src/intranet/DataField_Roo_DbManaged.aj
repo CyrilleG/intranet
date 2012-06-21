@@ -12,39 +12,6 @@ import javax.validation.constraints.NotNull;
 
 privileged aspect DataField_Roo_DbManaged {
     
-    @ManyToOne
-    @JoinColumn(name = "idobject", referencedColumnName = "idobject", nullable = false)
-    private UserData DataField.idobject;
-    
-    @Column(name = "name", length = 100)
-    @NotNull
-    private String DataField.name;
-    
-    @Column(name = "value", length = 255)
-    private String DataField.value;
-    
-    public UserData DataField.getIdobject() {
-        return idobject;
-    }
-    
-    public void DataField.setIdobject(UserData idobject) {
-        this.idobject = idobject;
-    }
-    
-    public String DataField.getName() {
-        return name;
-    }
-    
-    public void DataField.setName(String name) {
-        this.name = name;
-    }
-    
-    public String DataField.getValue() {
-        return value;
-    }
-    
-    public void DataField.setValue(String value) {
-        this.value = value;
-    }
+
     
 }

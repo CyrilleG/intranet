@@ -15,10 +15,6 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord(versionField = "", table = "app_user")
 @RooDbManaged(automaticallyDelete = true)
 public class AppUser {
-
-    @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
-    private Set<AppSession> appSessions;
-
     @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
     private Set<InfoPrivacities> infoPrivacitieses;
 
@@ -49,9 +45,21 @@ public class AppUser {
     @NotNull
     private boolean enabled;
 
+    
+    public boolean logIn(String login, String password)
+    {
+    	return false;
+    }
+    public void logOut()
+    {
+    	
+    }
+    
     private int findUserDataByName(String name) {
         UserData[] elems = (UserData[]) userDatas.toArray();
-        for (int i = 0; i < elems.length; i++) if (elems[i].getName().compareTo(name) == 0) return i;
+        for (int i = 0; i < elems.length; i++) 
+        	if (elems[i].getName().compareTo(name) == 0)
+        		return i;
         return -1;
     }
 
@@ -61,60 +69,128 @@ public class AppUser {
 
     public UserData getObject(String name) throws Exception {
         int index = findUserDataByName(name);
-        if (index != -1) return (UserData) userDatas.toArray()[index]; else throw new Exception("Object not found for this User");
+        if (index != -1) //TODO rights
+        	return (UserData) userDatas.toArray()[index];
+        else
+        	throw new Exception("Object not found for this User");
     }
 
     public void removeObject(String name) throws Exception {
-        int index = findUserDataByName(name);
+        int index = findUserDataByName(name);//TODO rights
         if (index != -1) {
             UserData e = (UserData) userDatas.toArray()[index];
-            for (DataField f : e.getDataFields()) f.remove();
-            e.remove();
+            for (DataField f : e.getFields()) f.remove();
+            	e.remove();
         } else throw new Exception("Object not found for this User");
     }
 
     public void setUserData(UserData o) throws Exception {
-        if (!hasObject(o.getName())) userDatas.add(o); else throw new Exception("Object name must be unique for an User");
+        if (!hasObject(o.getName())) //TODO rights
+        	userDatas.add(o); 
+        else 
+        	throw new Exception("Object name must be unique for an User");
     }
 
-    public Set<intranet.UserFilters> getUserFilterss() {
-        return userFilterss;
+    public void addFilter(AppFilter filter) {
+    	//TODO rights
+    }
+    public void removeFilterByName(String name) {
+    	//TODO rights
+    }
+    public void removeFilterByObject(AppFilter filter) {
+    	//TODO rights
+    }
+    public void applyPreFilter(AppFilter filter) {
+    	//TODO rights
+    }
+    public void applyPostFilter(AppFilter filter) {
+    	//TODO rights
+    }
+    public void applyUserPreFilters() {
+    	//TODO rights
+    }
+    public void applyUserPostFilters() {
+    	//TODO rights
+    }
+    
+    public boolean hasFilter(AppFilter filter)
+    {
+    	return false;//TODO rights
+    }
+    public void addUserToGroup(AppGroup group)
+    {
+    	//TODO rights
+    }
+    public void removeUserFromGroup(AppGroup group)
+    {
+    	//TODO rights
+    }
+    public boolean isOnGroup(AppGroup group)
+    {
+    	return false;
+    }
+    
+    public void setInformation(String key, String value)
+    {
+    	//TODO rights
     }
 
-    public void setUserFilterss(Set<intranet.UserFilters> userFilterss) {
-        this.userFilterss = userFilterss;
+    public void setInformation(UserInfo info)
+    {
+    	//TODO rights
     }
-
-    public Set<intranet.UserGroups> getUserGroupss() {
-        return userGroupss;
+    
+    public String getInformation(String key)
+    {
+    	return null; //TODO rights + privacities
     }
-
-    public void setUserGroupss(Set<intranet.UserGroups> userGroupss) {
-        this.userGroupss = userGroupss;
+    
+    public void removeInformation(String key)
+    {
+    	//TODO rights  + privacities
     }
-
-    public Set<intranet.UserInfo> getUserInfoes() {
-        return userInfoes;
+    
+    public void removeInformation(UserInfo info)
+    {
+    	//TODO rights  + privacities
     }
-
-    public void setUserInfoes(Set<intranet.UserInfo> userInfoes) {
-        this.userInfoes = userInfoes;
+    
+    public void giveRight(AppRight right)
+    {
+    	//TODO rights
     }
-
-    public Set<intranet.UserRights> getUserRightss() {
-        return userRightss;
+    
+    public void giveRight(String ident)
+    {
+    	//TODO rights
     }
-
-    public void setUserRightss(Set<intranet.UserRights> userRightss) {
-        this.userRightss = userRightss;
+    
+    public void hasRight(AppRight right)
+    {
+    	
     }
-
+    
+    public void hasRight(String ident)
+    {
+    	
+    }
+    
+    public void removeRight(AppRight right)
+    {
+    	//TODO rights
+    }
+    
+    public void removeRight(String ident)
+    {
+    	//TODO rights
+    }
+    
     public String getLogin() {
-        return login;
+        return login;//TODO rights
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.login = login;//TODO rights
     }
 
     public String getPassword() {
@@ -122,38 +198,30 @@ public class AppUser {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password;//TODO rights 
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return enabled;//TODO rights
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        this.enabled = enabled;//TODO rights
     }
-
-    public Set<intranet.AppSession> getAppSessions() {
-        return appSessions;
+    public UserData getData(String name)
+    {
+    	return null;
     }
-
-    public void setAppSessions(Set<intranet.AppSession> appSessions) {
-        this.appSessions = appSessions;
+    
+    public void hasData(String name)
+    {
+    	
     }
-
-    public Set<intranet.InfoPrivacities> getInfoPrivacitieses() {
-        return infoPrivacitieses;
+    
+    public void removeData(String name)
+    {
+    	
     }
-
-    public void setInfoPrivacitieses(Set<intranet.InfoPrivacities> infoPrivacitieses) {
-        this.infoPrivacitieses = infoPrivacitieses;
-    }
-
-    public Set<intranet.UserData> getUserDatas() {
-        return userDatas;
-    }
-
-    public void setUserDatas(Set<intranet.UserData> userDatas) {
-        this.userDatas = userDatas;
-    }
+    
+    
 }

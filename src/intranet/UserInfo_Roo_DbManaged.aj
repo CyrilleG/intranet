@@ -16,62 +16,6 @@ import javax.validation.constraints.NotNull;
 
 privileged aspect UserInfo_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "idinfo", cascade = CascadeType.ALL)
-    private Set<InfoPrivacities> UserInfo.infoPrivacitieses;
-    
-    @ManyToOne
-    @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
-    private AppUser UserInfo.iduser;
-    
-    @Column(name = "key", length = 100, unique = true)
-    @NotNull
-    private String UserInfo.key;
-    
-    @Column(name = "value", length = 255)
-    private String UserInfo.value;
-    
-    @Column(name = "show")
-    @NotNull
-    private boolean UserInfo.show;
-    
-    public Set<InfoPrivacities> UserInfo.getInfoPrivacitieses() {
-        return infoPrivacitieses;
-    }
-    
-    public void UserInfo.setInfoPrivacitieses(Set<InfoPrivacities> infoPrivacitieses) {
-        this.infoPrivacitieses = infoPrivacitieses;
-    }
-    
-    public AppUser UserInfo.getIduser() {
-        return iduser;
-    }
-    
-    public void UserInfo.setIduser(AppUser iduser) {
-        this.iduser = iduser;
-    }
-    
-    public String UserInfo.getKey() {
-        return key;
-    }
-    
-    public void UserInfo.setKey(String key) {
-        this.key = key;
-    }
-    
-    public String UserInfo.getValue() {
-        return value;
-    }
-    
-    public void UserInfo.setValue(String value) {
-        this.value = value;
-    }
-    
-    public boolean UserInfo.isShow() {
-        return show;
-    }
-    
-    public void UserInfo.setShow(boolean show) {
-        this.show = show;
-    }
+ 
     
 }

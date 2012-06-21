@@ -83,7 +83,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<AppFilter, String> ApplicationConversionServiceFactoryBean.getAppFilterToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.AppFilter, java.lang.String>() {
             public String convert(AppFilter appFilter) {
-                return new StringBuilder().append(appFilter.getName()).append(" ").append(appFilter.getDescription()).append(" ").append(appFilter.getClass1()).toString();
+                return new StringBuilder().append(appFilter.getName()).append(" ").append(appFilter.getDescription()).append(" ").append(appFilter.getFilterClass()).toString();
             }
         };
     }
@@ -131,7 +131,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<AppModule, String> ApplicationConversionServiceFactoryBean.getAppModuleToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.AppModule, java.lang.String>() {
             public String convert(AppModule appModule) {
-                return new StringBuilder().append(appModule.getName()).append(" ").append(appModule.getDescription()).append(" ").append(appModule.getClass1()).toString();
+                return new StringBuilder().append(appModule.getName()).append(" ").append(appModule.getDescription()).append(" ").append(appModule.getModuleClass()).toString();
             }
         };
     }
