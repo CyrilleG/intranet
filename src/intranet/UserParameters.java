@@ -1,22 +1,21 @@
 package intranet;
 
-public class UserParameters {
+import java.util.Collection;
+import java.util.Set;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+
+public class UserParameters implements Authentication{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private AppSession session;
 	private AppUser user;
-	private static UserParameters instance;
-	
-	
-	private UserParameters()
-	{
-	}
-	public static UserParameters getInstance()
-	{
-		if (instance == null)
-			instance = new UserParameters();
-		return instance;
-	}
-	
+	private boolean isAuth = false;
 	public AppSession getSession() throws Exception{
+		
 		if(session != null)
 			return session;
 		throw new Exception("Session not defined");
@@ -36,5 +35,48 @@ public class UserParameters {
 	public void setUser(AppUser user) {
 		if (this.user == null)
 			this.user = user;
+	}
+	public boolean hasRight(String ident)
+	{
+		Set<AppRight> rights = user.getAllAuthorities();
+		for (AppRight r : rights)
+			if (r.getIdent().compareTo(ident) == 0)
+				return true;
+		return false;
+			
+	}
+	@Override
+	public String getName() {
+		return user.getLogin();
+	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (isAuthenticated())
+			return user.getAllAuthorities();
+		else
+			return null;
+	}
+	@Override
+	public Object getCredentials() {
+		if (isAuthenticated())
+			return user;
+		else
+			return null;
+	}
+	@Override
+	public Object getDetails() {
+		return user;
+	}
+	@Override
+	public Object getPrincipal() {
+		return session;
+	}
+	@Override
+	public boolean isAuthenticated() {
+		return isAuth;
+	}
+	@Override
+	public void setAuthenticated(boolean arg0) throws IllegalArgumentException {
+		isAuth = arg0;
 	}
 }

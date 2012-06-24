@@ -1,10 +1,13 @@
 package intranet;
 
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -45,12 +48,21 @@ public class AppUser {
     @NotNull
     private boolean enabled;
 
-    
-    public boolean logIn(String login, String password)
+    public Set<AppRight> getAllAuthorities()
+    {
+    	Set<AppRight> rights = new HashSet<AppRight>();
+    	for (UserRights g : userRightss)
+    		rights.add(g.getIdright());
+    	for (UserGroups g : userGroupss)
+    		rights.addAll(g.getIdgroup().getRights());
+    	return rights;
+    }
+      
+    public static boolean logIn(String login, String password)
     {
     	return false;
     }
-    public void logOut()
+    public static void logOut()
     {
     	
     }
@@ -91,7 +103,7 @@ public class AppUser {
         	throw new Exception("Object name must be unique for an User");
     }
 
-    public void addFilter(AppFilter filter) {
+    public void addFilterToUser(AppFilter filter) {
     	//TODO rights
     }
     public void removeFilterByName(String name) {
@@ -113,7 +125,7 @@ public class AppUser {
     	//TODO rights
     }
     
-    public boolean hasFilter(AppFilter filter)
+    public boolean userhasFilter(AppFilter filter)
     {
     	return false;//TODO rights
     }
@@ -165,14 +177,14 @@ public class AppUser {
     	//TODO rights
     }
     
-    public void hasRight(AppRight right)
+    public boolean hasRight(AppRight right)
     {
-    	
+    	return false;
     }
     
-    public void hasRight(String ident)
+    public boolean hasRight(String ident)
     {
-    	
+    	return false;
     }
     
     public void removeRight(AppRight right)

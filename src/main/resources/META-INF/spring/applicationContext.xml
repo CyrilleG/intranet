@@ -21,6 +21,7 @@
         method). Roo applications use this useful feature in a number of
         areas, such as @PersistenceContext injection into entities.
     -->
+    
     <context:spring-configured/>
     <!--
         This declaration will cause Spring to locate every @Component,

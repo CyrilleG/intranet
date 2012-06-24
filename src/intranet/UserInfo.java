@@ -73,4 +73,17 @@ public class UserInfo {
 	    public void setShow(boolean show) {
 	        this.show = show;//TODO rights
 	    }
+	    
+	    public void allowGroupToAccess(AppGroup group)
+	    {
+	    	//TODO rights
+	    }
+	    public void disallowGroupToAccess(AppGroup group)
+	    {
+	    	//TODO rights
+	    }
+	    public boolean canGroupAccess(AppGroup group)
+	    {
+	    	return false;
+	    }
 }

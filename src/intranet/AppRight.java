@@ -11,14 +11,22 @@ import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.security.core.GrantedAuthority;
 
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "app_right")
 @RooDbManaged(automaticallyDelete = true)
-public class AppRight {
+public class AppRight implements GrantedAuthority
+{
 	
-	 @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
+		@Override
+		public String getAuthority() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	
+	 	@OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
 	    private Set<ActionRights> actionRightss;
 	    
 	    @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
@@ -41,6 +49,62 @@ public class AppRight {
 	    @Column(name = "description", length = 255)
 	    private String description;
 	   
+	    
+	    public void addRightToAction(ModuleAction action)
+	    {
+	    	//TODO rights
+	    }
+	    public void removeRightFromAction(ModuleAction action)
+	    {
+	    	//TODO rights
+	    }
+	    public boolean actionHasRight(ModuleAction action)
+	    {
+	    	return false;
+	    }
+	    
+	    
+	    public void addRightToGroup(AppGroup group)
+	    {
+	    	//TODO rights
+	    }
+	    public void removeRightFromGroup(AppGroup group)
+	    {
+	    	//TODO rights
+	    }
+	    public boolean groupHasRight(AppGroup group)
+	    {
+	    	return false;
+	    }
+	    
+	    
+	    public void addRightToModule(AppModule module)
+	    {
+	    	//TODO rights
+	    }
+	    public void removeRightFromModule(AppModule module)
+	    {
+	    	//TODO rights
+	    }
+	    public boolean moduleHasRight(AppModule module)
+	    {
+	    	return false;
+	    }
+	    
+	    
+	    public void addRightToUser(AppUser user)
+	    {
+	    	//TODO rights
+	    }
+	    public void removeRightFromUser(AppUser user)
+	    {
+	    	//TODO rights
+	    }
+	    public boolean userHasRight(AppUser user)
+	    {
+	    	return false;
+	    }
+	    
 	    public String getIdent() {
 	        return ident;//TODO rights
 	    }
@@ -68,5 +132,6 @@ public class AppRight {
 	    {
 	    	return actionRightss.size() > 0 || groupRightss.size() > 0 || moduleRightss.size() > 0 || userRightss.size() > 0;
 	    }
+		
 	    
 }

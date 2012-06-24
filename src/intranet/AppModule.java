@@ -45,6 +45,10 @@ public class AppModule {
     {
     	//TODO rights
     }
+    public boolean moduleHasAction(ModuleAction a)
+    {
+    	return false;
+    }
     
     public void addModuleToGroup(AppGroup p)
     {
@@ -55,7 +59,10 @@ public class AppModule {
     {
     	//TODO rights
     }
-    
+    public boolean groupCanAccessToModule(AppGroup p)
+    {
+    	return false;
+    }
     public String getName() {
         return name;//TODO rights
     }

@@ -44,6 +44,33 @@ public class AppFilter {
     {
     	//TODO rights
     }
+    public void addFilterToUser()
+    {
+    	//TODO rights
+    }
+    
+    public void removeFilterFromUser()
+    {
+    	//TODO rights
+    }
+    
+    public boolean hasUser()
+    {
+    	return userFilterss.size() > 0;
+    }
+    public int countUser()
+    {
+    	return userFilterss.size();
+    }
+    
+    public boolean hasGroup()
+    {
+    	return groupFilterss.size() > 0;
+    }
+    public int countGroup()
+    {
+    	return groupFilterss.size();
+    }
     
     public String getName() {
         return name;//TODO rights
@@ -82,9 +109,5 @@ public class AppFilter {
     {
     	return userFilterss.size() > 0;
     }
-    
-    public boolean hasGroup()
-    {
-    	return groupFilterss.size() > 0;
-    }
+
 }

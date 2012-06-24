@@ -1,4 +1,5 @@
 package intranet;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,13 +19,13 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class AppGroup {
 	
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-    private Set<ActionGroups>actionGroupss;
+    private Set<ActionGroups>actionGroupss;//
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
     private Set<GroupFilters> groupFilterss;
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-    private Set<GroupRights> groupRightss;
+    private Set<GroupRights> groupRightss;//
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
     private Set<InfoPrivacities> infoPrivacitieses;
@@ -33,7 +34,7 @@ public class AppGroup {
     private Set<ModuleGroups> moduleGroupss;
     
     @OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-    private Set<UserGroups>  userGroupss;
+    private Set<UserGroups>  userGroupss;//
     
     @Column(name = "name", length = 100, unique = true)
     @NotNull
@@ -42,19 +43,19 @@ public class AppGroup {
     @Column(name = "description", length = 255)
     private String description;
 
+    public Set<AppRight> getRights()
+    {
+    	Set<AppRight> rights = new HashSet<AppRight>(); 
+    	for (GroupRights g: groupRightss)
+    		rights.add(g.getIdright());
+    	return rights;
+    }
+    
     public void addRightToGroup(String ident)
     {
     	//TODO rights
     }
-    public void removeRightToGroup(String ident)
-    {
-    	//TODO rights
-    }
     
-    public void addRightFromGroup(AppRight right)
-    {
-    	//TODO rights
-    }
     public void removeRightFromGroup(AppRight right)
     {
     	//TODO rights
@@ -67,6 +68,56 @@ public class AppGroup {
     {
     	return false;
     }
+    
+    
+    public void addGroupToUser(AppUser ident)
+    {
+    	//TODO rights
+    }
+    public void removeGroupFromUser(AppUser ident)
+    {
+    	//TODO rights
+    }
+    
+    public boolean userHasGroup(AppUser ident)
+    {
+    	return false;
+    }
+    
+    
+    public void addGroupToModule(AppModule ident)
+    {
+    	//TODO rights
+    }
+    public void removeGroupFromModule(AppModule ident)
+    {
+    	//TODO rights
+    }
+    
+    public boolean moduleHasGroup(AppModule ident)
+    {
+    	return false;
+    }
+    
+    public void addGroupToAction(ModuleAction ident)
+    {
+    	//TODO rights
+    }
+    public void removeGroupFromAction(ModuleAction ident)
+    {
+    	//TODO rights
+    }
+    
+    public boolean actionHasGroup(ModuleAction ident)
+    {
+    	return false;
+    }
+    
+    public void addRightToGroup(AppRight right)
+    {
+    	//TODO rights
+    }
+    
     public String getName() {
         return name;//TODO rights
     }

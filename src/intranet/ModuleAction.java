@@ -77,4 +77,32 @@ public class ModuleAction {
 	    public void setEnabled(boolean enabled) {
 	        this.enabled = enabled;//TODO rights
 	    }
+	    
+	    public void allowGroup(ActionGroups g)
+	    {
+	    	
+	    }
+	    public void disallowGroup(ActionGroups g)
+	    {
+	    	
+	    }
+	    
+	    public void allowRight(ActionRights g)
+	    {
+	    	
+	    }
+	    public void disallowRight(ActionRights g)
+	    {
+	    	
+	    }
+	    
+	    public boolean canAccess()
+	    {
+	    	return false;
+	    }
+	    public boolean canAccess(AppUser e)
+	    {
+	    	return false;
+	    }
+	    
 }
