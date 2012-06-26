@@ -18,6 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 @Controller
+@RequestMapping("/filter")
 public class FilterController {
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String create(@Valid AppFilter appFilter, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {

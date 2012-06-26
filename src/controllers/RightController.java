@@ -18,6 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 @Controller
+@RequestMapping("/right")
 public class RightController {
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")

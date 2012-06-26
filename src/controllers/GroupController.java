@@ -18,6 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 @Controller
+@RequestMapping("/group")
 public class GroupController {
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String create(@Valid AppGroup appGroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {

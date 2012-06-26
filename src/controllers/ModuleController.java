@@ -20,6 +20,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 @Controller
+@RequestMapping("/module")
 public class ModuleController {
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")

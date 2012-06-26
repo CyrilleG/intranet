@@ -21,6 +21,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
     @RequestMapping(value = "/{iduser}", produces = "text/html")
     public String show(@PathVariable("iduser") Integer iduser, Model uiModel) {

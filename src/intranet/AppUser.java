@@ -2,12 +2,17 @@ package intranet;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 
+import org.junit.Ignore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -18,7 +23,9 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord(versionField = "", table = "app_user")
 @RooDbManaged(automaticallyDelete = true)
 public class AppUser {
-    @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
+
+	
+	@OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
     private Set<InfoPrivacities> infoPrivacitieses;
 
     @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
@@ -48,13 +55,24 @@ public class AppUser {
     @NotNull
     private boolean enabled;
 
+   
+
+    
+    /*public void refreshRights()
+    {
+    	allrights = null;
+    }*/
     public Set<AppRight> getAllAuthorities()
     {
+    	//if(this.allrights != null)
+    		//return this.allrights;
+    	
     	Set<AppRight> rights = new HashSet<AppRight>();
     	for (UserRights g : userRightss)
     		rights.add(g.getIdright());
     	for (UserGroups g : userGroupss)
     		rights.addAll(g.getIdgroup().getRights());
+    	//this.allrights = rights;
     	return rights;
     }
       
@@ -137,7 +155,7 @@ public class AppUser {
     {
     	//TODO rights
     }
-    public boolean isOnGroup(AppGroup group)
+    public boolean hasGroup(AppGroup group)
     {
     	return false;
     }
@@ -234,6 +252,23 @@ public class AppUser {
     {
     	
     }
+    public boolean ownData()
+    {
+    	return false;
+    }
     
+    public void grantUser()
+    {
+    	
+    }
     
+    public void revokeGrant()
+    {
+    	
+    }
+    
+    public boolean isAdmin()
+    {
+    	return false;
+    }
 }

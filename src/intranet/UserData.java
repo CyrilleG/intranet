@@ -41,6 +41,10 @@ public class UserData {
 	public void setField(String key, String value) {
 		//TODO rights
     }
+	
+	public void removeField(String key, String value) {
+		//TODO rights
+    }
 
 	public AppUser getUser() {
         return iduser;//TODO rights

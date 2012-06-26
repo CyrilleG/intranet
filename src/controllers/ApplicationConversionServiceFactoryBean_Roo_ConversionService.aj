@@ -76,7 +76,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<AppModule, String> ApplicationConversionServiceFactoryBean.getAppModuleToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.AppModule, java.lang.String>() {
             public String convert(AppModule appModule) {
-                return new StringBuilder().append(appModule.getName()).append(" ").append(appModule.getDescription()).append(" ").append(appModule.getModuleClass()).toString();
+                return new StringBuilder().append(appModule.getName()).append(" ").append(appModule.getDescription()).append(" ").append(appModule.getModuleController()).toString();
             }
         };
     }

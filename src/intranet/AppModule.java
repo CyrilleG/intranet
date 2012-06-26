@@ -12,6 +12,8 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
+import utils.Tools;
+
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "app_module")
@@ -36,14 +38,48 @@ public class AppModule {
     @NotNull
     private boolean enabled;
     
-    
-    public void addActionToModule(ModuleAction a)
+	public static AppModule createModule(String name, String description, String controller) {
+		if (Tools.hasRight("ADD_MODULE")) {
+			AppModule module = new AppModule();
+			module.setName(name);
+			module.setDescription(description);
+			module.setModuleController(controller);
+			module.persist();
+			return module;
+		}
+		return null;
+	}
+	
+	
+	public boolean install()
+	{
+		return false;
+	}
+	
+	public void uninstall()
+	{
+		
+	}
+	
+    public void addActionToModule(ModuleAction action)
     {
-    	//TODO rights
+    	if (Tools.hasRight("ADD_ACTION_TO_MODULE")) {
+			ModuleAction module = new ModuleAction();
+			module.setModule(this);
+			module.setIdaction(action.getIdaction());
+			module.persist();
+			moduleActions.add(module);
+		}
     }
-    public void removeActionFromModule(ModuleAction a)
+    public void removeActionFromModule(ModuleAction ident)
     {
-    	//TODO rights
+    	if (Tools.hasRight("REMOVE_ACTION_FROM_MODULE")) {
+			for (ModuleAction gp : moduleActions)
+				if (gp.getIdaction() == ident.getIdaction()) {
+					gp.remove();
+					break;
+				}
+		}
     }
     public boolean moduleHasAction(ModuleAction a)
     {
@@ -79,12 +115,12 @@ public class AppModule {
         this.description = description;//TODO rights
     }
     
-    public String getModuleClass() {
+    public String getModuleController() {
         return class1;//TODO rights
     }
     
-    public void setModuleClass(String type_name) {
-        this.class1 = type_name;//TODO rights
+    public void setModuleController(String controller) {
+        this.class1 = controller;//TODO rights
     }
     
     public boolean isEnabled() {

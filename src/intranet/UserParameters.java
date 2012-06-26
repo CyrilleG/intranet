@@ -36,15 +36,6 @@ public class UserParameters implements Authentication{
 		if (this.user == null)
 			this.user = user;
 	}
-	public boolean hasRight(String ident)
-	{
-		Set<AppRight> rights = user.getAllAuthorities();
-		for (AppRight r : rights)
-			if (r.getIdent().compareTo(ident) == 0)
-				return true;
-		return false;
-			
-	}
 	@Override
 	public String getName() {
 		return user.getLogin();
