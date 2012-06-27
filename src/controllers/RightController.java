@@ -29,7 +29,7 @@ public class RightController {
         }
         uiModel.asMap().clear();
         appRight.persist();
-        return "redirect:/apprights/" + encodeUrlPathSegment(appRight.getIdright().toString(), httpServletRequest);
+        return "redirect:/apprights/" + encodeUrlPathSegment(appRight.getRight().toString(), httpServletRequest);
     }
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -67,7 +67,7 @@ public class RightController {
         }
         uiModel.asMap().clear();
         appRight.merge();
-        return "redirect:/apprights/" + encodeUrlPathSegment(appRight.getIdright().toString(), httpServletRequest);
+        return "redirect:/apprights/" + encodeUrlPathSegment(appRight.getRight().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{idright}", params = "form", produces = "text/html")

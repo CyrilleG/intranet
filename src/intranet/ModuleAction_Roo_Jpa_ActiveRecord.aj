@@ -28,9 +28,9 @@ privileged aspect ModuleAction_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM ModuleAction o", ModuleAction.class).getResultList();
     }
     
-    public static ModuleAction ModuleAction.findModuleAction(Integer idaction) {
-        if (idaction == null) return null;
-        return entityManager().find(ModuleAction.class, idaction);
+    public static ModuleAction ModuleAction.findModuleAction(Integer action) {
+        if (action == null) return null;
+        return entityManager().find(ModuleAction.class, action);
     }
     
     public static List<ModuleAction> ModuleAction.findModuleActionEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect ModuleAction_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            ModuleAction attached = ModuleAction.findModuleAction(this.idaction);
+            ModuleAction attached = ModuleAction.findModuleAction(this.action);
             this.entityManager.remove(attached);
         }
     }

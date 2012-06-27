@@ -17,23 +17,27 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class DataField {
 	
     @ManyToOne
-    @JoinColumn(name = "idobject", referencedColumnName = "idobject", nullable = false)
-    private UserData idobject;
+    @JoinColumn(name = "module_data", referencedColumnName = "module_data", nullable = false)
+    private ModuleData moduleData;
     
-    @Column(name = "name", length = 100)
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
     @NotNull
     private String name;
     
-    @Column(name = "value", length = 255)
+    @Column(name = "value", columnDefinition = "VARCHAR", length = 255)
     private String value;
     
-    public UserData getIdobject() {
+    @Column(name = "type", columnDefinition = "VARCHAR", length = 45)
+    @NotNull
+    private String type;
+    
+    /*public UserData getIdobject() {
         return idobject;
     }
     
     public void setIdobject(UserData idobject) {
         this.idobject = idobject;//TODO rights
-    }
+    }*/
     
     public String getName() {
         return name;

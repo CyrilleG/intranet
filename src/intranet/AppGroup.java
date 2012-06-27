@@ -21,35 +21,38 @@ import utils.Tools;
 @RooDbManaged(automaticallyDelete = true)
 public class AppGroup {
 
-	@OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-	private Set<ActionGroups> actionGroupss;//
-
-	@OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-	private Set<GroupFilters> groupFilterss;
-
-	@OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-	private Set<GroupRights> groupRightss;//
-
-	@OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-	private Set<InfoPrivacities> infoPrivacitieses;
-
-	@OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-	private Set<ModuleGroups> moduleGroupss;
-
-	@OneToMany(mappedBy = "idgroup", cascade = CascadeType.ALL)
-	private Set<UserGroups> userGroupss;//
-
-	@Column(name = "name", length = 100, unique = true)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", length = 255)
-	private String description;
+	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<ActionGroup> actionGroups;
+    
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<DataGroup> dataGroups;
+    
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<GroupFilter> groupFilters;
+    
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<GroupRight> groupRights;
+    
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<InfoPrivacity> infoPrivacities;
+    
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<ModuleGroup> moduleGroups;
+    
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<UserGroup> userGroups;
+    
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100, unique = true)
+    @NotNull
+    private String name;
+    
+    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    private String description;
 
 	public Set<AppRight> getRights() {
 		Set<AppRight> rights = new HashSet<AppRight>();
-		for (GroupRights g : groupRightss)
-			rights.add(g.getIdright());
+		for (GroupRight g : groupRights)
+			rights.add(g.getRight());
 		return rights;
 	}
 
@@ -66,18 +69,18 @@ public class AppGroup {
 
 	public void addRightToGroup(AppRight right) {
 		if (Tools.hasRight("ADD_RIGHT_TO_GROUP")) {
-			GroupRights groupright = new GroupRights();
-			groupright.setIdgroup(this);
-			groupright.setIdright(right);
+			GroupRight groupright = new GroupRight();
+			groupright.setGroup(this);
+			groupright.setRight(right);
 			groupright.persist();
-			groupRightss.add(groupright);
+			groupRights.add(groupright);
 		}
 	}
 
 	public void removeRightFromGroup(AppRight right) {
 		if (Tools.hasRight("REMOVE_FILTER_FROM_GROUP")) {
-			for (GroupRights gp : groupRightss)
-				if (gp.getIdright().equals(right)) {
+			for (GroupRight gp : groupRights)
+				if (gp.getRight().equals(right)) {
 					gp.remove();
 					break;
 				}
@@ -85,8 +88,8 @@ public class AppGroup {
 	}
 
 	public boolean groupHasRight(String ident) {
-		for (GroupRights gp : groupRightss)
-    		if(gp.getIdright().getIdent().compareTo(ident) == 0)
+		for (GroupRight gp : groupRights)
+    		if(gp.getRight().getIdent().compareTo(ident) == 0)
     			return true;
 		return false;
 	}
@@ -97,18 +100,18 @@ public class AppGroup {
 
 	public void addGroupToUser(AppUser ident) {
 		if (Tools.hasRight("ADD_USER_TO_GROUP")) {
-			UserGroups groupuser = new UserGroups();
-			groupuser.setIdgroup(this);
-			groupuser.setIduser(ident);
+			UserGroup groupuser = new UserGroup();
+			groupuser.setGroup(this);
+			groupuser.setUser(ident);
 			groupuser.persist();
-			userGroupss.add(groupuser);
+			userGroups.add(groupuser);
 		}
 	}
 
 	public void removeGroupFromUser(AppUser ident) {
 		if (Tools.hasRight("REMOVE_USER_FROM_GROUP")) {
-			for (UserGroups gp : userGroupss)
-				if (gp.getIduser().equals(ident)) {
+			for (UserGroup gp : userGroups)
+				if (gp.getUser().equals(ident)) {
 					gp.remove();
 					break;
 				}
@@ -116,26 +119,26 @@ public class AppGroup {
 	}
 
 	public boolean userHasGroup(AppUser ident) {
-		for (UserGroups gp : userGroupss)
-    		if(gp.getIduser().equals(ident))
+		for (UserGroup gp : userGroups)
+    		if(gp.getUser().equals(ident))
     			return true;
 		return false;
 	}
 
 	public void addGroupToModule(AppModule ident) {
 		if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
-			ModuleGroups groupuser = new ModuleGroups();
-			groupuser.setIdgroup(this);
-			groupuser.setIdmodule(ident);
+			ModuleGroup groupuser = new ModuleGroup();
+			groupuser.setGroup(this);
+			groupuser.setModule(ident);
 			groupuser.persist();
-			moduleGroupss.add(groupuser);
+			moduleGroups.add(groupuser);
 		}
 	}
 
 	public void removeGroupFromModule(AppModule ident) {
 		if (Tools.hasRight("REMOVE_MODULE_FROM_GROUP")) {
-			for (ModuleGroups gp : moduleGroupss)
-				if (gp.getIdmodule().equals(ident)) {
+			for (ModuleGroup gp : moduleGroups)
+				if (gp.getModule().equals(ident)) {
 					gp.remove();
 					break;
 				}
@@ -143,26 +146,26 @@ public class AppGroup {
 	}
 
 	public boolean moduleHasGroup(AppModule ident) {
-		for (ModuleGroups gp : moduleGroupss)
-    		if(gp.getIdmodule().equals(ident))
+		for (ModuleGroup gp : moduleGroups)
+    		if(gp.getModule().equals(ident))
     			return true;
 		return false;
 	}
 
 	public void addGroupToAction(ModuleAction ident) {
 		if (Tools.hasRight("ADD_ACTION_TO_GROUP")) {
-			ActionGroups groupaction = new ActionGroups();
-			groupaction.setIdgroup(this);
-			groupaction.setIdaction(ident);
+			ActionGroup groupaction = new ActionGroup();
+			groupaction.setGroup(this);
+			groupaction.setAction(ident);
 			groupaction.persist();
-			actionGroupss.add(groupaction);
+			actionGroups.add(groupaction);
 		}
 	}
 
 	public void removeGroupFromAction(ModuleAction ident) {
 		if (Tools.hasRight("REMOVE_ACTION_FROM_GROUP")) {
-			for (ActionGroups gp : actionGroupss)
-				if (gp.getIdaction().equals(ident)) {
+			for (ActionGroup gp : actionGroups)
+				if (gp.getAction().equals(ident)) {
 					gp.remove();
 					break;
 				}
@@ -170,8 +173,8 @@ public class AppGroup {
 	}
 
 	public boolean actionHasGroup(ModuleAction ident) {
-		for (ActionGroups gp : actionGroupss)
-    		if(gp.getIdaction().equals(ident))
+		for (ActionGroup gp : actionGroups)
+    		if(gp.getAction().equals(ident))
     			return true;
 		return false;
 	}
@@ -195,8 +198,8 @@ public class AppGroup {
 	}
 
 	public boolean isUse() {
-		return actionGroupss.size() > 0 || groupFilterss.size() > 0
-				|| groupRightss.size() > 0 || infoPrivacitieses.size() > 0
-				|| moduleGroupss.size() > 0 || userGroupss.size() > 0;
+		return actionGroups.size() > 0 || groupFilters.size() > 0
+				|| groupRights.size() > 0 || infoPrivacities.size() > 0
+				|| moduleGroups.size() > 0 || userGroups.size() > 0;
 	}
 }

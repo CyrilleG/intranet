@@ -33,28 +33,31 @@ public class AppRight implements GrantedAuthority
 			return null;
 		}
 	
-	 	@OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
-	    private Set<ActionRights> actionRightss;
-	    
-	    @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
-	    private Set<GroupRights> groupRightss;
-	    
-	    @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
-	    private Set<ModuleRights> moduleRightss;
-	    
-	    @OneToMany(mappedBy = "idright", cascade = CascadeType.ALL)
-	    private Set<UserRights> userRightss;
-	    
-	    @Column(name = "ident", length = 70, unique = true)
-	    @NotNull
-	    private String ident;
-	    
-	    @Column(name = "name", length = 100)
-	    @NotNull
-	    private String name;
-	    
-	    @Column(name = "description", length = 255)
-	    private String description;
+	 	    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<ActionRight> actionRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<DataRight> dataRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<GroupRight> groupRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<ModuleRight> moduleRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<UserRight> userRights;
+    
+    @Column(name = "ident", columnDefinition = "VARCHAR", length = 70, unique = true)
+    @NotNull
+    private String ident;
+    
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
+    @NotNull
+    private String name;
+    
+    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    private String description;
 	   
 	    public static AppRight createRight(String name, String ident, String description) {
 			if (Tools.hasRight("ADD_RIGHT")) {
@@ -71,18 +74,18 @@ public class AppRight implements GrantedAuthority
 	    public void addRightToAction(ModuleAction action)
 	    {
 	    	if (Tools.hasRight("ADD_RIGHT_TO_ACTION")) {
-				ActionRights element = new ActionRights();
-				element.setIdright(this);
-				element.setIdaction(action);
+				ActionRight element = new ActionRight();
+				element.setRight(this);
+				element.setAction(action);
 				element.persist();
-				actionRightss.add(element);
+				actionRights.add(element);
 			}
 	    }
 	    public void removeRightFromAction(ModuleAction action)
 	    {
 	    	if (Tools.hasRight("REMOVE_RIGHT_FROM_ACTION")) {
-				for (ActionRights gp : actionRightss)
-					if (gp.getIdaction().equals(ident)) {
+				for (ActionRight gp : actionRights)
+					if (gp.getAction().equals(ident)) {
 						gp.remove();
 						break;
 					}
@@ -90,8 +93,8 @@ public class AppRight implements GrantedAuthority
 	    }
 	    public boolean actionHasRight(ModuleAction action)
 	    {
-	    	for (ActionRights gp : actionRightss)
-	    		if(gp.getIdaction().equals(ident))
+	    	for (ActionRight gp : actionRights)
+	    		if(gp.getAction().equals(ident))
 	    			return true;
 			return false;
 	    }
@@ -100,18 +103,18 @@ public class AppRight implements GrantedAuthority
 	    public void addRightToGroup(AppGroup group)
 	    {
 	    	if (Tools.hasRight("ADD_RIGHT_TO_GROUP")) {
-				GroupRights groupright = new GroupRights();
-				groupright.setIdgroup(group);
-				groupright.setIdright(this);
+				GroupRight groupright = new GroupRight();
+				groupright.setGroup(group);
+				groupright.setRight(this);
 				groupright.persist();
-				groupRightss.add(groupright);
+				groupRights.add(groupright);
 			}
 	    }
 	    public void removeRightFromGroup(AppGroup group)
 	    {
 	    	if (Tools.hasRight("REMOVE_RIGHT_FROM_GROUP")) {
-				for (GroupRights gp : groupRightss)
-					if (gp.getIdgroup().equals(group)) {
+				for (GroupRight gp : groupRights)
+					if (gp.getGroup().equals(group)) {
 						gp.remove();
 						break;
 					}
@@ -120,8 +123,8 @@ public class AppRight implements GrantedAuthority
 	    }
 	    public boolean groupHasRight(AppGroup group)
 	    {
-	    	for (GroupRights gp : groupRightss)
-	    		if(gp.getIdgroup().equals(group))
+	    	for (GroupRight gp : groupRights)
+	    		if(gp.getGroup().equals(group))
 	    			return true;
 			return false;
 	    }
@@ -130,18 +133,18 @@ public class AppRight implements GrantedAuthority
 	    public void addRightToModule(AppModule module)
 	    {
 	    	if (Tools.hasRight("ADD_RIGHT_TO_MODULE")) {
-				ModuleRights element = new ModuleRights();
-				element.setIdright(this);
-				element.setIdmodule(module);
+				ModuleRight element = new ModuleRight();
+				element.setRight(this);
+				element.setModule(module);
 				element.persist();
-				moduleRightss.add(element);
+				moduleRights.add(element);
 			}
 	    }
 	    public void removeRightFromModule(AppModule module)
 	    {
 	    	if (Tools.hasRight("REMOVE_RIGHT_FROM_MODULE")) {
-				for (ModuleRights gp : moduleRightss)
-					if (gp.getIdmodule().equals(module)) {
+				for (ModuleRight gp : moduleRights)
+					if (gp.getModule().equals(module)) {
 						gp.remove();
 						break;
 					}
@@ -149,8 +152,8 @@ public class AppRight implements GrantedAuthority
 	    }
 	    public boolean moduleHasRight(AppModule module)
 	    {
-	    	for (ModuleRights gp : moduleRightss)
-	    		if(gp.getIdmodule().equals(module))
+	    	for (ModuleRight gp : moduleRights)
+	    		if(gp.getModule().equals(module))
 	    			return true;
 			return false;
 	    }
@@ -159,11 +162,11 @@ public class AppRight implements GrantedAuthority
 	    public void addRightToUser(AppUser user)
 	    {
 	    	if (Tools.hasRight("ADD_RIGHT_TO_USER")) {
-				UserRights element = new UserRights();
-				element.setIdright(this);
-				element.setIduser(user);
+				UserRight element = new UserRight();
+				element.setRight(this);
+				element.setUser(user);
 				element.persist();
-				userRightss.add(element);
+				userRights.add(element);
 			}
 	    }
 	    public void removeRightFromUser(AppUser user)
@@ -200,7 +203,7 @@ public class AppRight implements GrantedAuthority
 	    }
 	    public boolean isRightUsed()
 	    {
-	    	return actionRightss.size() > 0 || groupRightss.size() > 0 || moduleRightss.size() > 0 || userRightss.size() > 0;
+	    	return actionRights.size() > 0 || groupRights.size() > 0 || moduleRights.size() > 0 || userRights.size() > 0;
 	    }
 		
 	    

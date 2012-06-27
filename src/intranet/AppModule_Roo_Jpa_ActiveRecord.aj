@@ -28,9 +28,9 @@ privileged aspect AppModule_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM AppModule o", AppModule.class).getResultList();
     }
     
-    public static AppModule AppModule.findAppModule(Integer idmodule) {
-        if (idmodule == null) return null;
-        return entityManager().find(AppModule.class, idmodule);
+    public static AppModule AppModule.findAppModule(Integer module) {
+        if (module == null) return null;
+        return entityManager().find(AppModule.class, module);
     }
     
     public static List<AppModule> AppModule.findAppModuleEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect AppModule_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            AppModule attached = AppModule.findAppModule(this.idmodule);
+            AppModule attached = AppModule.findAppModule(this.module);
             this.entityManager.remove(attached);
         }
     }

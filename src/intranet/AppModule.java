@@ -19,22 +19,28 @@ import utils.Tools;
 @RooJpaActiveRecord(versionField = "", table = "app_module")
 @RooDbManaged(automaticallyDelete = true)
 public class AppModule {
-    @OneToMany(mappedBy = "idmodule", cascade = CascadeType.ALL)
+@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
     private Set<ModuleAction> moduleActions;
     
-    @OneToMany(mappedBy = "idmodule", cascade = CascadeType.ALL)
-    private Set<ModuleGroups> moduleGroupss;
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    private Set<ModuleData> moduleDatas;
     
-    @Column(name = "name", length = 100)
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    private Set<ModuleGroup> moduleGroups;
+    
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    private Set<ModuleRight> moduleRights;
+    
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100, unique = true)
     private String name;
     
-    @Column(name = "description", length = 255)
+    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
     private String description;
     
-    @Column(name = "class", length = 100)
+    @Column(name = "class", columnDefinition = "VARCHAR", length = 100)
     private String class1;
     
-    @Column(name = "enabled")
+    @Column(name = "enabled", columnDefinition = "BIT")
     @NotNull
     private boolean enabled;
     
@@ -66,7 +72,6 @@ public class AppModule {
     	if (Tools.hasRight("ADD_ACTION_TO_MODULE")) {
 			ModuleAction module = new ModuleAction();
 			module.setModule(this);
-			module.setIdaction(action.getIdaction());
 			module.persist();
 			moduleActions.add(module);
 		}
@@ -92,19 +97,19 @@ public class AppModule {
     public void addModuleToGroup(AppGroup p)
     {
     	if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
-			ModuleGroups groupuser = new ModuleGroups();
-			groupuser.setIdgroup(p);
-			groupuser.setIdmodule(this);
+			ModuleGroup groupuser = new ModuleGroup();
+			groupuser.setGroup(p);
+			groupuser.setModule(this);
 			groupuser.persist();
-			moduleGroupss.add(groupuser);
+			moduleGroups.add(groupuser);
 		}
     }
     
     public void removeModuleFromGroup(AppGroup ident)
     {
     	if (Tools.hasRight("REMOVE_MODULE_FROM_GROUP")) {
-			for (ModuleGroups gp : moduleGroupss)
-				if (gp.getIdgroup().equals(ident)) {
+			for (ModuleGroup gp : moduleGroups)
+				if (gp.getGroup().equals(ident)) {
 					gp.remove();
 					break;
 				}
@@ -112,8 +117,8 @@ public class AppModule {
     }
     public boolean groupCanAccessToModule(AppGroup ident)
     {
-    	for (ModuleGroups gp : moduleGroupss)
-    		if(gp.getIdgroup().equals(ident))
+    	for (ModuleGroup gp : moduleGroups)
+    		if(gp.getGroup().equals(ident))
     			return true;
 		return false;
     }
@@ -163,10 +168,10 @@ public class AppModule {
     
     public boolean hasGroup()
     {
-    	return moduleGroupss.size() > 0;
+    	return moduleGroups.size() > 0;
     }
     public int countGroup()
     {
-    	return moduleGroupss.size();
+    	return moduleGroups.size();
     }
 }

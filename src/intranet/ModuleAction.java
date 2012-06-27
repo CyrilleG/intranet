@@ -19,90 +19,75 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord(versionField = "", table = "module_action")
 @RooDbManaged(automaticallyDelete = true)
 public class ModuleAction {
-	
-	  @OneToMany(mappedBy = "idaction", cascade = CascadeType.ALL)
-	    private Set<ActionGroups> actionGroupss;
-	    
-	    @OneToMany(mappedBy = "idaction", cascade = CascadeType.ALL)
-	    private Set<ActionRights> actionRightss;
-	    
-	    @ManyToOne
-	    @JoinColumn(name = "idmodule", referencedColumnName = "idmodule", nullable = false)
-	    private AppModule idmodule;
-	    
-	    @Column(name = "method", length = 100)
-	    @NotNull
-	    private String method;
-	    
-	    @Column(name = "template", length = 100)
-	    private String template;
-	    
-	    @Column(name = "enabled")
-	    @NotNull
-	    private boolean enabled;
-	    
-	    public boolean canBeUse()
-	    {
-	    	return actionGroupss.size() > 0 || actionRightss.size() > 0;
-	    }
-	    
-	    public AppModule getModule() {
-	        return idmodule;
-	    }
-	    
-	    public void setModule(AppModule idmodule) {
-	        this.idmodule = idmodule;//TODO rights
-	    }
-	    
-	    public String getMethod() {
-	        return method;//TODO rights
-	    }
-	    
-	    public void setMethod(String method) {
-	        this.method = method;//TODO rights
-	    }
-	    
-	    public String getTemplate() {
-	        return template;
-	    }
-	    
-	    public void setTemplate(String template) {
-	        this.template = template;//TODO rights
-	    }
-	    
-	    public boolean isEnabled() {
-	        return enabled;
-	    }
-	    
-	    public void setEnabled(boolean enabled) {
-	        this.enabled = enabled;//TODO rights
-	    }
-	    
-	    public void allowGroup(ActionGroups g)
-	    {
-	    	
-	    }
-	    public void disallowGroup(ActionGroups g)
-	    {
-	    	
-	    }
-	    
-	    public void allowRight(ActionRights g)
-	    {
-	    	
-	    }
-	    public void disallowRight(ActionRights g)
-	    {
-	    	
-	    }
-	    
-	    public boolean canAccess()
-	    {
-	    	return false;
-	    }
-	    public boolean canAccess(AppUser e)
-	    {
-	    	return false;
-	    }
-	    
+
+	@OneToMany(mappedBy = "action", cascade = CascadeType.ALL)
+	private Set<ActionGroup> actionGroups;
+
+	@OneToMany(mappedBy = "action", cascade = CascadeType.ALL)
+	private Set<ActionRight> actionRights;
+
+	@ManyToOne
+	@JoinColumn(name = "module", referencedColumnName = "module", nullable = false)
+	private AppModule module;
+
+	@Column(name = "method", columnDefinition = "VARCHAR", length = 100)
+	@NotNull
+	private String method;
+
+	@Column(name = "enabled", columnDefinition = "BIT")
+	@NotNull
+	private boolean enabled;
+
+	public boolean canBeUse() {
+		return actionGroups.size() > 0 || actionRights.size() > 0;
+	}
+
+	public AppModule getModule() {
+		return module;
+	}
+
+	public void setModule(AppModule idmodule) {
+		this.module = idmodule;// TODO rights
+	}
+
+	public String getMethod() {
+		return method;// TODO rights
+	}
+
+	public void setMethod(String method) {
+		this.method = method;// TODO rights
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;// TODO rights
+	}
+
+	public void allowGroup(ActionGroup g) {
+
+	}
+
+	public void disallowGroup(ActionGroup g) {
+
+	}
+
+	public void allowRight(ActionRight g) {
+
+	}
+
+	public void disallowRight(ActionRight g) {
+
+	}
+
+	public boolean canAccess() {
+		return false;
+	}
+
+	public boolean canAccess(AppUser e) {
+		return false;
+	}
+
 }

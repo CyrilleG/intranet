@@ -28,7 +28,7 @@ public class FilterController {
         }
         uiModel.asMap().clear();
         appFilter.persist();
-        return "redirect:/appfilters/" + encodeUrlPathSegment(appFilter.getIdfilter().toString(), httpServletRequest);
+        return "redirect:/appfilters/" + encodeUrlPathSegment(appFilter.getFilter().toString(), httpServletRequest);
     }
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -66,7 +66,7 @@ public class FilterController {
         }
         uiModel.asMap().clear();
         appFilter.merge();
-        return "redirect:/appfilters/" + encodeUrlPathSegment(appFilter.getIdfilter().toString(), httpServletRequest);
+        return "redirect:/appfilters/" + encodeUrlPathSegment(appFilter.getFilter().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{idfilter}", params = "form", produces = "text/html")

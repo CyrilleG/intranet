@@ -19,15 +19,15 @@ privileged aspect AppSession_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idsession", columnDefinition = "VARCHAR", length = 100)
-    private String AppSession.idsession;
+    @Column(name = "session", columnDefinition = "VARCHAR", length = 100)
+    private String AppSession.session;
     
-    public String AppSession.getIdsession() {
-        return this.idsession;
+    public String AppSession.getSession() {
+        return this.session;
     }
     
-    public void AppSession.setIdsession(String id) {
-        this.idsession = id;
+    public void AppSession.setSession(String id) {
+        this.session = id;
     }
     
 }

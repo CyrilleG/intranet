@@ -19,15 +19,15 @@ privileged aspect DataField_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idfields")
-    private Integer DataField.idfields;
+    @Column(name = "fields", columnDefinition = "INT")
+    private Integer DataField.fields;
     
-    public Integer DataField.getIdfields() {
-        return this.idfields;
+    public Integer DataField.getFields() {
+        return this.fields;
     }
     
-    public void DataField.setIdfields(Integer id) {
-        this.idfields = id;
+    public void DataField.setFields(Integer id) {
+        this.fields = id;
     }
     
 }

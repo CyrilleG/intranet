@@ -2,7 +2,6 @@ package controllers;
 
 import intranet.AppSession;
 import intranet.AppUser;
-import intranet.UserData;
 import intranet.UserInfo;
 
 import java.io.UnsupportedEncodingException;
@@ -52,7 +51,7 @@ public class UserController {
         }
         uiModel.asMap().clear();
         appUser.merge();
-        return "redirect:/appusers/" + encodeUrlPathSegment(appUser.getIduser().toString(), httpServletRequest);
+        return "redirect:/appusers/" + encodeUrlPathSegment(appUser.getUser().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{iduser}", params = "form", produces = "text/html")
@@ -67,7 +66,7 @@ public class UserController {
         uiModel.addAttribute("appUser", appUser);
         uiModel.addAttribute("appsessions", AppSession.findAllAppSessions());
         //uiModel.addAttribute("infoprivacitieses", InfoPrivacities.findAllInfoPrivacitieses());
-        uiModel.addAttribute("userdatas", UserData.findAllUserDatas());
+        //uiModel.addAttribute("userdatas", UserData.findAllUserDatas());
         //uiModel.addAttribute("userfilterses", UserFilters.findAllUserFilterses());
         //uiModel.addAttribute("usergroupses", UserGroups.findAllUserGroupses());
         uiModel.addAttribute("userinfoes", UserInfo.findAllUserInfoes());
@@ -81,7 +80,7 @@ public class UserController {
         }
         uiModel.asMap().clear();
         appUser.persist();
-        return "redirect:/appusers/" + encodeUrlPathSegment(appUser.getIduser().toString(), httpServletRequest);
+        return "redirect:/appusers/" + encodeUrlPathSegment(appUser.getUser().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{iduser}", method = RequestMethod.DELETE, produces = "text/html")

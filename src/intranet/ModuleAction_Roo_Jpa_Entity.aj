@@ -19,15 +19,15 @@ privileged aspect ModuleAction_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idaction")
-    private Integer ModuleAction.idaction;
+    @Column(name = "action", columnDefinition = "INT")
+    private Integer ModuleAction.action;
     
-    public Integer ModuleAction.getIdaction() {
-        return this.idaction;
+    public Integer ModuleAction.getAction() {
+        return this.action;
     }
     
-    public void ModuleAction.setIdaction(Integer id) {
-        this.idaction = id;
+    public void ModuleAction.setAction(Integer id) {
+        this.action = id;
     }
     
 }

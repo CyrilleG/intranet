@@ -1,5 +1,7 @@
 package intranet;
 
+import intranet.ModuleAction;
+
 import org.junit.Test;
 import org.springframework.roo.addon.test.RooIntegrationTest;
 

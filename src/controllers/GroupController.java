@@ -28,7 +28,7 @@ public class GroupController {
         }
         uiModel.asMap().clear();
         appGroup.persist();
-        return "redirect:/appgroups/" + encodeUrlPathSegment(appGroup.getIdgroup().toString(), httpServletRequest);
+        return "redirect:/appgroups/" + encodeUrlPathSegment(appGroup.getGroup().toString(), httpServletRequest);
     }
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -66,7 +66,7 @@ public class GroupController {
         }
         uiModel.asMap().clear();
         appGroup.merge();
-        return "redirect:/appgroups/" + encodeUrlPathSegment(appGroup.getIdgroup().toString(), httpServletRequest);
+        return "redirect:/appgroups/" + encodeUrlPathSegment(appGroup.getGroup().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{idgroup}", params = "form", produces = "text/html")

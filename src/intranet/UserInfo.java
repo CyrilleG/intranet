@@ -19,35 +19,27 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord(versionField = "", table = "user_info")
 @RooDbManaged(automaticallyDelete = true)
 public class UserInfo {
-	   @OneToMany(mappedBy = "idinfo", cascade = CascadeType.ALL)
-	    private Set<InfoPrivacities> infoPrivacitieses;
-	    
-	    @ManyToOne
-	    @JoinColumn(name = "iduser", referencedColumnName = "iduser", nullable = false)
-	    private AppUser iduser;
-	    
-	    @Column(name = "key", length = 100, unique = true)
-	    @NotNull
-	    private String key;
-	    
-	    @Column(name = "value", length = 255)
-	    private String value;
-	    
-	    @Column(name = "show")
-	    @NotNull
-	    private boolean show;
+	       @OneToMany(mappedBy = "info", cascade = CascadeType.ALL)
+    private Set<InfoPrivacity> infoPrivacities;
+    
+    @Column(name = "key", columnDefinition = "VARCHAR", length = 100, unique = true)
+    @NotNull
+    private String key;
+    
+    @Column(name = "value", columnDefinition = "VARCHAR", length = 255)
+    private String value;
+    
+    @Column(name = "show", columnDefinition = "BIT")
+    @NotNull
+    private boolean show;
+    
+    @Column(name = "editable", columnDefinition = "BIT")
+    @NotNull
+    private boolean editable;
 	    
 	    public boolean canBeViewBy(AppUser user)
 	    {
 	    	return false;
-	    }
-	    
-	    public AppUser getUser() {
-	        return iduser;//TODO rights
-	    }
-	    
-	    public void setUser(AppUser iduser) {
-	        this.iduser = iduser;//TODO rights
 	    }
 	    
 	    public String getKey() {

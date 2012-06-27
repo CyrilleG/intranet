@@ -28,9 +28,9 @@ privileged aspect AppSession_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM AppSession o", AppSession.class).getResultList();
     }
     
-    public static AppSession AppSession.findAppSession(String idsession) {
-        if (idsession == null || idsession.length() == 0) return null;
-        return entityManager().find(AppSession.class, idsession);
+    public static AppSession AppSession.findAppSession(String session) {
+        if (session == null || session.length() == 0) return null;
+        return entityManager().find(AppSession.class, session);
     }
     
     public static List<AppSession> AppSession.findAppSessionEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect AppSession_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            AppSession attached = AppSession.findAppSession(this.idsession);
+            AppSession attached = AppSession.findAppSession(this.session);
             this.entityManager.remove(attached);
         }
     }

@@ -3,14 +3,6 @@
 
 package intranet;
 
-import intranet.AppModule;
-import intranet.ModuleAction;
-import intranet.ModuleGroups;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 privileged aspect AppModule_Roo_DbManaged {
     

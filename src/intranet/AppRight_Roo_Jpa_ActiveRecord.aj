@@ -28,9 +28,9 @@ privileged aspect AppRight_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM AppRight o", AppRight.class).getResultList();
     }
     
-    public static AppRight AppRight.findAppRight(Integer idright) {
-        if (idright == null) return null;
-        return entityManager().find(AppRight.class, idright);
+    public static AppRight AppRight.findAppRight(Integer right) {
+        if (right == null) return null;
+        return entityManager().find(AppRight.class, right);
     }
     
     public static List<AppRight> AppRight.findAppRightEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect AppRight_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            AppRight attached = AppRight.findAppRight(this.idright);
+            AppRight attached = AppRight.findAppRight(this.right);
             this.entityManager.remove(attached);
         }
     }

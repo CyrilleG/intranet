@@ -15,8 +15,8 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 import utils.Tools;
 import intranet.AppFilter;
-import intranet.GroupFilters;
-import intranet.UserFilters;
+import intranet.GroupFilter;
+import intranet.UserFilter;
 
 @SuppressWarnings("unused")
 @RooJavaBean
@@ -25,19 +25,19 @@ import intranet.UserFilters;
 @RooDbManaged(automaticallyDelete = true)
 public class AppFilter {
 	
-    @OneToMany(mappedBy = "idfilter", cascade = CascadeType.ALL)
-    private Set<GroupFilters> groupFilterss;
+    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
+    private Set<GroupFilter> groupFilters;
     
-    @OneToMany(mappedBy = "idfilter", cascade = CascadeType.ALL)
-    private Set<UserFilters> userFilterss;
+    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
+    private Set<UserFilter> userFilters;
     
-    @Column(name = "name", length = 100)
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
     private String name;
     
-    @Column(name = "description", length = 255)
+    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
     private String description;
     
-    @Column(name = "class", length = 75)
+    @Column(name = "class", columnDefinition = "VARCHAR", length = 75)
     private String class1;
     
     public AppFilter createFilter(String name, String description, String classname)
@@ -58,10 +58,10 @@ public class AppFilter {
     {
     	if (Tools.hasRight("ADD_FILTER_TO_GROUP"))
     	{
-    		GroupFilters group = new GroupFilters();
-    		group.setIdfilter(this);
-    		group.setIdgroup(g);
-    		groupFilterss.add(group);
+    		GroupFilter group = new GroupFilter();
+    		group.setFilter(this);
+    		group.setGroup(g);
+    		groupFilters.add(group);
     		group.persist();
     	}
     }
@@ -70,8 +70,8 @@ public class AppFilter {
     {
     	if (Tools.hasRight("REMOVE_FILTER_FROM_GROUP"))
     	{
-    		for (GroupFilters gp : groupFilterss)
-	    		if(gp.getIdgroup().equals(group))
+    		for (GroupFilter gp : groupFilters)
+	    		if(gp.getGroup().equals(group))
 	    		{
 	    			gp.remove();
 	    			break;
@@ -82,10 +82,10 @@ public class AppFilter {
     {
     	if (Tools.hasRight("ADD_FILTER_TO_USER"))
     	{
-    		UserFilters group = new UserFilters();
-    		group.setIdfilter(this);
-    		group.setIduser(user);
-    		userFilterss.add(group);
+    		UserFilter group = new UserFilter();
+    		group.setFilter(this);
+    		group.setUser(user);
+    		userFilters.add(group);
     		group.persist();
     	}
     }
@@ -94,8 +94,8 @@ public class AppFilter {
     {
     	if (Tools.hasRight("REMOVE_FILTER_FROM_USER"))
     	{
-    		for (UserFilters gp : userFilterss)
-	    		if(gp.getIduser().equals(user))
+    		for (UserFilter gp : userFilters)
+	    		if(gp.getUser().equals(user))
 	    		{
 	    			gp.remove();
 	    			break;
@@ -105,20 +105,20 @@ public class AppFilter {
     
     public boolean hasUser()
     {
-    	return userFilterss.size() > 0;
+    	return userFilters.size() > 0;
     }
     public int countUser()
     {
-    	return userFilterss.size();
+    	return userFilters.size();
     }
     
     public boolean hasGroup()
     {
-    	return groupFilterss.size() > 0;
+    	return groupFilters.size() > 0;
     }
     public int countGroup()
     {
-    	return groupFilterss.size();
+    	return groupFilters.size();
     }
     
     public String getName() {
@@ -182,30 +182,30 @@ public class AppFilter {
     
     public void appliPreFilter()
     {
-    	for (GroupFilters group : groupFilterss)
-    		if (Tools.getUser().hasGroup(group.getIdgroup()))
-    			invokeMethod(group.getIdfilter().getFilterClass(), "preFilter");
+    	for (GroupFilter group : groupFilters)
+    		if (Tools.getUser().hasGroup(group.getGroup()))
+    			invokeMethod(group.getFilter().getFilterClass(), "preFilter");
 
-    	for (UserFilters user : userFilterss)
-    		if (Tools.getUser().equals(user.getIduser()))
-    			invokeMethod(user.getIdfilter().getFilterClass(), "preFilter");
+    	for (UserFilter user : userFilters)
+    		if (Tools.getUser().equals(user.getUser()))
+    			invokeMethod(user.getFilter().getFilterClass(), "preFilter");
 
     	
     }
     public void appliPostFilter()
     {
-    	for (GroupFilters group : groupFilterss)
-    		if (Tools.getUser().hasGroup(group.getIdgroup()))
-    			invokeMethod(group.getIdfilter().getFilterClass(), "postFilter");
+    	for (GroupFilter group : groupFilters)
+    		if (Tools.getUser().hasGroup(group.getGroup()))
+    			invokeMethod(group.getFilter().getFilterClass(), "postFilter");
     	
-    	for (UserFilters user : userFilterss)
-    		if (Tools.getUser().equals(user.getIduser()))
-    			invokeMethod(user.getIdfilter().getFilterClass(), "postFilter");
+    	for (UserFilter user : userFilters)
+    		if (Tools.getUser().equals(user.getUser()))
+    			invokeMethod(user.getFilter().getFilterClass(), "postFilter");
     }
     
     public boolean isUse()
     {
-    	return userFilterss.size() > 0;
+    	return userFilters.size() > 0;
     }
 
 }

@@ -19,15 +19,15 @@ privileged aspect UserInfo_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idinfo")
-    private Integer UserInfo.idinfo;
+    @Column(name = "info", columnDefinition = "INT")
+    private Integer UserInfo.info;
     
-    public Integer UserInfo.getIdinfo() {
-        return this.idinfo;
+    public Integer UserInfo.getInfo() {
+        return this.info;
     }
     
-    public void UserInfo.setIdinfo(Integer id) {
-        this.idinfo = id;
+    public void UserInfo.setInfo(Integer id) {
+        this.info = id;
     }
     
 }

@@ -19,15 +19,15 @@ privileged aspect AppRight_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idright")
-    private Integer AppRight.idright;
+    @Column(name = "right", columnDefinition = "INT")
+    private Integer AppRight.right;
     
-    public Integer AppRight.getIdright() {
-        return this.idright;
+    public Integer AppRight.getRight() {
+        return this.right;
     }
     
-    public void AppRight.setIdright(Integer id) {
-        this.idright = id;
+    public void AppRight.setRight(Integer id) {
+        this.right = id;
     }
     
 }

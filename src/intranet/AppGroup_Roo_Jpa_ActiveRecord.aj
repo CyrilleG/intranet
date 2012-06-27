@@ -28,9 +28,9 @@ privileged aspect AppGroup_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM AppGroup o", AppGroup.class).getResultList();
     }
     
-    public static AppGroup AppGroup.findAppGroup(Integer idgroup) {
-        if (idgroup == null) return null;
-        return entityManager().find(AppGroup.class, idgroup);
+    public static AppGroup AppGroup.findAppGroup(Integer group) {
+        if (group == null) return null;
+        return entityManager().find(AppGroup.class, group);
     }
     
     public static List<AppGroup> AppGroup.findAppGroupEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect AppGroup_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            AppGroup attached = AppGroup.findAppGroup(this.idgroup);
+            AppGroup attached = AppGroup.findAppGroup(this.group);
             this.entityManager.remove(attached);
         }
     }

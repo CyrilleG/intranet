@@ -28,9 +28,9 @@ privileged aspect AppUser_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM AppUser o", AppUser.class).getResultList();
     }
     
-    public static AppUser AppUser.findAppUser(Integer iduser) {
-        if (iduser == null) return null;
-        return entityManager().find(AppUser.class, iduser);
+    public static AppUser AppUser.findAppUser(Integer user) {
+        if (user == null) return null;
+        return entityManager().find(AppUser.class, user);
     }
     
     public static List<AppUser> AppUser.findAppUserEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect AppUser_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            AppUser attached = AppUser.findAppUser(this.iduser);
+            AppUser attached = AppUser.findAppUser(this.user);
             this.entityManager.remove(attached);
         }
     }

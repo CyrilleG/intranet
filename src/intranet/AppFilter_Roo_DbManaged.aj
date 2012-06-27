@@ -3,13 +3,6 @@
 
 package intranet;
 
-import intranet.AppFilter;
-import intranet.GroupFilters;
-import intranet.UserFilters;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 
 privileged aspect AppFilter_Roo_DbManaged {
     

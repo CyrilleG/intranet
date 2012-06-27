@@ -3,16 +3,10 @@ package intranet;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-
-import org.junit.Ignore;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -25,33 +19,30 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class AppUser {
 
 	
-	@OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
-    private Set<InfoPrivacities> infoPrivacitieses;
-
-    @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
-    private Set<UserData> userDatas;
-
-    @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
-    private Set<UserFilters> userFilterss;
-
-    @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
-    private Set<UserGroups> userGroupss;
-
-    @OneToMany(mappedBy = "iduser")
-    private Set<UserInfo> userInfoes;
-
-    @OneToMany(mappedBy = "iduser", cascade = CascadeType.ALL)
-    private Set<UserRights> userRightss;
-
-    @Column(name = "login", length = 45, unique = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<DataUser> dataUsers;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<InfoPrivacity> infoPrivacities;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserFilter> userFilters;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserGroup> userGroups;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserRight> userRights;
+    
+    @Column(name = "login", columnDefinition = "VARCHAR", length = 45, unique = true)
     @NotNull
     private String login;
-
-    @Column(name = "password", length = 100)
+    
+    @Column(name = "password", columnDefinition = "VARCHAR", length = 100)
     @NotNull
     private String password;
-
-    @Column(name = "enabled")
+    
+    @Column(name = "enabled", columnDefinition = "BIT")
     @NotNull
     private boolean enabled;
 
@@ -68,10 +59,10 @@ public class AppUser {
     		//return this.allrights;
     	
     	Set<AppRight> rights = new HashSet<AppRight>();
-    	for (UserRights g : userRightss)
-    		rights.add(g.getIdright());
-    	for (UserGroups g : userGroupss)
-    		rights.addAll(g.getIdgroup().getRights());
+    	for (UserRight g : userRights)
+    		rights.add(g.getRight());
+    	for (UserGroup g : userGroups)
+    		rights.addAll(g.getGroup().getRights());
     	//this.allrights = rights;
     	return rights;
     }
@@ -85,19 +76,19 @@ public class AppUser {
     	
     }
     
-    private int findUserDataByName(String name) {
+    /*private int findUserDataByName(String name) {
         UserData[] elems = (UserData[]) userDatas.toArray();
         for (int i = 0; i < elems.length; i++) 
         	if (elems[i].getName().compareTo(name) == 0)
         		return i;
         return -1;
-    }
-
+    }*/
+/*
     public boolean hasObject(String name) {
         return findUserDataByName(name) != -1;
     }
-
-    public UserData getObject(String name) throws Exception {
+*/
+    /*public UserData getObject(String name) throws Exception {
         int index = findUserDataByName(name);
         if (index != -1) //TODO rights
         	return (UserData) userDatas.toArray()[index];
@@ -119,7 +110,7 @@ public class AppUser {
         	userDatas.add(o); 
         else 
         	throw new Exception("Object name must be unique for an User");
-    }
+    }*/
 
     public void addFilterToUser(AppFilter filter) {
     	//TODO rights
@@ -238,10 +229,10 @@ public class AppUser {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;//TODO rights
     }
-    public UserData getData(String name)
+    /*public UserData getData(String name)
     {
     	return null;
-    }
+    }*/
     
     public void hasData(String name)
     {

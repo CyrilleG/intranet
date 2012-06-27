@@ -28,9 +28,9 @@ privileged aspect AppFilter_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM AppFilter o", AppFilter.class).getResultList();
     }
     
-    public static AppFilter AppFilter.findAppFilter(Integer idfilter) {
-        if (idfilter == null) return null;
-        return entityManager().find(AppFilter.class, idfilter);
+    public static AppFilter AppFilter.findAppFilter(Integer filter) {
+        if (filter == null) return null;
+        return entityManager().find(AppFilter.class, filter);
     }
     
     public static List<AppFilter> AppFilter.findAppFilterEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect AppFilter_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            AppFilter attached = AppFilter.findAppFilter(this.idfilter);
+            AppFilter attached = AppFilter.findAppFilter(this.filter);
             this.entityManager.remove(attached);
         }
     }

@@ -30,7 +30,7 @@ public class ModuleController {
         }
         uiModel.asMap().clear();
         appModule.persist();
-        return "redirect:/appmodules/" + encodeUrlPathSegment(appModule.getIdmodule().toString(), httpServletRequest);
+        return "redirect:/appmodules/" + encodeUrlPathSegment(appModule.getModule().toString(), httpServletRequest);
     }
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -68,7 +68,7 @@ public class ModuleController {
         }
         uiModel.asMap().clear();
         appModule.merge();
-        return "redirect:/appmodules/" + encodeUrlPathSegment(appModule.getIdmodule().toString(), httpServletRequest);
+        return "redirect:/appmodules/" + encodeUrlPathSegment(appModule.getModule().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{idmodule}", params = "form", produces = "text/html")

@@ -12,7 +12,6 @@ import intranet.AppSession;
 import intranet.AppUser;
 import intranet.DataField;
 import intranet.ModuleAction;
-import intranet.UserData;
 import intranet.UserInfo;
 import controllers.ApplicationConversionServiceFactoryBean;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -188,13 +187,13 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
    
   
     
-    public Converter<ModuleAction, String> ApplicationConversionServiceFactoryBean.getModuleActionToStringConverter() {
+    /*public Converter<ModuleAction, String> ApplicationConversionServiceFactoryBean.getModuleActionToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.ModuleAction, java.lang.String>() {
             public String convert(ModuleAction moduleAction) {
                 return new StringBuilder().append(moduleAction.getMethod()).append(" ").append(moduleAction.getTemplate()).toString();
             }
         };
-    }
+    }*/
     
     public Converter<Integer, ModuleAction> ApplicationConversionServiceFactoryBean.getIdToModuleActionConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ModuleAction>() {
@@ -214,7 +213,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     
     
-    public Converter<UserData, String> ApplicationConversionServiceFactoryBean.getUserDataToStringConverter() {
+    /*public Converter<UserData, String> ApplicationConversionServiceFactoryBean.getUserDataToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.UserData, java.lang.String>() {
             public String convert(UserData userData) {
                 return new StringBuilder().append(userData.getName()).toString();
@@ -236,7 +235,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
                 return getObject().convert(getObject().convert(id, Integer.class), UserData.class);
             }
         };
-    }
+    }*/
     
     
     
@@ -289,13 +288,8 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getDataFieldToStringConverter());
         registry.addConverter(getIdToDataFieldConverter());
         registry.addConverter(getStringToDataFieldConverter());
-
-        registry.addConverter(getModuleActionToStringConverter());
         registry.addConverter(getIdToModuleActionConverter());
         registry.addConverter(getStringToModuleActionConverter());
-        registry.addConverter(getUserDataToStringConverter());
-        registry.addConverter(getIdToUserDataConverter());
-        registry.addConverter(getStringToUserDataConverter());
         registry.addConverter(getUserInfoToStringConverter());
         registry.addConverter(getIdToUserInfoConverter());
         registry.addConverter(getStringToUserInfoConverter());

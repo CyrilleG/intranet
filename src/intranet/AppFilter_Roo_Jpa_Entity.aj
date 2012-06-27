@@ -19,15 +19,15 @@ privileged aspect AppFilter_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idfilter")
-    private Integer AppFilter.idfilter;
+    @Column(name = "filter", columnDefinition = "INT")
+    private Integer AppFilter.filter;
     
-    public Integer AppFilter.getIdfilter() {
-        return this.idfilter;
+    public Integer AppFilter.getFilter() {
+        return this.filter;
     }
     
-    public void AppFilter.setIdfilter(Integer id) {
-        this.idfilter = id;
+    public void AppFilter.setFilter(Integer id) {
+        this.filter = id;
     }
     
 }

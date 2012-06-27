@@ -19,15 +19,15 @@ privileged aspect AppModule_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idmodule")
-    private Integer AppModule.idmodule;
+    @Column(name = "module", columnDefinition = "INT")
+    private Integer AppModule.module;
     
-    public Integer AppModule.getIdmodule() {
-        return this.idmodule;
+    public Integer AppModule.getModule() {
+        return this.module;
     }
     
-    public void AppModule.setIdmodule(Integer id) {
-        this.idmodule = id;
+    public void AppModule.setModule(Integer id) {
+        this.module = id;
     }
     
 }

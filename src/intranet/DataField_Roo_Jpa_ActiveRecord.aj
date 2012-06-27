@@ -28,9 +28,9 @@ privileged aspect DataField_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM DataField o", DataField.class).getResultList();
     }
     
-    public static DataField DataField.findDataField(Integer idfields) {
-        if (idfields == null) return null;
-        return entityManager().find(DataField.class, idfields);
+    public static DataField DataField.findDataField(Integer fields) {
+        if (fields == null) return null;
+        return entityManager().find(DataField.class, fields);
     }
     
     public static List<DataField> DataField.findDataFieldEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect DataField_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            DataField attached = DataField.findDataField(this.idfields);
+            DataField attached = DataField.findDataField(this.fields);
             this.entityManager.remove(attached);
         }
     }

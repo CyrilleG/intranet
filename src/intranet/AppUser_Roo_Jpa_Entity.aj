@@ -19,15 +19,15 @@ privileged aspect AppUser_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "iduser")
-    private Integer AppUser.iduser;
+    @Column(name = "user", columnDefinition = "INT")
+    private Integer AppUser.user;
     
-    public Integer AppUser.getIduser() {
-        return this.iduser;
+    public Integer AppUser.getUser() {
+        return this.user;
     }
     
-    public void AppUser.setIduser(Integer id) {
-        this.iduser = id;
+    public void AppUser.setUser(Integer id) {
+        this.user = id;
     }
     
 }

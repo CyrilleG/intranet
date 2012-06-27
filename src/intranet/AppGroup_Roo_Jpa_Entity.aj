@@ -19,15 +19,15 @@ privileged aspect AppGroup_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idgroup")
-    private Integer AppGroup.idgroup;
+    @Column(name = "group", columnDefinition = "INT")
+    private Integer AppGroup.group;
     
-    public Integer AppGroup.getIdgroup() {
-        return this.idgroup;
+    public Integer AppGroup.getGroup() {
+        return this.group;
     }
     
-    public void AppGroup.setIdgroup(Integer id) {
-        this.idgroup = id;
+    public void AppGroup.setGroup(Integer id) {
+        this.group = id;
     }
     
 }

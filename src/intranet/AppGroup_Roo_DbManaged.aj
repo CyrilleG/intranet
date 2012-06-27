@@ -2,20 +2,7 @@
 // You may push code into the target .java compilation unit if you wish to edit any member(s).
 
 package intranet;
-
-import intranet.ActionGroups;
-import intranet.AppGroup;
-import intranet.GroupFilters;
-import intranet.GroupRights;
-import intranet.InfoPrivacities;
-import intranet.ModuleGroups;
-import intranet.ModuleRights;
-import intranet.UserGroups;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
+;
 
 privileged aspect AppGroup_Roo_DbManaged {
     
