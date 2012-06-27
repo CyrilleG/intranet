@@ -13,6 +13,8 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.security.core.GrantedAuthority;
 
+import utils.Tools;
+
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "app_right")
@@ -20,6 +22,11 @@ import org.springframework.security.core.GrantedAuthority;
 public class AppRight implements GrantedAuthority
 {
 	
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 		@Override
 		public String getAuthority() {
 			// TODO Auto-generated method stub
@@ -49,52 +56,115 @@ public class AppRight implements GrantedAuthority
 	    @Column(name = "description", length = 255)
 	    private String description;
 	   
+	    public static AppRight createRight(String name, String ident, String description) {
+			if (Tools.hasRight("ADD_RIGHT")) {
+				AppRight right = new AppRight();
+				right.setName(name);
+				right.setDescription(description);
+				right.setIdent(ident);
+				right.persist();
+				return right;
+			}
+			return null;
+		}
 	    
 	    public void addRightToAction(ModuleAction action)
 	    {
-	    	//TODO rights
+	    	if (Tools.hasRight("ADD_RIGHT_TO_ACTION")) {
+				ActionRights element = new ActionRights();
+				element.setIdright(this);
+				element.setIdaction(action);
+				element.persist();
+				actionRightss.add(element);
+			}
 	    }
 	    public void removeRightFromAction(ModuleAction action)
 	    {
-	    	//TODO rights
+	    	if (Tools.hasRight("REMOVE_RIGHT_FROM_ACTION")) {
+				for (ActionRights gp : actionRightss)
+					if (gp.getIdaction().equals(ident)) {
+						gp.remove();
+						break;
+					}
+			}
 	    }
 	    public boolean actionHasRight(ModuleAction action)
 	    {
-	    	return false;
+	    	for (ActionRights gp : actionRightss)
+	    		if(gp.getIdaction().equals(ident))
+	    			return true;
+			return false;
 	    }
 	    
 	    
 	    public void addRightToGroup(AppGroup group)
 	    {
-	    	//TODO rights
+	    	if (Tools.hasRight("ADD_RIGHT_TO_GROUP")) {
+				GroupRights groupright = new GroupRights();
+				groupright.setIdgroup(group);
+				groupright.setIdright(this);
+				groupright.persist();
+				groupRightss.add(groupright);
+			}
 	    }
 	    public void removeRightFromGroup(AppGroup group)
 	    {
-	    	//TODO rights
+	    	if (Tools.hasRight("REMOVE_RIGHT_FROM_GROUP")) {
+				for (GroupRights gp : groupRightss)
+					if (gp.getIdgroup().equals(group)) {
+						gp.remove();
+						break;
+					}
+			}
+
 	    }
 	    public boolean groupHasRight(AppGroup group)
 	    {
-	    	return false;
+	    	for (GroupRights gp : groupRightss)
+	    		if(gp.getIdgroup().equals(group))
+	    			return true;
+			return false;
 	    }
 	    
 	    
 	    public void addRightToModule(AppModule module)
 	    {
-	    	//TODO rights
+	    	if (Tools.hasRight("ADD_RIGHT_TO_MODULE")) {
+				ModuleRights element = new ModuleRights();
+				element.setIdright(this);
+				element.setIdmodule(module);
+				element.persist();
+				moduleRightss.add(element);
+			}
 	    }
 	    public void removeRightFromModule(AppModule module)
 	    {
-	    	//TODO rights
+	    	if (Tools.hasRight("REMOVE_RIGHT_FROM_MODULE")) {
+				for (ModuleRights gp : moduleRightss)
+					if (gp.getIdmodule().equals(module)) {
+						gp.remove();
+						break;
+					}
+			}
 	    }
 	    public boolean moduleHasRight(AppModule module)
 	    {
-	    	return false;
+	    	for (ModuleRights gp : moduleRightss)
+	    		if(gp.getIdmodule().equals(module))
+	    			return true;
+			return false;
 	    }
 	    
 	    
 	    public void addRightToUser(AppUser user)
 	    {
-	    	//TODO rights
+	    	if (Tools.hasRight("ADD_RIGHT_TO_USER")) {
+				UserRights element = new UserRights();
+				element.setIdright(this);
+				element.setIduser(user);
+				element.persist();
+				userRightss.add(element);
+			}
 	    }
 	    public void removeRightFromUser(AppUser user)
 	    {

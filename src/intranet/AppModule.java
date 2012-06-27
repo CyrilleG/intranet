@@ -75,60 +75,82 @@ public class AppModule {
     {
     	if (Tools.hasRight("REMOVE_ACTION_FROM_MODULE")) {
 			for (ModuleAction gp : moduleActions)
-				if (gp.getIdaction() == ident.getIdaction()) {
+				if (gp.equals(ident)) {
 					gp.remove();
 					break;
 				}
 		}
     }
-    public boolean moduleHasAction(ModuleAction a)
+    public boolean moduleHasAction(ModuleAction ident)
     {
-    	return false;
+    	for (ModuleAction gp : moduleActions)
+    		if(gp.equals(ident))
+    			return true;
+		return false;
     }
     
     public void addModuleToGroup(AppGroup p)
     {
-    	//TODO rights
+    	if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
+			ModuleGroups groupuser = new ModuleGroups();
+			groupuser.setIdgroup(p);
+			groupuser.setIdmodule(this);
+			groupuser.persist();
+			moduleGroupss.add(groupuser);
+		}
     }
     
-    public void removeModuleFromGroup(AppGroup p)
+    public void removeModuleFromGroup(AppGroup ident)
     {
-    	//TODO rights
+    	if (Tools.hasRight("REMOVE_MODULE_FROM_GROUP")) {
+			for (ModuleGroups gp : moduleGroupss)
+				if (gp.getIdgroup().equals(ident)) {
+					gp.remove();
+					break;
+				}
+		}
     }
-    public boolean groupCanAccessToModule(AppGroup p)
+    public boolean groupCanAccessToModule(AppGroup ident)
     {
-    	return false;
+    	for (ModuleGroups gp : moduleGroupss)
+    		if(gp.getIdgroup().equals(ident))
+    			return true;
+		return false;
     }
     public String getName() {
-        return name;//TODO rights
+        return name;
     }
     
     public void setName(String name) {
-        this.name = name;//TODO rights
+    	if (Tools.hasRight("SET_MODULE_NAME"))
+    		this.name = name;
     }
     
     public String getDescription() {
-        return description;//TODO rights
+        return description;
     }
     
     public void setDescription(String description) {
-        this.description = description;//TODO rights
+    	if (Tools.hasRight("SET_MODULE_DESCRIPTION"))
+    		this.description = description;
     }
     
     public String getModuleController() {
-        return class1;//TODO rights
+        return class1;
     }
     
     public void setModuleController(String controller) {
-        this.class1 = controller;//TODO rights
+    	if (Tools.hasRight("SET_MODULE_CONTROLLER"))
+    		this.class1 = controller;
     }
     
     public boolean isEnabled() {
-        return enabled;//TODO rights
+        return enabled;
     }
     
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;//TODO rights
+    	if (Tools.hasRight("SET_MODULE_ENABLED"))
+    		this.enabled = enabled;
     }
     public boolean hasAction()
     {

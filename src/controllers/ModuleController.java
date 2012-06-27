@@ -2,7 +2,6 @@ package controllers;
 
 import intranet.AppModule;
 import intranet.ModuleAction;
-import intranet.UserParameters;
 
 import java.io.UnsupportedEncodingException;
 

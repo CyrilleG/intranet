@@ -77,7 +77,7 @@ public class AppGroup {
 	public void removeRightFromGroup(AppRight right) {
 		if (Tools.hasRight("REMOVE_FILTER_FROM_GROUP")) {
 			for (GroupRights gp : groupRightss)
-				if (gp.getIdgroup().equals(right)) {
+				if (gp.getIdright().equals(right)) {
 					gp.remove();
 					break;
 				}
