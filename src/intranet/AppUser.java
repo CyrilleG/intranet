@@ -1,6 +1,7 @@
 package intranet;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
+import utils.Tools;
 
 @RooJavaBean
 @RooToString
@@ -46,27 +48,43 @@ public class AppUser {
     @NotNull
     private boolean enabled;
 
-   
-
-    
-    /*public void refreshRights()
+    public static AppUser findFilterByLogin(String login) {
+		List<AppUser> elements = AppUser.findAllAppUsers();
+		for (AppUser element : elements)
+			if (element.getLogin().compareToIgnoreCase(login) == 0)
+				return element;
+		return null;
+	}
+    public AppUser createUser(String login, String password, boolean enabled)
     {
-    	allrights = null;
-    }*/
+    	if (Tools.hasRight("ADD_USER"))
+    	{
+	    	AppUser user = new AppUser();
+	    	user.setLogin(login);
+	    	user.setPassword(password);
+	    	user.setEnabled(enabled);
+	    	user.persist();
+	    	return user;
+    	}
+    	return null;
+    }
     public Set<AppRight> getAllAuthorities()
-    {
-    	//if(this.allrights != null)
-    		//return this.allrights;
-    	
+    {    	
     	Set<AppRight> rights = new HashSet<AppRight>();
     	for (UserRight g : userRights)
     		rights.add(g.getRight());
     	for (UserGroup g : userGroups)
     		rights.addAll(g.getGroup().getRights());
-    	//this.allrights = rights;
     	return rights;
     }
-      
+     
+    public Set<AppGroup> getAllGroups()
+    {    	
+    	Set<AppGroup> groups = new HashSet<AppGroup>();
+    	for (UserGroup g : userGroups)
+    		groups.add(g.getGroup());
+    	return groups;
+    }
     public static boolean logIn(String login, String password)
     {
     	return false;
@@ -88,130 +106,190 @@ public class AppUser {
         return findUserDataByName(name) != -1;
     }
 */
-    /*public UserData getObject(String name) throws Exception {
-        int index = findUserDataByName(name);
-        if (index != -1) //TODO rights
-        	return (UserData) userDatas.toArray()[index];
-        else
-        	throw new Exception("Object not found for this User");
+    public ModuleData getModuleData(String name) throws Exception {
+		if (Tools.hasRight("GET_DATA_FROM_OTHER_USER")
+				|| Tools.getUser().equals(this)) 
+    	for (DataUser data : dataUsers)
+        	if (data.getData().getName().compareTo(name) == 0)
+        		return data.getData();
+        return null;
     }
 
-    public void removeObject(String name) throws Exception {
-        int index = findUserDataByName(name);//TODO rights
-        if (index != -1) {
-            UserData e = (UserData) userDatas.toArray()[index];
-            for (DataField f : e.getFields()) f.remove();
-            	e.remove();
-        } else throw new Exception("Object not found for this User");
+    public void removeModuleData(String name) throws Exception {
+    	if (Tools.hasRight("REMOVE_DATA_FROM_USER") || Tools.getUser().equals(this)) 
+	    	for (DataUser data : dataUsers)
+	        	if (data.getData().getName().compareTo(name) == 0)
+	        		data.remove();
     }
 
-    public void setUserData(UserData o) throws Exception {
-        if (!hasObject(o.getName())) //TODO rights
-        	userDatas.add(o); 
-        else 
-        	throw new Exception("Object name must be unique for an User");
-    }*/
-
+    public void addModuleData(ModuleData data) throws Exception {
+    	if (Tools.hasRight("ADD_DATA_TO_USER")) {
+			DataUser elem = new DataUser();
+			elem.setData(data);
+			elem.setUser(this);
+			elem.persist();
+			dataUsers.add(elem);
+		}
+    }
+    public boolean moduleHasData(ModuleData data)
+    {
+    	for (DataUser elem : dataUsers)
+    		if (elem.getData().equals(data))
+    			return true;
+    	return false;
+    }
     public void addFilterToUser(AppFilter filter) {
-    	//TODO rights
+    	if (Tools.hasRight("ADD_FILTER_TO_USER"))
+    	{
+    		UserFilter group = new UserFilter();
+    		group.setFilter(filter);
+    		group.setUser(this);
+    		userFilters.add(group);
+    		group.persist();
+    	}
     }
-    public void removeFilterByName(String name) {
-    	//TODO rights
-    }
-    public void removeFilterByObject(AppFilter filter) {
-    	//TODO rights
-    }
-    public void applyPreFilter(AppFilter filter) {
-    	//TODO rights
-    }
-    public void applyPostFilter(AppFilter filter) {
-    	//TODO rights
-    }
-    public void applyUserPreFilters() {
-    	//TODO rights
-    }
-    public void applyUserPostFilters() {
-    	//TODO rights
+    public void removeFilterFromUser(AppFilter filter) {
+    	if (Tools.hasRight("REMOVE_FILTER_FROM_USER"))
+    	{
+    		for (UserFilter gp : userFilters)
+	    		if(gp.getFilter().equals(filter))
+	    		{
+	    			gp.remove();
+	    			break;
+	    		}
+    	}
     }
     
-    public boolean userhasFilter(AppFilter filter)
+    public boolean userHasFilter(AppFilter filter)
     {
-    	return false;//TODO rights
+    	for (UserFilter elem : userFilters)
+    		if (elem.getFilter().equals(filter))
+    			return true;
+    	return false;
     }
+    
+    public void applyPreFilter(AppFilter filter) {
+    	filter.appliPreFilter();
+    }
+    public void applyPostFilter(AppFilter filter) {
+    	filter.appliPostFilter();
+    }
+    public void applyUserPreFilters() {
+    	for(UserFilter filter: userFilters)
+    		filter.getFilter().appliPreFilter();
+    }
+    public void applyUserPostFilters() {
+    	for(UserFilter filter: userFilters)
+    		filter.getFilter().appliPostFilter();
+    }
+    
     public void addUserToGroup(AppGroup group)
     {
-    	//TODO rights
+    	if (Tools.hasRight("ADD_USER_TO_GROUP")) {
+			UserGroup groupuser = new UserGroup();
+			groupuser.setGroup(group);
+			groupuser.setUser(this);
+			groupuser.persist();
+			userGroups.add(groupuser);
+		}
     }
     public void removeUserFromGroup(AppGroup group)
     {
-    	//TODO rights
+    	if (Tools.hasRight("REMOVE_USER_FROM_GROUP")) {
+			for (UserGroup gp : userGroups)
+				if (gp.getGroup().equals(group)) {
+					gp.remove();
+					break;
+				}
+		}
     }
-    public boolean hasGroup(AppGroup group)
+    public boolean userHasGroup(AppGroup ident)
     {
-    	return false;
-    }
-    
-    public void setInformation(String key, String value)
-    {
-    	//TODO rights
+    	for (UserGroup elem : userGroups)
+			if (elem.getGroup().equals(ident))
+				return true;
+		return false;
     }
 
-    public void setInformation(UserInfo info)
+    public void addInformationToUser(UserInfo info, AppGroup privacity)
     {
-    	//TODO rights
+    	if (Tools.hasRight("ADD_INFO_TO_OTHER_USER") || Tools.hasRight("ADD_INFO"))
+    	{
+    		InfoPrivacity priv = new InfoPrivacity();
+    		priv.setInfo(info);
+    		priv.setGroup(privacity);
+    		priv.setUser(this);
+    		priv.persist();
+    	}
     }
     
-    public String getInformation(String key)
+    public UserInfo getInformation(String key)
     {
-    	return null; //TODO rights + privacities
+    	for (InfoPrivacity element : infoPrivacities)
+    		if (element.getInfo().getKey().compareTo(key) == 0 && (
+    				Tools.getUser().userHasGroup(element.getGroup()) || Tools.getUser().isAdmin()))
+    			return element.getInfo();
+    	return null;
+    			
     }
     
-    public void removeInformation(String key)
+    public void removeInformationFromUser(UserInfo info)
     {
-    	//TODO rights  + privacities
+    	if (Tools.hasRight("REMOVE_INFO_FROM_OTHER_USER") || info.isEditable()) {
+			for (InfoPrivacity element : infoPrivacities)
+				if (element.getInfo().equals(info)) {
+					element.remove();
+					break;
+				}
+		}
     }
     
-    public void removeInformation(UserInfo info)
+    public void addRightToUser(AppRight right)
     {
-    	//TODO rights  + privacities
+    	if (Tools.hasRight("ADD_RIGHT_TO_USER")) {
+			UserRight element = new UserRight();
+			element.setRight(right);
+			element.setUser(this);
+			element.persist();
+			userRights.add(element);
+		}
     }
     
-    public void giveRight(AppRight right)
+    public boolean userHasRight(AppRight right)
     {
-    	//TODO rights
-    }
-    
-    public void giveRight(String ident)
-    {
-    	//TODO rights
-    }
-    
-    public boolean hasRight(AppRight right)
-    {
+    	for(UserRight item : userRights)
+    		if(item.getRight().equals(right))
+    			return true;
     	return false;
     }
     
-    public boolean hasRight(String ident)
+    public boolean userHasRight(String right)
     {
+    	for(UserRight item : userRights)
+    		if(item.getRight().getIdent().compareToIgnoreCase(right) == 0)
+    			return true;
     	return false;
     }
     
-    public void removeRight(AppRight right)
+    public void removeRightFromUser(AppRight right)
     {
-    	//TODO rights
+    	if (Tools.hasRight("REMOVE_RIGHT_FROM_USER")) {
+			for (UserRight gp : userRights)
+				if (gp.getRight().equals(right)) {
+					gp.remove();
+					break;
+				}
+		}
     }
-    
-    public void removeRight(String ident)
-    {
-    	//TODO rights
-    }
+
     
     public String getLogin() {
-        return login;//TODO rights
+    		return login;
     }
 
     public void setLogin(String login) {
-        this.login = login;//TODO rights
+    	if (Tools.hasRight("SET_USER_LOGIN"))
+    		this.login = login;
     }
 
     public String getPassword() {
@@ -219,45 +297,18 @@ public class AppUser {
     }
 
     public void setPassword(String password) {
-        this.password = password;//TODO rights 
+    	if (Tools.hasRight("SET_USER_PASSWORD"))
+    		this.password = password;
     }
 
     public boolean isEnabled() {
-        return enabled;//TODO rights
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;//TODO rights
+    	if (Tools.hasRight("SET_USER_ENABLED"))
+    		this.enabled = enabled;
     }
-    /*public UserData getData(String name)
-    {
-    	return null;
-    }*/
-    
-    public void hasData(String name)
-    {
-    	
-    }
-    
-    public void removeData(String name)
-    {
-    	
-    }
-    public boolean ownData()
-    {
-    	return false;
-    }
-    
-    public void grantUser()
-    {
-    	
-    }
-    
-    public void revokeGrant()
-    {
-    	
-    }
-    
     public boolean isAdmin()
     {
     	return false;

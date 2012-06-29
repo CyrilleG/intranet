@@ -1,6 +1,7 @@
 package intranet;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Temporal;
@@ -31,13 +32,22 @@ public class AppSession {
     @DateTimeFormat(style = "M-")
     private Date lastAction;
     
+    
+    public static AppSession findSessionByLogin(String login) {
+		List<AppSession> elements = AppSession.findAllAppSessions();
+		for (AppSession element : elements)
+			if (element.getLogin().compareToIgnoreCase(login) == 0)
+				return element;
+		return null;
+	}
+    
     public String getLogin() {
         return login;
     }
     
     public void setLogin(String login) {
     	if (this.login == null) 
-    		this.login = login; // TODO rights
+    		this.login = login;
     }
     
     public Date getLoginDate() {
@@ -47,7 +57,7 @@ public class AppSession {
     
     public void setLoginDate(Date loginDate) {
     	if (this.loginDate == null) 
-    	this.loginDate = loginDate;// TODO rights
+    	this.loginDate = loginDate;
     }
     
     public Date getLastAction() {

@@ -1,8 +1,6 @@
 package intranet;
 
 import java.util.Collection;
-import java.util.Set;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 

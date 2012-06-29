@@ -1,6 +1,7 @@
 package intranet;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -55,7 +56,15 @@ public class AppGroup {
 			rights.add(g.getRight());
 		return rights;
 	}
-
+	
+	public static AppGroup findGroupByName(String name) {
+		List<AppGroup> elements = AppGroup.findAllAppGroups();
+		for (AppGroup element : elements)
+			if (element.getName().compareToIgnoreCase(name) == 0)
+				return element;
+		return null;
+	}
+	
 	public static AppGroup createGroup(String name, String description) {
 		if (Tools.hasRight("ADD_GROUP")) {
 			AppGroup group = new AppGroup();
@@ -78,7 +87,7 @@ public class AppGroup {
 	}
 
 	public void removeRightFromGroup(AppRight right) {
-		if (Tools.hasRight("REMOVE_FILTER_FROM_GROUP")) {
+		if (Tools.hasRight("REMOVE_RIGHT_FROM_GROUP")) {
 			for (GroupRight gp : groupRights)
 				if (gp.getRight().equals(right)) {
 					gp.remove();
@@ -119,12 +128,38 @@ public class AppGroup {
 	}
 
 	public boolean userHasGroup(AppUser ident) {
-		for (UserGroup gp : userGroups)
-    		if(gp.getUser().equals(ident))
-    			return true;
+		for (UserGroup elem : userGroups)
+			if (elem.getUser().equals(ident))
+				return true;
 		return false;
 	}
 
+	
+	public void addGroupToData(ModuleData ident) {
+		if (Tools.hasRight("ADD_DATA_TO_GROUP")) {
+			DataGroup element = new DataGroup();
+			element.setGroup(this);
+			element.setData(ident);
+			element.persist();
+			dataGroups.add(element);
+		}
+	}
+
+	public void removeGroupFromData(ModuleData ident) {
+		if (Tools.hasRight("REMOVE_DATA_FROM_GROUP")) {
+			for (DataGroup gp : dataGroups)
+				if (gp.getData().equals(ident)) {
+					gp.remove();
+					break;
+				}
+		}
+	}
+
+	public boolean dataHasGroup(ModuleData ident) {
+		return dataGroups.contains(ident);
+	}
+	
+	
 	public void addGroupToModule(AppModule ident) {
 		if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
 			ModuleGroup groupuser = new ModuleGroup();
@@ -146,10 +181,7 @@ public class AppGroup {
 	}
 
 	public boolean moduleHasGroup(AppModule ident) {
-		for (ModuleGroup gp : moduleGroups)
-    		if(gp.getModule().equals(ident))
-    			return true;
-		return false;
+		return moduleGroups.contains(ident);
 	}
 
 	public void addGroupToAction(ModuleAction ident) {
@@ -173,9 +205,9 @@ public class AppGroup {
 	}
 
 	public boolean actionHasGroup(ModuleAction ident) {
-		for (ActionGroup gp : actionGroups)
-    		if(gp.getAction().equals(ident))
-    			return true;
+		for (ActionGroup item : actionGroups)
+			if (item.getAction().equals(ident))
+				return true;
 		return false;
 	}
 

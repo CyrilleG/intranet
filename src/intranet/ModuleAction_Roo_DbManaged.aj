@@ -2,54 +2,7 @@
 // You may push code into the target .java compilation unit if you wish to edit any member(s).
 
 package intranet;
+ aspect ModuleAction_Roo_DbManaged {
 
-import intranet.ActionGroup;
-import intranet.ActionRight;
-import intranet.AppModule;
-import intranet.ModuleAction;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-
-privileged aspect ModuleAction_Roo_DbManaged {
-    
-    @OneToMany(mappedBy = "action", cascade = CascadeType.ALL)
-    private Set<ActionGroup> ModuleAction.actionGroups;
-    
-    @OneToMany(mappedBy = "action", cascade = CascadeType.ALL)
-    private Set<ActionRight> ModuleAction.actionRights;
-    
-    @ManyToOne
-    @JoinColumn(name = "module", referencedColumnName = "module", nullable = false)
-    private AppModule ModuleAction.module;
-    
-    @Column(name = "method", columnDefinition = "VARCHAR", length = 100)
-    @NotNull
-    private String ModuleAction.method;
-    
-    @Column(name = "enabled", columnDefinition = "BIT")
-    @NotNull
-    private boolean ModuleAction.enabled;
-    
-    public Set<ActionGroup> ModuleAction.getActionGroups() {
-        return actionGroups;
-    }
-    
-    public void ModuleAction.setActionGroups(Set<ActionGroup> actionGroups) {
-        this.actionGroups = actionGroups;
-    }
-    
-    public Set<ActionRight> ModuleAction.getActionRights() {
-        return actionRights;
-    }
-    
-    public void ModuleAction.setActionRights(Set<ActionRight> actionRights) {
-        this.actionRights = actionRights;
-    }
-    
     
 }

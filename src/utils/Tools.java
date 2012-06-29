@@ -1,6 +1,7 @@
 package utils;
 
 
+import intranet.AppRight;
 import intranet.AppSession;
 import intranet.AppUser;
 
@@ -11,6 +12,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import controllers.RightController;
 
 public class Tools {
 
@@ -65,7 +68,7 @@ public class Tools {
 	{
 		AppUser user = getUser();
 		if(user != null)
-			return user.hasRight(ident) || user.isAdmin();
+			return user.userHasRight(ident) || user.isAdmin();
 		else 
 			return false;
 	}

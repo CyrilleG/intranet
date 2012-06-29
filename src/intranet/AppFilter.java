@@ -2,12 +2,16 @@ package intranet;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import filters.*; // This import is useful to access to filter types. DO NOT DELETE
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -54,6 +58,14 @@ public class AppFilter {
     	return null;
     }
     
+    public static AppFilter findFilterByName(String name) {
+		List<AppFilter> elements = AppFilter.findAllAppFilters();
+		for (AppFilter element : elements)
+			if (element.getName().compareToIgnoreCase(name) == 0)
+				return element;
+		return null;
+	}
+    
     public void addFilterToGroup(AppGroup g)
     {
     	if (Tools.hasRight("ADD_FILTER_TO_GROUP"))
@@ -78,6 +90,12 @@ public class AppFilter {
 	    		}
     	}
     }
+    
+    public boolean filterHasGroup(AppGroup group)
+    {
+    	return groupFilters.contains(group);
+    }
+
     public void addFilterToUser(AppUser user)
     {
     	if (Tools.hasRight("ADD_FILTER_TO_USER"))
@@ -101,6 +119,14 @@ public class AppFilter {
 	    			break;
 	    		}
     	}
+    }
+    
+    public boolean filterHasUser(AppUser user)
+    {
+    	for (UserFilter elem : userFilters)
+    		if (elem.getUser().equals(user))
+    			return true;
+    	return false;
     }
     
     public boolean hasUser()
@@ -183,7 +209,7 @@ public class AppFilter {
     public void appliPreFilter()
     {
     	for (GroupFilter group : groupFilters)
-    		if (Tools.getUser().hasGroup(group.getGroup()))
+    		if (Tools.getUser().userHasGroup(group.getGroup()))
     			invokeMethod(group.getFilter().getFilterClass(), "preFilter");
 
     	for (UserFilter user : userFilters)
@@ -195,7 +221,7 @@ public class AppFilter {
     public void appliPostFilter()
     {
     	for (GroupFilter group : groupFilters)
-    		if (Tools.getUser().hasGroup(group.getGroup()))
+    		if (Tools.getUser().userHasGroup(group.getGroup()))
     			invokeMethod(group.getFilter().getFilterClass(), "postFilter");
     	
     	for (UserFilter user : userFilters)

@@ -3,6 +3,7 @@
 
 package intranet;
 
+import intranet.ModuleActionDataOnDemand;
 import org.springframework.beans.factory.annotation.Configurable;
 
 privileged aspect ModuleActionDataOnDemand_Roo_Configurable {

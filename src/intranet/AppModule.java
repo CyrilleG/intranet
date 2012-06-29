@@ -1,5 +1,6 @@
 package intranet;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -44,6 +45,14 @@ public class AppModule {
     @NotNull
     private boolean enabled;
     
+    public static AppGroup findModuleByName(String name) {
+		List<AppGroup> elements = AppGroup.findAllAppGroups();
+		for (AppGroup element : elements)
+			if (element.getName().compareToIgnoreCase(name) == 0)
+				return element;
+		return null;
+	}
+    
 	public static AppModule createModule(String name, String description, String controller) {
 		if (Tools.hasRight("ADD_MODULE")) {
 			AppModule module = new AppModule();
@@ -67,6 +76,58 @@ public class AppModule {
 		
 	}
 	
+    public void addDataToModule(ModuleData ident)
+    {
+    	if (Tools.hasRight("ADD_DATA_TO_MODULE")) {
+			ident.setModule(this);
+			moduleDatas.add(ident);
+		}
+    }
+    public void removeDataFromModule(ModuleData ident)
+    {
+    	if (Tools.hasRight("REMOVE_DATA_FROM_MODULE")) {
+			for (ModuleData gp : moduleDatas)
+				if (gp.equals(ident)) {
+					gp.remove();
+					break;
+				}
+		}
+    }
+    public boolean moduleHasData(ModuleData ident)
+    {
+    	return moduleActions.contains(ident);
+    }
+    
+    
+    
+    public void addRightToModule(AppRight ident)
+    {
+    	if (Tools.hasRight("ADD_RIGHT_TO_MODULE")) {
+			ModuleRight element = new ModuleRight();
+			element.setModule(this);
+			element.setRight(ident);
+			element.persist();
+			moduleRights.add(element);
+		}
+    }
+    public void removeRightFromModule(ModuleAction ident)
+    {
+    	if (Tools.hasRight("REMOVE_RIGHT_FROM_MODULE")) {
+			for (ModuleAction gp : moduleActions)
+				if (gp.equals(ident)) {
+					gp.remove();
+					break;
+				}
+		}
+    }
+    public boolean moduleHasRight(ModuleRight ident)
+    {
+    	return moduleRights.contains(ident);
+    }
+
+    
+    
+    
     public void addActionToModule(ModuleAction action)
     {
     	if (Tools.hasRight("ADD_ACTION_TO_MODULE")) {
@@ -88,11 +149,11 @@ public class AppModule {
     }
     public boolean moduleHasAction(ModuleAction ident)
     {
-    	for (ModuleAction gp : moduleActions)
-    		if(gp.equals(ident))
-    			return true;
-		return false;
+    	return moduleActions.contains(ident);
     }
+
+    
+    
     
     public void addModuleToGroup(AppGroup p)
     {
@@ -117,10 +178,7 @@ public class AppModule {
     }
     public boolean groupCanAccessToModule(AppGroup ident)
     {
-    	for (ModuleGroup gp : moduleGroups)
-    		if(gp.getGroup().equals(ident))
-    			return true;
-		return false;
+    	return moduleGroups.contains(ident);
     }
     public String getName() {
         return name;
