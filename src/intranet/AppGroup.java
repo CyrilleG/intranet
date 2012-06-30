@@ -43,11 +43,15 @@ public class AppGroup {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private Set<UserGroup> userGroups;
     
-    @Column(name = "name", columnDefinition = "VARCHAR", length = 100, unique = true)
+    @Column(name = "ident", columnDefinition = "VARCHAR", length = 70, unique = true)
     @NotNull
-    private String name;
+    private String ident;
     
-    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    @Column(name = "label", columnDefinition = "VARCHAR", length = 100)
+    @NotNull
+    private String label;
+    
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
 	public Set<AppRight> getRights() {
@@ -57,18 +61,19 @@ public class AppGroup {
 		return rights;
 	}
 	
-	public static AppGroup findGroupByName(String name) {
+	public static AppGroup findGroupByIdent(String name) {
 		List<AppGroup> elements = AppGroup.findAllAppGroups();
 		for (AppGroup element : elements)
-			if (element.getName().compareToIgnoreCase(name) == 0)
+			if (element.getIdent().compareToIgnoreCase(name) == 0)
 				return element;
 		return null;
 	}
 	
-	public static AppGroup createGroup(String name, String description) {
+	public static AppGroup createGroup(String ident, String label, String description) {
 		if (Tools.hasRight("ADD_GROUP")) {
 			AppGroup group = new AppGroup();
-			group.setName(name);
+			group.setIdent(ident);
+			group.setLabel(label);
 			group.setDescription(description);
 			group.persist();
 			return group;
@@ -108,7 +113,7 @@ public class AppGroup {
 	}
 
 	public void addGroupToUser(AppUser ident) {
-		if (Tools.hasRight("ADD_USER_TO_GROUP")) {
+		if (Tools.hasRight("ADD_USER_TO_GROUP") || Tools.hasRight("ADD_HIMSELF_TO_GROUP_")) {
 			UserGroup groupuser = new UserGroup();
 			groupuser.setGroup(this);
 			groupuser.setUser(ident);
@@ -214,15 +219,23 @@ public class AppGroup {
 		return false;
 	}
 
-	public String getName() {
-		return name;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setName(String name) {
-		if (Tools.hasRight("SET_GROUP_NAME"))
-			this.name = name;
+	public void setLabel(String label) {
+		if (Tools.hasRight("SET_GROUP_LABEL"))
+			this.label = label;
 	}
 
+	public String getIdent() {
+		return ident;
+	}
+
+	public void setIdent(String ident) {
+		if (Tools.hasRight("SET_GROUP_IDENT"))
+			this.ident = ident;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -237,4 +250,6 @@ public class AppGroup {
 				|| groupRights.size() > 0 || infoPrivacities.size() > 0
 				|| moduleGroups.size() > 0 || userGroups.size() > 0;
 	}
+	
+	
 }

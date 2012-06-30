@@ -36,7 +36,7 @@ public class ModuleData {
 	@JoinColumn(name = "module", referencedColumnName = "module", nullable = false)
 	private AppModule module;
 
-	@Column(name = "name", columnDefinition = "VARCHAR", length = 45, unique = true)
+	@Column(name = "name", columnDefinition = "VARCHAR", length = 100, unique = true)
 	@NotNull
 	private String name;
 

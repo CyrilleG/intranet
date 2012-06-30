@@ -38,7 +38,7 @@ public class AppFilter {
 	    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
 	    private String name;
 	    
-	    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+	    @Column(name = "description", columnDefinition = "TEXT")
 	    private String description;
 	    
 	    @Column(name = "class", columnDefinition = "VARCHAR", length = 75)

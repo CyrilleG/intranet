@@ -36,7 +36,7 @@ public class AppUser {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRight> userRights;
     
-    @Column(name = "login", columnDefinition = "VARCHAR", length = 45, unique = true)
+    @Column(name = "login", columnDefinition = "VARCHAR", length = 100, unique = true)
     @NotNull
     private String login;
     

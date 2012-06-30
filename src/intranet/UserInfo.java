@@ -27,7 +27,7 @@ public class UserInfo {
 	@NotNull
 	private String key;
 
-	@Column(name = "value", columnDefinition = "VARCHAR", length = 255)
+	@Column(name = "value", columnDefinition = "TEXT")
 	private String value;
 
 	@Column(name = "show", columnDefinition = "BIT")

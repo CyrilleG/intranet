@@ -45,9 +45,9 @@ public class AppModule {
     @NotNull
     private boolean enabled;
     
-    public static AppGroup findModuleByName(String name) {
-		List<AppGroup> elements = AppGroup.findAllAppGroups();
-		for (AppGroup element : elements)
+    public static AppModule findModuleByName(String name) {
+		List<AppModule> elements = AppModule.findAllAppModules();
+		for (AppModule element : elements)
 			if (element.getName().compareToIgnoreCase(name) == 0)
 				return element;
 		return null;

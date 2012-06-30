@@ -56,7 +56,7 @@ public class AppRight implements GrantedAuthority {
     @NotNull
     private String name;
     
-    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
 	public static AppRight findRightByName(String name) {

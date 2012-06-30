@@ -50,7 +50,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<AppGroup, String> ApplicationConversionServiceFactoryBean.getAppGroupToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.AppGroup, java.lang.String>() {
             public String convert(AppGroup appGroup) {
-                return new StringBuilder().append(appGroup.getName()).append(" ").append(appGroup.getDescription()).toString();
+                return new StringBuilder().append(appGroup.getIdent()).append(" ").append(appGroup.getDescription()).toString();
             }
         };
     }
