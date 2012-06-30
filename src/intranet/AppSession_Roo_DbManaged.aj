@@ -2,14 +2,6 @@
 // You may push code into the target .java compilation unit if you wish to edit any member(s).
 
 package intranet;
-
-import intranet.AppSession;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.springframework.format.annotation.DateTimeFormat;
-
 privileged aspect AppSession_Roo_DbManaged {
     
 

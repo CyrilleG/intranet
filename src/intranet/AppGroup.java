@@ -156,7 +156,10 @@ public class AppGroup {
 	}
 
 	public boolean dataHasGroup(ModuleData ident) {
-		return dataGroups.contains(ident);
+		for (DataGroup g : dataGroups)
+			if (g.getData().equals(ident))
+				return true;
+		return false;
 	}
 	
 	

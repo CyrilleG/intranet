@@ -20,7 +20,7 @@ import utils.Tools;
 @RooJpaActiveRecord(versionField = "", table = "app_module")
 @RooDbManaged(automaticallyDelete = true)
 public class AppModule {
-@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
     private Set<ModuleAction> moduleActions;
     
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
@@ -35,7 +35,7 @@ public class AppModule {
     @Column(name = "name", columnDefinition = "VARCHAR", length = 100, unique = true)
     private String name;
     
-    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     
     @Column(name = "class", columnDefinition = "VARCHAR", length = 100)

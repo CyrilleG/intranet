@@ -16,11 +16,11 @@ import javax.persistence.Column;
 @RooDbManaged(automaticallyDelete = true)
 public class AppConfig {
 
-	@Column(name = "key", columnDefinition = "VARCHAR", length = 100)
-	private String key;
-
-	@Column(name = "value", columnDefinition = "VARCHAR", length = 255)
-	private String value;
+	@Column(name = "key", columnDefinition = "VARCHAR", length = 100, unique = true)
+    private String key;
+    
+    @Column(name = "value", columnDefinition = "VARCHAR", length = 255)
+    private String value;
 
 	public static AppConfig findConfigByKey(String key) {
 		List<AppConfig> confs = AppConfig.findAllAppConfigs();

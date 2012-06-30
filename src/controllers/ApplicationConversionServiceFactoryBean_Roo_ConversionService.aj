@@ -10,7 +10,6 @@ import intranet.AppModule;
 import intranet.AppRight;
 import intranet.AppSession;
 import intranet.AppUser;
-import intranet.DataField;
 import intranet.ModuleAction;
 import intranet.UserInfo;
 import controllers.ApplicationConversionServiceFactoryBean;
@@ -128,13 +127,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, AppSession> ApplicationConversionServiceFactoryBean.getIdToAppSessionConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.AppSession>() {
-            public intranet.AppSession convert(java.lang.String id) {
-                return AppSession.findAppSession(id);
-            }
-        };
-    }
     
     public Converter<AppUser, String> ApplicationConversionServiceFactoryBean.getAppUserToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.AppUser, java.lang.String>() {
@@ -160,41 +152,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<DataField, String> ApplicationConversionServiceFactoryBean.getDataFieldToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.DataField, java.lang.String>() {
-            public String convert(DataField dataField) {
-                return new StringBuilder().append(dataField.getName()).append(" ").append(dataField.getValue()).toString();
-            }
-        };
-    }
-    
-    public Converter<Integer, DataField> ApplicationConversionServiceFactoryBean.getIdToDataFieldConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.DataField>() {
-            public intranet.DataField convert(java.lang.Integer id) {
-                return DataField.findDataField(id);
-            }
-        };
-    }
-    
-    public Converter<String, DataField> ApplicationConversionServiceFactoryBean.getStringToDataFieldConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.DataField>() {
-            public intranet.DataField convert(String id) {
-                return getObject().convert(getObject().convert(id, Integer.class), DataField.class);
-            }
-        };
-    }
-    
-   
-  
-    
-    /*public Converter<ModuleAction, String> ApplicationConversionServiceFactoryBean.getModuleActionToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.ModuleAction, java.lang.String>() {
-            public String convert(ModuleAction moduleAction) {
-                return new StringBuilder().append(moduleAction.getMethod()).append(" ").append(moduleAction.getTemplate()).toString();
-            }
-        };
-    }*/
-    
+
     public Converter<Integer, ModuleAction> ApplicationConversionServiceFactoryBean.getIdToModuleActionConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ModuleAction>() {
             public intranet.ModuleAction convert(java.lang.Integer id) {
@@ -281,13 +239,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getIdToAppRightConverter());
         registry.addConverter(getStringToAppRightConverter());
         registry.addConverter(getAppSessionToStringConverter());
-        registry.addConverter(getIdToAppSessionConverter());
         registry.addConverter(getAppUserToStringConverter());
         registry.addConverter(getIdToAppUserConverter());
         registry.addConverter(getStringToAppUserConverter());
-        registry.addConverter(getDataFieldToStringConverter());
-        registry.addConverter(getIdToDataFieldConverter());
-        registry.addConverter(getStringToDataFieldConverter());
         registry.addConverter(getIdToModuleActionConverter());
         registry.addConverter(getStringToModuleActionConverter());
         registry.addConverter(getUserInfoToStringConverter());

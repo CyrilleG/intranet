@@ -9,5 +9,5 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "group_filter")
 @RooDbManaged(automaticallyDelete = true)
-class GroupFilter {
+public class GroupFilter {
 }

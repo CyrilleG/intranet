@@ -1,5 +1,6 @@
 package intranet;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -37,9 +38,18 @@ public class UserInfo {
 	@NotNull
 	private boolean editable;
 
+	public static UserInfo findInfoByKey(String key) {
+		List<UserInfo> elements = UserInfo.findAllUserInfoes();
+		for (UserInfo element : elements)
+			if (element.getKey().compareToIgnoreCase(key) == 0
+					&& element.canUserAccess(Tools.getUser()))
+				return element;
+		return null;
+	}
+
 	public UserInfo createInformation(AppUser user, String key, String value,
 			boolean editable, boolean show, AppGroup privacity) {
-		if (Tools.hasRight("ADD_INFO_TO_OTHER_USER") && privacity != null) {
+		if ((Tools.hasRight("ADD_INFO_TO_OTHER_USER") || user.equals(Tools.getUser())) && privacity != null) {
 			UserInfo element = new UserInfo();
 			element.setKey(key);
 			element.setValue(value);
@@ -56,6 +66,7 @@ public class UserInfo {
 		}
 		return null;
 	}
+
 	public String getKey() {
 		return key;
 	}
@@ -66,13 +77,15 @@ public class UserInfo {
 	}
 
 	public String getValue() {
-		if (Tools.hasRight("GET_DATA_FROM_OTHER_USER") || canUserAccess(Tools.getUser()))
+		if (canUserAccess(Tools.getUser()))
 			return value;
 		return null;
 	}
 
 	public void setValue(String value) {
-		if (Tools.hasRight("SET_INFO_VALUE"))
+		if (Tools.hasRight("SET_INFO_VALUE")
+				&& (editable || Tools.hasRight("EDIT_UNEDITABLE_DATA") || Tools
+						.hasRight("SET_INFO_FROM_OTHER_USER")))
 			this.value = value;
 	}
 
@@ -81,11 +94,13 @@ public class UserInfo {
 	}
 
 	public void setShow(boolean show) {
-		this.show = show;// TODO rights
+		if (Tools.hasRight("SET_HIS_INFO_AS_HIDDEN") || Tools.hasRight("SET_INFO_FROM_OTHER_USER_AS_HIDDEN"))
+			this.show = show;
 	}
 
 	public void setInfoEditable(boolean editable) {
-		this.editable = editable;// TODO rights
+		if (Tools.hasRight("SET_INFO_FROM_OTHER_USER_AS_UNEDITABLE"))
+			this.editable = editable;
 	}
 
 	public boolean isEditable() {
@@ -104,31 +119,32 @@ public class UserInfo {
 	}
 
 	public void removeGroupFromPrivacities(AppGroup group) {
-		if (Tools.hasRight("REMOVE_GROUP_FROM_INFO")) 
-	    	for (InfoPrivacity data : infoPrivacities)
-	        	if (data.getGroup().equals(group))
-	        		data.remove();
+		if (Tools.hasRight("REMOVE_GROUP_FROM_INFO"))
+			for (InfoPrivacity data : infoPrivacities)
+				if (data.getGroup().equals(group))
+					data.remove();
 	}
 
 	public boolean canGroupAccess(AppGroup group) {
-		for (InfoPrivacity priv : infoPrivacities)
-		{
+		for (InfoPrivacity priv : infoPrivacities) {
 			if (group.equals(priv.getGroup()))
 				return true;
 		}
 		return false;
 	}
-	
-	public boolean canUserAccess(AppUser user)
-	{
-		for (InfoPrivacity priv : infoPrivacities)
-		{
-			if (priv.getUser().equals(user))
-				for (AppGroup group : user.getAllGroups())
-				{
-					if (group.equals(priv.getGroup()))
-						return true;
-				}
+
+	public boolean canUserAccess(AppUser user) {
+		for (InfoPrivacity priv : infoPrivacities) {
+			if (priv.getInfo().show || Tools.hasRight("VIEW_HIDDEN_INFO"))
+			{
+				if (priv.getUser().equals(user)
+						|| Tools.hasRight("GET_INFO_FROM_OTHER_USER"))
+					for (AppGroup group : user.getAllGroups()) {
+						if (group.equals(priv.getGroup())
+								|| Tools.hasRight("GET_INFO_FROM_OTHER_USER"))
+							return true;
+					}
+			}
 		}
 		return false;
 	}

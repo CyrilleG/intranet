@@ -34,30 +34,30 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-	private Set<ActionRight> actionRights;
-
-	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-	private Set<DataRight> dataRights;
-
-	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-	private Set<GroupRight> groupRights;
-
-	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-	private Set<ModuleRight> moduleRights;
-
-	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-	private Set<UserRight> userRights;
-
-	@Column(name = "ident", columnDefinition = "VARCHAR", length = 70, unique = true)
-	@NotNull
-	private String ident;
-
-	@Column(name = "name", columnDefinition = "VARCHAR", length = 100)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "VARCHAR", length = 255)
-	private String description;
+    private Set<ActionRight> actionRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<DataRight> dataRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<GroupRight> groupRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<ModuleRight> moduleRights;
+    
+    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+    private Set<UserRight> userRights;
+    
+    @Column(name = "ident", columnDefinition = "VARCHAR", length = 70, unique = true)
+    @NotNull
+    private String ident;
+    
+    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
+    @NotNull
+    private String name;
+    
+    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+    private String description;
 
 	public static AppRight findRightByName(String name) {
 		List<AppRight> elements = AppRight.findAllAppRights();

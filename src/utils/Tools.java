@@ -1,7 +1,7 @@
 package utils;
 
 
-import intranet.AppRight;
+
 import intranet.AppSession;
 import intranet.AppUser;
 
@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import controllers.RightController;
 
 public class Tools {
 
@@ -73,7 +72,7 @@ public class Tools {
 			return false;
 	}
 	
-	public void log(String msg)
+	public static void log(String msg)
 	{
 		
 	}

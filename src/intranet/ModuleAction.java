@@ -2,7 +2,6 @@ package intranet;
 
 import java.util.List;
 import java.util.Set;
-import intranet.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -33,7 +32,7 @@ public class ModuleAction {
 	@JoinColumn(name = "module", referencedColumnName = "module", nullable = false)
 	private AppModule module;
 
-	@Column(name = "method", columnDefinition = "VARCHAR", length = 100)
+	@Column(name = "method", columnDefinition = "VARCHAR", length = 100, unique = true)
 	@NotNull
 	private String method;
 
@@ -41,15 +40,16 @@ public class ModuleAction {
 	@NotNull
 	private boolean enabled;
 
-	
-	public static ModuleAction findActionByNameAndModule(AppModule module, String name) {
+	public static ModuleAction findActionByNameAndModule(AppModule module,
+			String name) {
 		List<ModuleAction> elements = ModuleAction.findAllModuleActions();
 		for (ModuleAction element : elements)
-			if (element.getMethod().compareToIgnoreCase(name) == 0 && element.getModule().equals(module))
+			if (element.getMethod().compareToIgnoreCase(name) == 0
+					&& element.getModule().equals(module))
 				return element;
 		return null;
 	}
-	
+
 	public boolean canBeUse() {
 		return actionGroups.size() > 0 || actionRights.size() > 0;
 	}
@@ -59,7 +59,7 @@ public class ModuleAction {
 	}
 
 	public void setModule(AppModule idmodule) {
-		if (Tools.hasRight("SET_ACTION_MODULE")) 
+		if (Tools.hasRight("SET_ACTION_MODULE"))
 			this.module = idmodule;
 	}
 
@@ -100,12 +100,14 @@ public class ModuleAction {
 				}
 		}
 	}
+
 	public boolean actionHasGroup(AppGroup g) {
 		for (ActionGroup item : actionGroups)
 			if (item.getGroup().equals(g))
 				return true;
 		return false;
 	}
+
 	public void addRightToAction(AppRight right) {
 		if (Tools.hasRight("ADD_RIGHT_TO_ACTION")) {
 			ActionRight element = new ActionRight();
@@ -125,17 +127,25 @@ public class ModuleAction {
 				}
 		}
 	}
+
 	public boolean actionHasRight(AppRight right) {
 		for (ActionRight item : actionRights)
 			if (item.getRight().equals(right))
 				return true;
 		return false;
 	}
+
 	public boolean canAccess() {
-		return false;
+		return canAccess(Tools.getUser());
 	}
 
 	public boolean canAccess(AppUser e) {
+		for (ActionGroup g : actionGroups)
+			if (e.userHasGroup(g.getGroup()))
+				return true;
+		for (ActionRight g : actionRights)
+			if (e.userHasRight(g.getRight()))
+				return true;
 		return false;
 	}
 

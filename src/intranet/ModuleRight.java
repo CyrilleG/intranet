@@ -9,5 +9,5 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "module_right")
 @RooDbManaged(automaticallyDelete = true)
-class ModuleRight {
+public class ModuleRight {
 }

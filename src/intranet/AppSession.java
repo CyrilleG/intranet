@@ -19,7 +19,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooDbManaged(automaticallyDelete = true)
 public class AppSession {
 	
-    @Column(name = "login", columnDefinition = "VARCHAR", length = 70)
+	@Column(name = "login", columnDefinition = "VARCHAR", length = 70, unique = true)
     private String login;
     
     @Column(name = "login_date", columnDefinition = "DATE")

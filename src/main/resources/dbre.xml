@@ -20,6 +20,10 @@
         <unique name="PRIMARY">
             <unique-column name="action_group"/>
         </unique>
+        <unique name="uniqactiongroup">
+            <unique-column name="action"/>
+            <unique-column name="group"/>
+        </unique>
         <index name="idaction">
             <index-column name="action"/>
         </index>
@@ -42,6 +46,10 @@
         <unique name="PRIMARY">
             <unique-column name="action_rights"/>
         </unique>
+        <unique name="uniqactionright">
+            <unique-column name="right"/>
+            <unique-column name="action"/>
+        </unique>
         <index name="idright">
             <index-column name="right"/>
         </index>
@@ -55,6 +63,9 @@
         <column name="value" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
         <unique name="PRIMARY">
             <unique-column name="app_config"/>
+        </unique>
+        <unique name="uniqkey">
+            <unique-column name="key"/>
         </unique>
     </table>
     <table name="app_filter">
@@ -116,7 +127,7 @@
     <table name="app_module">
         <column name="module" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="name" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
-        <column name="description" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
+        <column name="description" primaryKey="false" required="false" scale="0" size="65535" type="-1,TEXT"/>
         <column name="class" primaryKey="false" required="false" scale="0" size="100" type="12,VARCHAR"/>
         <column name="enabled" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
         <foreign-key foreignTable="module_action" name="action_module" onDelete="cascade" onUpdate="cascade">
@@ -175,12 +186,15 @@
         </unique>
     </table>
     <table name="app_session">
-        <column name="session" primaryKey="true" required="true" scale="0" size="100" type="12,VARCHAR"/>
+        <column name="session" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="login" primaryKey="false" required="false" scale="0" size="70" type="12,VARCHAR"/>
         <column name="login_date" primaryKey="false" required="false" scale="0" size="10" type="91,DATE"/>
         <column name="last_action" primaryKey="false" required="false" scale="0" size="10" type="91,DATE"/>
         <unique name="PRIMARY">
             <unique-column name="session"/>
+        </unique>
+        <unique name="login_UNIQUE">
+            <unique-column name="login"/>
         </unique>
         <index name="session_user">
             <index-column name="login"/>
@@ -218,37 +232,24 @@
             <unique-column name="login"/>
         </unique>
     </table>
-    <table name="data_field">
-        <column name="fields" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="module_data" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="name" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
-        <column name="value" primaryKey="false" required="false" scale="0" size="255" type="12,VARCHAR"/>
-        <column name="type" primaryKey="false" required="true" scale="0" size="45" type="12,VARCHAR"/>
-        <foreign-key foreignTable="module_data" name="module_data" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="module_data" local="module_data"/>
-        </foreign-key>
-        <unique name="PRIMARY">
-            <unique-column name="fields"/>
-        </unique>
-        <index name="module_data">
-            <index-column name="module_data"/>
-        </index>
-    </table>
     <table name="data_group">
         <column name="data_group" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="data" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="group" primaryKey="false" required="false" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="app_group" name="data_group_group" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="group" local="group"/>
-        </foreign-key>
         <foreign-key foreignTable="module_data" name="data_data" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="module_data" local="data"/>
         </foreign-key>
+        <foreign-key foreignTable="app_group" name="data_group_group" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="group" local="group"/>
+        </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="data_group"/>
+        </unique>
+        <unique name="uniqdatagroup">
+            <unique-column name="data"/>
+            <unique-column name="group"/>
         </unique>
         <index name="data_group_group">
             <index-column name="group"/>
@@ -261,16 +262,20 @@
         <column name="data_right" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="data" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="right" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="app_right" name="data_right_right" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="right" local="right"/>
-        </foreign-key>
         <foreign-key foreignTable="module_data" name="data_right_data" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="module_data" local="data"/>
         </foreign-key>
+        <foreign-key foreignTable="app_right" name="data_right_right" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="right" local="right"/>
+        </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="data_right"/>
+        </unique>
+        <unique name="uniqdataright">
+            <unique-column name="data"/>
+            <unique-column name="right"/>
         </unique>
         <index name="data_right_right">
             <index-column name="right"/>
@@ -283,16 +288,20 @@
         <column name="data_user" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="data" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="user" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <foreign-key foreignTable="app_user" name="data_user_user" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="user" local="user"/>
-        </foreign-key>
         <foreign-key foreignTable="module_data" name="data_user_data" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="module_data" local="data"/>
         </foreign-key>
+        <foreign-key foreignTable="app_user" name="data_user_user" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="user" local="user"/>
+        </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="data_user"/>
+        </unique>
+        <unique name="uniqdatauser">
+            <unique-column name="data"/>
+            <unique-column name="user"/>
         </unique>
         <index name="data_user_user">
             <index-column name="user"/>
@@ -316,10 +325,14 @@
         <unique name="PRIMARY">
             <unique-column name="group_filter"/>
         </unique>
-        <index name="group_filters_filter">
+        <unique name="uniqgroupfilter">
+            <unique-column name="group"/>
+            <unique-column name="filter"/>
+        </unique>
+        <index name="group_filters_filter_index">
             <index-column name="filter"/>
         </index>
-        <index name="group_filters_group">
+        <index name="group_filters_group_index">
             <index-column name="group"/>
         </index>
     </table>
@@ -337,6 +350,10 @@
         </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="group_rights"/>
+        </unique>
+        <unique name="uniqgroupright">
+            <unique-column name="right"/>
+            <unique-column name="group"/>
         </unique>
         <index name="group_rights_group">
             <index-column name="group"/>
@@ -364,6 +381,11 @@
         </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="privacity"/>
+        </unique>
+        <unique name="uniqgroupinfouser">
+            <unique-column name="info"/>
+            <unique-column name="group"/>
+            <unique-column name="user"/>
         </unique>
         <index name="group">
             <index-column name="group"/>
@@ -395,7 +417,11 @@
         <unique name="PRIMARY">
             <unique-column name="action"/>
         </unique>
-        <index name="action_module">
+        <unique name="uniqmodulemethod">
+            <unique-column name="module"/>
+            <unique-column name="method"/>
+        </unique>
+        <index name="action_module_index">
             <index-column name="module"/>
         </index>
     </table>
@@ -403,13 +429,10 @@
         <column name="module_data" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="name" primaryKey="false" required="true" scale="0" size="45" type="12,VARCHAR"/>
         <column name="module" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="data" primaryKey="false" required="false" scale="0" size="65535" type="-4,BLOB"/>
         <foreign-key foreignTable="app_module" name="module_data_module" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="module" local="module"/>
-        </foreign-key>
-        <foreign-key foreignTable="data_field" name="module_data" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="module_data" local="module_data"/>
         </foreign-key>
         <foreign-key foreignTable="data_group" name="data_data" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
@@ -425,6 +448,10 @@
         </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="module_data"/>
+        </unique>
+        <unique name="uniqmoduledata">
+            <unique-column name="name"/>
+            <unique-column name="module"/>
         </unique>
         <index name="module_data_module">
             <index-column name="module"/>
@@ -451,6 +478,10 @@
         <index name="module_access_group">
             <index-column name="group"/>
         </index>
+        <index name="uniqmodulegroup">
+            <index-column name="module"/>
+            <index-column name="group"/>
+        </index>
     </table>
     <table name="module_right">
         <column name="module_right" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
@@ -466,6 +497,10 @@
         </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="module_right"/>
+        </unique>
+        <unique name="uniqmoduleright">
+            <unique-column name="module"/>
+            <unique-column name="right"/>
         </unique>
         <index name="idmodule">
             <index-column name="module"/>
@@ -492,6 +527,10 @@
         <unique name="PRIMARY">
             <unique-column name="user_filters"/>
         </unique>
+        <unique name="uniquserfilter">
+            <unique-column name="filter"/>
+            <unique-column name="user"/>
+        </unique>
         <index name="user_filter_user">
             <index-column name="user"/>
         </index>
@@ -513,6 +552,10 @@
         </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="user_groups"/>
+        </unique>
+        <unique name="uniqusergroup">
+            <unique-column name="user"/>
+            <unique-column name="group"/>
         </unique>
         <index name="iduser">
             <index-column name="user"/>
@@ -552,6 +595,10 @@
         </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="user_rights"/>
+        </unique>
+        <unique name="uniquserright">
+            <unique-column name="user"/>
+            <unique-column name="right"/>
         </unique>
         <index name="user_rights_iduser">
             <index-column name="user"/>

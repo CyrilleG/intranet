@@ -9,5 +9,5 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "user_group")
 @RooDbManaged(automaticallyDelete = true)
-class UserGroup {
+public class UserGroup {
 }

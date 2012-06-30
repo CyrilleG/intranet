@@ -106,7 +106,7 @@ public class AppUser {
         return findUserDataByName(name) != -1;
     }
 */
-    public ModuleData getModuleData(String name) throws Exception {
+    public ModuleData getModuleData(String name) {
 		if (Tools.hasRight("GET_DATA_FROM_OTHER_USER")
 				|| Tools.getUser().equals(this)) 
     	for (DataUser data : dataUsers)
@@ -115,26 +115,26 @@ public class AppUser {
         return null;
     }
 
-    public void removeModuleData(String name) throws Exception {
-    	if (Tools.hasRight("REMOVE_DATA_FROM_USER") || Tools.getUser().equals(this)) 
+    public void removeDataFromUser(ModuleData ident){
+    	if (Tools.hasRight("REMOVE_DATA_FROM_OTHER_USER") || Tools.getUser().equals(ident)) 
 	    	for (DataUser data : dataUsers)
-	        	if (data.getData().getName().compareTo(name) == 0)
+	        	if (data.getUser().equals(ident))
 	        		data.remove();
     }
 
-    public void addModuleData(ModuleData data) throws Exception {
-    	if (Tools.hasRight("ADD_DATA_TO_USER")) {
+    public void addDataToUser(ModuleData ident) {
+    	if (Tools.hasRight("ADD_DATA_TO_OTHER_USER") || Tools.getUser().equals(ident)) {
 			DataUser elem = new DataUser();
-			elem.setData(data);
+			elem.setData(ident);
 			elem.setUser(this);
 			elem.persist();
 			dataUsers.add(elem);
 		}
     }
-    public boolean moduleHasData(ModuleData data)
+    public boolean userHasData(ModuleData ident)
     {
     	for (DataUser elem : dataUsers)
-    		if (elem.getData().equals(data))
+    		if (elem.getUser().equals(ident))
     			return true;
     	return false;
     }
@@ -288,7 +288,7 @@ public class AppUser {
     }
 
     public void setLogin(String login) {
-    	if (Tools.hasRight("SET_USER_LOGIN"))
+    	if (Tools.hasRight("SET_USER_LOGIN") || Tools.hasRight("SET_HIS_LOGIN"))
     		this.login = login;
     }
 
@@ -297,7 +297,7 @@ public class AppUser {
     }
 
     public void setPassword(String password) {
-    	if (Tools.hasRight("SET_USER_PASSWORD"))
+    	if (Tools.hasRight("SET_USER_PASSWORD") || Tools.hasRight("SET_HIS_PASSWORD"))
     		this.password = password;
     }
 

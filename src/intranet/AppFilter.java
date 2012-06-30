@@ -29,20 +29,20 @@ import intranet.UserFilter;
 @RooDbManaged(automaticallyDelete = true)
 public class AppFilter {
 	
-    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
-    private Set<GroupFilter> groupFilters;
-    
-    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
-    private Set<UserFilter> userFilters;
-    
-    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
-    private String name;
-    
-    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
-    private String description;
-    
-    @Column(name = "class", columnDefinition = "VARCHAR", length = 75)
-    private String class1;
+	 @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
+	    private Set<GroupFilter> groupFilters;
+	    
+	    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
+	    private Set<UserFilter> userFilters;
+	    
+	    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
+	    private String name;
+	    
+	    @Column(name = "description", columnDefinition = "VARCHAR", length = 255)
+	    private String description;
+	    
+	    @Column(name = "class", columnDefinition = "VARCHAR", length = 75)
+	    private String class1;
     
     public AppFilter createFilter(String name, String description, String classname)
     {

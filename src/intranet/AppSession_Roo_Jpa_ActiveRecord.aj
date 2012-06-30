@@ -28,8 +28,7 @@ privileged aspect AppSession_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM AppSession o", AppSession.class).getResultList();
     }
     
-    public static AppSession AppSession.findAppSession(String session) {
-        if (session == null || session.length() == 0) return null;
+    public static AppSession AppSession.findAppSession(Integer session) {
         return entityManager().find(AppSession.class, session);
     }
     

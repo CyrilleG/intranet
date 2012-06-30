@@ -9,5 +9,5 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "data_user")
 @RooDbManaged(automaticallyDelete = true)
-class DataUser {
+public class DataUser {
 }
