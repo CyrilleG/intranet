@@ -13,6 +13,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.ElementNotFoundException;
+
 import utils.Tools;
 
 @RooJavaBean
@@ -38,18 +41,20 @@ public class UserInfo {
 	@NotNull
 	private boolean editable;
 
-	public static UserInfo findInfoByKey(String key) {
+	public static UserInfo findInfoByKey(String key) throws ElementNotFoundException {
 		List<UserInfo> elements = UserInfo.findAllUserInfoes();
 		for (UserInfo element : elements)
 			if (element.getKey().compareToIgnoreCase(key) == 0
 					&& element.canUserAccess(Tools.getUser()))
 				return element;
-		return null;
+		throw new ElementNotFoundException("No Information Object with key "
+				+ key);
 	}
 
 	public UserInfo createInformation(AppUser user, String key, String value,
-			boolean editable, boolean show, AppGroup privacity) {
-		if ((Tools.hasRight("ADD_INFO_TO_OTHER_USER") || user.equals(Tools.getUser())) && privacity != null) {
+			boolean editable, boolean show, AppGroup privacity) throws AccessNotAllowedException {
+		if ((Tools.hasRight("ADD_INFO_TO_OTHER_USER") || user.equals(Tools
+				.getUser())) && privacity != null) {
 			UserInfo element = new UserInfo();
 			element.setKey(key);
 			element.setValue(value);
@@ -64,50 +69,66 @@ public class UserInfo {
 			priv.persist();
 			return element;
 		}
-		return null;
+		else
+			throw new AccessNotAllowedException("You can't add a information entry");
 	}
 
 	public String getKey() {
 		return key;
 	}
 
-	public void setKey(String key) {
+	public void setKey(String key) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_INFO_KEY"))
 			this.key = key;
+		else
+			throw new AccessNotAllowedException(
+					"You can't set a information key as: " + key);
 	}
 
-	public String getValue() {
+	public String getValue() throws AccessNotAllowedException {
 		if (canUserAccess(Tools.getUser()))
 			return value;
-		return null;
+		else
+			throw new AccessNotAllowedException(
+					"You can't access to this information");
 	}
 
-	public void setValue(String value) {
+	public void setValue(String value) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_INFO_VALUE")
 				&& (editable || Tools.hasRight("EDIT_UNEDITABLE_DATA") || Tools
 						.hasRight("SET_INFO_FROM_OTHER_USER")))
 			this.value = value;
+		else
+			throw new AccessNotAllowedException(
+					"You can't set a information value as: " + value);
 	}
 
 	public boolean isShow() {
 		return show;
 	}
 
-	public void setShow(boolean show) {
-		if (Tools.hasRight("SET_HIS_INFO_AS_HIDDEN") || Tools.hasRight("SET_INFO_FROM_OTHER_USER_AS_HIDDEN"))
+	public void setShow(boolean show) throws AccessNotAllowedException {
+		if (Tools.hasRight("SET_HIS_INFO_AS_HIDDEN")
+				|| Tools.hasRight("SET_INFO_FROM_OTHER_USER_AS_HIDDEN"))
 			this.show = show;
+		else
+			throw new AccessNotAllowedException(
+					"You can't set a information visibility as: " + show);
 	}
 
-	public void setInfoEditable(boolean editable) {
+	public void setInfoEditable(boolean editable) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_INFO_FROM_OTHER_USER_AS_UNEDITABLE"))
 			this.editable = editable;
+		else
+			throw new AccessNotAllowedException(
+					"You can't set a information editability as: " + editable);
 	}
 
 	public boolean isEditable() {
-		return editable;// TODO rights
+		return editable;
 	}
 
-	public void addGroupToPrivacities(AppGroup group, AppUser user) {
+	public void addGroupToPrivacities(AppGroup group, AppUser user) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_GROUP_TO_INFO")) {
 			InfoPrivacity elem = new InfoPrivacity();
 			elem.setInfo(this);
@@ -116,13 +137,21 @@ public class UserInfo {
 			elem.persist();
 			infoPrivacities.add(elem);
 		}
+		else
+			throw new AccessNotAllowedException(
+					"You can't allow group to see this information");
 	}
 
-	public void removeGroupFromPrivacities(AppGroup group) {
+	public void removeGroupFromPrivacities(AppGroup group) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_GROUP_FROM_INFO"))
+		{
 			for (InfoPrivacity data : infoPrivacities)
 				if (data.getGroup().equals(group))
 					data.remove();
+		}
+		else
+			throw new AccessNotAllowedException(
+					"You can't disallow group to see this information");
 	}
 
 	public boolean canGroupAccess(AppGroup group) {
@@ -135,8 +164,7 @@ public class UserInfo {
 
 	public boolean canUserAccess(AppUser user) {
 		for (InfoPrivacity priv : infoPrivacities) {
-			if (priv.getInfo().show || Tools.hasRight("VIEW_HIDDEN_INFO"))
-			{
+			if (priv.getInfo().show || Tools.hasRight("VIEW_HIDDEN_INFO")) {
 				if (priv.getUser().equals(user)
 						|| Tools.hasRight("GET_INFO_FROM_OTHER_USER"))
 					for (AppGroup group : user.getAllGroups()) {

@@ -14,6 +14,9 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.security.core.GrantedAuthority;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.ElementNotFoundException;
+
 import utils.Tools;
 
 @RooJavaBean
@@ -34,49 +37,53 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-    private Set<ActionRight> actionRights;
-    
-    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-    private Set<DataRight> dataRights;
-    
-    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-    private Set<GroupRight> groupRights;
-    
-    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-    private Set<ModuleRight> moduleRights;
-    
-    @OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
-    private Set<UserRight> userRights;
-    
-    @Column(name = "ident", columnDefinition = "VARCHAR", length = 70, unique = true)
-    @NotNull
-    private String ident;
-    
-    @Column(name = "name", columnDefinition = "VARCHAR", length = 100)
-    @NotNull
-    private String name;
-    
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+	private Set<ActionRight> actionRights;
 
-	public static AppRight findRightByName(String name) {
+	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+	private Set<DataRight> dataRights;
+
+	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+	private Set<GroupRight> groupRights;
+
+	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+	private Set<ModuleRight> moduleRights;
+
+	@OneToMany(mappedBy = "right", cascade = CascadeType.ALL)
+	private Set<UserRight> userRights;
+
+	@Column(name = "ident", columnDefinition = "VARCHAR", length = 70, unique = true)
+	@NotNull
+	private String ident;
+
+	@Column(name = "name", columnDefinition = "VARCHAR", length = 100)
+	@NotNull
+	private String name;
+
+	@Column(name = "description", columnDefinition = "TEXT")
+	private String description;
+
+	public static AppRight findRightByName(String name)
+			throws ElementNotFoundException {
 		List<AppRight> elements = AppRight.findAllAppRights();
 		for (AppRight element : elements)
 			if (element.getName().compareToIgnoreCase(name) == 0)
 				return element;
-		return null;
+		throw new ElementNotFoundException("No Right Object found with name: "
+				+ name);
 	}
 
-	public static AppRight findRightByIdent(String ident) {
+	public static AppRight findRightByIdent(String ident)
+			throws ElementNotFoundException {
 		List<AppRight> elements = AppRight.findAllAppRights();
 		for (AppRight element : elements)
 			if (element.getIdent().compareToIgnoreCase(ident) == 0)
 				return element;
-		return null;
+		throw new ElementNotFoundException("No Right Object found with ident: "
+				+ ident);
 	}
 
 	public static AppRight createRight(String name, String ident,
-			String description) {
+			String description) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT")) {
 			AppRight right = new AppRight();
 			right.setName(name);
@@ -84,28 +91,33 @@ public class AppRight implements GrantedAuthority {
 			right.setIdent(ident);
 			right.persist();
 			return right;
-		}
-		return null;
+		} else
+			throw new AccessNotAllowedException("You can't add a Right entry");
 	}
 
-	public void addRightToAction(ModuleAction action) {
+	public void addRightToAction(ModuleAction action)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_ACTION")) {
 			ActionRight element = new ActionRight();
 			element.setRight(this);
 			element.setAction(action);
 			element.persist();
 			actionRights.add(element);
-		}
+		} else
+			throw new AccessNotAllowedException("You can't add right to action");
 	}
 
-	public void removeRightFromAction(ModuleAction action) {
+	public void removeRightFromAction(ModuleAction action)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_ACTION")) {
 			for (ActionRight gp : actionRights)
 				if (gp.getAction().equals(ident)) {
 					gp.remove();
 					break;
 				}
-		}
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove right from action");
 	}
 
 	public boolean actionHasRight(ModuleAction element) {
@@ -115,24 +127,29 @@ public class AppRight implements GrantedAuthority {
 		return false;
 	}
 
-	public void addRightToGroup(AppGroup group) {
+	public void addRightToGroup(AppGroup group)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_GROUP")) {
 			GroupRight groupright = new GroupRight();
 			groupright.setGroup(group);
 			groupright.setRight(this);
 			groupright.persist();
 			groupRights.add(groupright);
-		}
+		} else
+			throw new AccessNotAllowedException("You can't add right to group");
 	}
 
-	public void removeRightFromGroup(AppGroup group) {
+	public void removeRightFromGroup(AppGroup group)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_GROUP")) {
 			for (GroupRight gp : groupRights)
 				if (gp.getGroup().equals(group)) {
 					gp.remove();
 					break;
 				}
-		}
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove right from group");
 
 	}
 
@@ -143,24 +160,29 @@ public class AppRight implements GrantedAuthority {
 		return false;
 	}
 
-	public void addRightToModule(AppModule module) {
+	public void addRightToModule(AppModule module)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_MODULE")) {
 			ModuleRight element = new ModuleRight();
 			element.setRight(this);
 			element.setModule(module);
 			element.persist();
 			moduleRights.add(element);
-		}
+		} else
+			throw new AccessNotAllowedException("You can't add right to module");
 	}
 
-	public void removeRightFromModule(AppModule module) {
+	public void removeRightFromModule(AppModule module)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_MODULE")) {
 			for (ModuleRight gp : moduleRights)
 				if (gp.getModule().equals(module)) {
 					gp.remove();
 					break;
 				}
-		}
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove right from module");
 	}
 
 	public boolean moduleHasRight(AppModule element) {
@@ -170,24 +192,28 @@ public class AppRight implements GrantedAuthority {
 		return false;
 	}
 
-	public void addRightToUser(AppUser user) {
+	public void addRightToUser(AppUser user) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_USER")) {
 			UserRight element = new UserRight();
 			element.setRight(this);
 			element.setUser(user);
 			element.persist();
 			userRights.add(element);
-		}
+		} else
+			throw new AccessNotAllowedException("You can't add right to user");
 	}
 
-	public void removeRightFromUser(AppUser user) {
+	public void removeRightFromUser(AppUser user)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_USER")) {
 			for (UserRight gp : userRights)
 				if (gp.getUser().equals(user)) {
 					gp.remove();
 					break;
 				}
-		}
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove right from user");
 	}
 
 	public boolean userHasRight(AppUser element) {
@@ -197,24 +223,29 @@ public class AppRight implements GrantedAuthority {
 		return false;
 	}
 
-	public void addRightToData(ModuleData data) {
+	public void addRightToData(ModuleData data)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_DATA")) {
 			DataRight element = new DataRight();
 			element.setRight(this);
 			element.setData(data);
 			element.persist();
 			dataRights.add(element);
-		}
+		} else
+			throw new AccessNotAllowedException("You can't add right to data");
 	}
 
-	public void removeRightFromData(ModuleData data) {
+	public void removeRightFromData(ModuleData data)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_DATA")) {
 			for (DataRight gp : dataRights)
 				if (gp.getData().equals(data)) {
 					gp.remove();
 					break;
 				}
-		}
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove right from data");
 	}
 
 	public boolean dataHasRight(ModuleData element) {
@@ -228,27 +259,37 @@ public class AppRight implements GrantedAuthority {
 		return ident;
 	}
 
-	public void setIdent(String ident) {
+	public void setIdent(String ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_RIGHT_IDENT"))
 			this.ident = ident;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a right ident as: " + ident);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_RIGHT_NAME"))
 			this.name = name;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a right name as: " + name);
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_RIGHT_DESCRIP"))
 			this.description = description;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a right description");
 	}
 
 	public boolean isRightUsed() {

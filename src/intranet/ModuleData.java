@@ -5,10 +5,15 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.ElementNotFoundException;
+import exceptions.FatalErrorException;
+
 import utils.Tools;
 import utils.Utils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,12 +48,40 @@ public class ModuleData {
 	@Column(name = "data", columnDefinition = "BLOB")
 	private byte[] data;
 
+	
+	public ModuleData createData(AppModule module, String name, Object data) throws AccessNotAllowedException, FatalErrorException {
+		if (Tools.hasRight("ADD_USER")) {
+			ModuleData element = new ModuleData();
+			element.setName(name);
+			element.setData(data);
+			element.setModule(module);
+			element.persist();
+			return element;
+		} else
+			throw new AccessNotAllowedException("You can't add a data entry");
+	}
+	
+	public static ModuleAction findActionByNameAndModule(AppModule module,
+			String name) throws ElementNotFoundException {
+		List<ModuleAction> elements = ModuleAction.findAllModuleActions();
+		for (ModuleAction element : elements)
+			if (element.getMethod().compareToIgnoreCase(name) == 0
+					&& element.getModule().equals(module))
+				return element;
+		throw new ElementNotFoundException("No Action Object found with name: "
+				+ name + " and module: " + module.getName());
+	}
+	
 	public void removeDataFromUser(AppUser user) throws Exception {
 		if (Tools.hasRight("REMOVE_DATA_FROM_OTHER_USER")
 				|| Tools.getUser().equals(user))
+		{
 			for (DataUser data : dataUsers)
 				if (data.getUser().equals(user))
 					data.remove();
+		}
+		else
+			throw new AccessNotAllowedException("You can't remove data from user");
 	}
 
 	public void addDataToUser(AppUser user) throws Exception {
@@ -60,6 +93,8 @@ public class ModuleData {
 			elem.persist();
 			dataUsers.add(elem);
 		}
+		else
+			throw new AccessNotAllowedException("You can't add data to user");
 	}
 
 	public boolean userHasData(AppUser user) {
@@ -69,7 +104,7 @@ public class ModuleData {
 		return false;
 	}
 
-	public void addRightToData(AppRight data) {
+	public void addRightToData(AppRight data) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_DATA")) {
 			DataRight element = new DataRight();
 			element.setRight(data);
@@ -77,16 +112,19 @@ public class ModuleData {
 			element.persist();
 			dataRights.add(element);
 		}
+		else
+			throw new AccessNotAllowedException("You can't add right to data");
 	}
 
-	public void removeRightFromData(AppRight data) {
+	public void removeRightFromData(AppRight data) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_DATA")) {
 			for (DataRight gp : dataRights)
 				if (gp.getRight().equals(data)) {
 					gp.remove();
 					break;
 				}
-		}
+		}else
+			throw new AccessNotAllowedException("You can't remove right from data");
 	}
 
 	public boolean dataHasRight(AppRight element) {
@@ -96,7 +134,7 @@ public class ModuleData {
 		return false;
 	}
 
-	public void addGroupToData(AppGroup ident) {
+	public void addGroupToData(AppGroup ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_DATA_TO_GROUP")) {
 			DataGroup element = new DataGroup();
 			element.setGroup(ident);
@@ -104,9 +142,11 @@ public class ModuleData {
 			element.persist();
 			dataGroups.add(element);
 		}
+		else
+			throw new AccessNotAllowedException("You can't add group to data");
 	}
 
-	public void removeGroupFromData(AppGroup ident) {
+	public void removeGroupFromData(AppGroup ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_DATA_FROM_GROUP")) {
 			for (DataGroup gp : dataGroups)
 				if (gp.getGroup().equals(ident)) {
@@ -114,6 +154,8 @@ public class ModuleData {
 					break;
 				}
 		}
+		else
+			throw new AccessNotAllowedException("You can't remove group from data");
 	}
 
 	public boolean dataHasGroup(AppGroup ident) {
@@ -127,45 +169,48 @@ public class ModuleData {
 		return module;
 	}
 
-	public void setModule(AppModule module) {
+	public void setModule(AppModule module) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_DATA_MODULE"))
 			this.module = module;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a data module as: " + module.getName());
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_DATA_NAME"))
 			this.name = name;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a data name as: " + name);
 	}
 
-	public Object getData() {
+	public Object getData() throws FatalErrorException, AccessNotAllowedException {
 		if (Tools.hasRight("GET_DATA_FROM_OTHER_USER")
 				|| this.userHasData(Tools.getUser())) {
 			try {
 				return Utils.ByteArrayToObject(data);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				throw new FatalErrorException("Convert to byte array error");
 			}
 		}
-		return null;
+		else
+			throw new AccessNotAllowedException(
+					"You can't access to this data");
 	}
 
-	public void setData(Object data) {
+	public void setData(Object data) throws FatalErrorException {
 		if (Tools.hasRight("EDIT_DATA_FROM_OTHER_USER")
 				|| this.userHasData(Tools.getUser())) {
 
 			try {
 				this.data = Utils.ObjectToByteArray(data);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new FatalErrorException("Convert to object error");
 			}
 		}
 	}

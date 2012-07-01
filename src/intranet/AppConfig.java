@@ -6,10 +6,10 @@ import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
-
+import exceptions.ElementNotFoundException;
+import exceptions.AccessNotAllowedException;
 import utils.Tools;
 import javax.persistence.Column;
-
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "app_config")
@@ -22,15 +22,15 @@ public class AppConfig {
     @Column(name = "value", columnDefinition = "TEXT")
     private String value;
 
-	public static AppConfig findConfigByKey(String key) {
+	public static AppConfig findConfigByKey(String key) throws ElementNotFoundException {
 		List<AppConfig> confs = AppConfig.findAllAppConfigs();
 		for (AppConfig conf : confs)
 			if (conf.getKey().compareToIgnoreCase(key) == 0)
 				return conf;
-		return null;
+		throw new ElementNotFoundException("No Config Object with ident " + key);
 	}
 
-	public static String getConfig(String key) {
+	public static String getConfig(String key) throws ElementNotFoundException {
 		return findConfigByKey(key).getValue();
 	}
 
@@ -38,7 +38,7 @@ public class AppConfig {
 		return key;
 	}
 
-	public AppConfig createConf(String key, String value) {
+	public AppConfig createConf(String key, String value) throws AccessNotAllowedException{
 		if (Tools.hasRight("ADD_CONF")) {
 			AppConfig conf = new AppConfig();
 			conf.setKey(key);
@@ -46,20 +46,24 @@ public class AppConfig {
 			conf.persist();
 			return conf;
 		}
-		return null;
+		throw new AccessNotAllowedException("You can't add a configuration entry");
 	}
 
-	public void setKey(String key) {
+	public void setKey(String key) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_CONF_KEY"))
 			this.key = key;
+		else
+			throw new AccessNotAllowedException("You can't edit a configuration key as: " + key);
 	}
 
 	public String getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(String value) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_CONF_VALUE"))
 			this.value = value;
+		else
+			throw new AccessNotAllowedException("You can't edit a configuration value as: " + value);
 	}
 }

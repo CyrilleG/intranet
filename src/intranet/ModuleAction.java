@@ -14,6 +14,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.ElementNotFoundException;
+
 import utils.Tools;
 
 @RooJavaBean
@@ -41,15 +44,28 @@ public class ModuleAction {
 	private boolean enabled;
 
 	public static ModuleAction findActionByNameAndModule(AppModule module,
-			String name) {
+			String name) throws ElementNotFoundException {
 		List<ModuleAction> elements = ModuleAction.findAllModuleActions();
 		for (ModuleAction element : elements)
 			if (element.getMethod().compareToIgnoreCase(name) == 0
 					&& element.getModule().equals(module))
 				return element;
-		return null;
+		throw new ElementNotFoundException("No Action Object found with name: "
+				+ name + " and module: " + module.getName());
 	}
 
+	public ModuleAction createAction(AppModule module, String method, boolean enabled) throws AccessNotAllowedException {
+		if (Tools.hasRight("ADD_USER")) {
+			ModuleAction user = new ModuleAction();
+			user.setActionEnabled(enabled);
+			user.setMethod(method);
+			user.setModule(module);
+			user.persist();
+			return user;
+		} else
+			throw new AccessNotAllowedException("You can't add a action entry");
+	}
+	
 	public boolean canBeUse() {
 		return actionGroups.size() > 0 || actionRights.size() > 0;
 	}
@@ -58,30 +74,39 @@ public class ModuleAction {
 		return module;
 	}
 
-	public void setModule(AppModule idmodule) {
+	public void setModule(AppModule module) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_ACTION_MODULE"))
-			this.module = idmodule;
+			this.module = module;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a action module as: " + module.getName());
 	}
 
 	public String getMethod() {
 		return method;
 	}
 
-	public void setMethod(String method) {
+	public void setMethod(String method) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_ACTION_METHOD"))
 			this.method = method;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a action method as: " + method);
 	}
 
 	public boolean isActionEnabled() {
 		return enabled;
 	}
 
-	public void setActionEnabled(boolean enabled) {
+	public void setActionEnabled(boolean enabled) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_ACTION_ENABLED"))
 			this.enabled = enabled;
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a action enabled as: " + enabled);
 	}
 
-	public void addGroupToAction(AppGroup g) {
+	public void addGroupToAction(AppGroup g) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_ACTION_TO_GROUP")) {
 			ActionGroup groupaction = new ActionGroup();
 			groupaction.setGroup(g);
@@ -89,9 +114,11 @@ public class ModuleAction {
 			groupaction.persist();
 			actionGroups.add(groupaction);
 		}
+		else
+			throw new AccessNotAllowedException("You can't add action to group");
 	}
 
-	public void removeGroupFromAction(AppGroup g) {
+	public void removeGroupFromAction(AppGroup g) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_ACTION_FROM_GROUP")) {
 			for (ActionGroup gp : actionGroups)
 				if (gp.getGroup().equals(g)) {
@@ -99,6 +126,8 @@ public class ModuleAction {
 					break;
 				}
 		}
+		else
+			throw new AccessNotAllowedException("You can't remove action from group");
 	}
 
 	public boolean actionHasGroup(AppGroup g) {
@@ -108,7 +137,7 @@ public class ModuleAction {
 		return false;
 	}
 
-	public void addRightToAction(AppRight right) {
+	public void addRightToAction(AppRight right) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_ACTION")) {
 			ActionRight element = new ActionRight();
 			element.setRight(right);
@@ -116,9 +145,11 @@ public class ModuleAction {
 			element.persist();
 			actionRights.add(element);
 		}
+		else
+			throw new AccessNotAllowedException("You can't add right to action");
 	}
 
-	public void removeRightFromAction(AppRight right) {
+	public void removeRightFromAction(AppRight right) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_ACTION")) {
 			for (ActionRight gp : actionRights)
 				if (gp.getRight().equals(right)) {
@@ -126,6 +157,8 @@ public class ModuleAction {
 					break;
 				}
 		}
+		else
+			throw new AccessNotAllowedException("You can't remove right from action");
 	}
 
 	public boolean actionHasRight(AppRight right) {

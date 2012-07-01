@@ -9,5 +9,5 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "info_privacity")
 @RooDbManaged(automaticallyDelete = true)
-public class InfoPrivacity {
+class InfoPrivacity {
 }

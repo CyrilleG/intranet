@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 
+import exceptions.AccessNotAllowedException;
+
 privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService {
     
     declare @type: ApplicationConversionServiceFactoryBean: @Configurable;
@@ -200,7 +202,13 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<UserInfo, String> ApplicationConversionServiceFactoryBean.getUserInfoToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<intranet.UserInfo, java.lang.String>() {
             public String convert(UserInfo userInfo) {
-                return new StringBuilder().append(userInfo.getKey()).append(" ").append(userInfo.getValue()).toString();
+                try {
+					return new StringBuilder().append(userInfo.getKey()).append(" ").append(userInfo.getValue()).toString();
+				} catch (AccessNotAllowedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				}
             }
         };
     }
