@@ -43,7 +43,7 @@ public class ModuleAction {
 	@NotNull
 	private boolean enabled;
 
-	public static ModuleAction findActionByNameAndModule(AppModule module,
+	public static ModuleAction findByNameAndModule(AppModule module,
 			String name) throws ElementNotFoundException {
 		List<ModuleAction> elements = ModuleAction.findAllModuleActions();
 		for (ModuleAction element : elements)
@@ -54,7 +54,7 @@ public class ModuleAction {
 				+ name + " and module: " + module.getName());
 	}
 
-	public ModuleAction createAction(AppModule module, String method, boolean enabled) throws AccessNotAllowedException {
+	public ModuleAction create(AppModule module, String method, boolean enabled) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_USER")) {
 			ModuleAction user = new ModuleAction();
 			user.setActionEnabled(enabled);
@@ -66,7 +66,7 @@ public class ModuleAction {
 			throw new AccessNotAllowedException("You can't add a action entry");
 	}
 	
-	public boolean canBeUse() {
+	public boolean isSomeoneCanAccess() {
 		return actionGroups.size() > 0 || actionRights.size() > 0;
 	}
 
@@ -106,7 +106,7 @@ public class ModuleAction {
 					"You can't edit a action enabled as: " + enabled);
 	}
 
-	public void addGroupToAction(AppGroup g) throws AccessNotAllowedException {
+	public void allow(AppGroup g) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_ACTION_TO_GROUP")) {
 			ActionGroup groupaction = new ActionGroup();
 			groupaction.setGroup(g);
@@ -118,7 +118,7 @@ public class ModuleAction {
 			throw new AccessNotAllowedException("You can't add action to group");
 	}
 
-	public void removeGroupFromAction(AppGroup g) throws AccessNotAllowedException {
+	public void disallowAccess(AppGroup g) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_ACTION_FROM_GROUP")) {
 			for (ActionGroup gp : actionGroups)
 				if (gp.getGroup().equals(g)) {
@@ -130,14 +130,14 @@ public class ModuleAction {
 			throw new AccessNotAllowedException("You can't remove action from group");
 	}
 
-	public boolean actionHasGroup(AppGroup g) {
+	public boolean isAccessAllow(AppGroup g) {
 		for (ActionGroup item : actionGroups)
 			if (item.getGroup().equals(g))
 				return true;
 		return false;
 	}
 
-	public void addRightToAction(AppRight right) throws AccessNotAllowedException {
+	public void allow(AppRight right) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_ACTION")) {
 			ActionRight element = new ActionRight();
 			element.setRight(right);
@@ -149,7 +149,7 @@ public class ModuleAction {
 			throw new AccessNotAllowedException("You can't add right to action");
 	}
 
-	public void removeRightFromAction(AppRight right) throws AccessNotAllowedException {
+	public void disallowAccess(AppRight right) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_ACTION")) {
 			for (ActionRight gp : actionRights)
 				if (gp.getRight().equals(right)) {
@@ -161,23 +161,23 @@ public class ModuleAction {
 			throw new AccessNotAllowedException("You can't remove right from action");
 	}
 
-	public boolean actionHasRight(AppRight right) {
+	public boolean isAccessAllow(AppRight right) {
 		for (ActionRight item : actionRights)
 			if (item.getRight().equals(right))
 				return true;
 		return false;
 	}
 
-	public boolean canAccess() {
-		return canAccess(Tools.getUser());
+	public boolean isAccessAllow() {
+		return isAccessAllow(Tools.getUser());
 	}
 
-	public boolean canAccess(AppUser e) {
+	public boolean isAccessAllow(AppUser e) {
 		for (ActionGroup g : actionGroups)
-			if (e.userHasGroup(g.getGroup()))
+			if (e.hasGroup(g.getGroup()))
 				return true;
 		for (ActionRight g : actionRights)
-			if (e.userHasRight(g.getRight()))
+			if (e.hasRight(g.getRight()))
 				return true;
 		return false;
 	}

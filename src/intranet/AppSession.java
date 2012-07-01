@@ -34,7 +34,7 @@ public class AppSession {
 	@DateTimeFormat(style = "M-")
 	private Date lastAction;
 
-	public static AppSession findSessionByLogin(String login) {
+	public static AppSession findByLogin(String login) {
 		List<AppSession> elements = AppSession.findAllAppSessions();
 		for (AppSession element : elements)
 			if (element.getLogin().compareToIgnoreCase(login) == 0)

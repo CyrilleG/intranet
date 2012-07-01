@@ -51,7 +51,7 @@ public class AppUser {
 	@NotNull
 	private boolean enabled;
 
-	public static AppUser findFilterByLogin(String login) throws ElementNotFoundException {
+	public static AppUser findByLogin(String login) throws ElementNotFoundException {
 		List<AppUser> elements = AppUser.findAllAppUsers();
 		for (AppUser element : elements)
 			if (element.getLogin().compareToIgnoreCase(login) == 0)
@@ -60,7 +60,7 @@ public class AppUser {
 				+ login);
 	}
 
-	public AppUser createUser(String login, String password, boolean enabled) throws AccessNotAllowedException {
+	public AppUser create(String login, String password, boolean enabled) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_USER")) {
 			AppUser user = new AppUser();
 			user.setLogin(login);
@@ -81,7 +81,7 @@ public class AppUser {
 		return rights;
 	}
 
-	public Set<AppGroup> getAllGroups() {
+	public Set<AppGroup> getHisGroup() {
 		Set<AppGroup> groups = new HashSet<AppGroup>();
 		for (UserGroup g : userGroups)
 			groups.add(g.getGroup());
@@ -109,7 +109,7 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't get data from this user");
 	}
 
-	public void removeDataFromUser(ModuleData ident) throws AccessNotAllowedException {
+	public void removeData(ModuleData ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_DATA_FROM_OTHER_USER")
 				|| Tools.getUser().equals(ident)) {
 			for (DataUser data : dataUsers)
@@ -119,7 +119,7 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't add data to user");
 	}
 
-	public void addDataToUser(ModuleData ident) throws AccessNotAllowedException {
+	public void addModule(ModuleData ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_DATA_TO_OTHER_USER")
 				|| Tools.getUser().equals(ident)) {
 			DataUser elem = new DataUser();
@@ -132,14 +132,14 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't remove data from user");
 	}
 
-	public boolean userHasData(ModuleData ident) {
+	public boolean hasData(ModuleData ident) {
 		for (DataUser elem : dataUsers)
 			if (elem.getUser().equals(ident))
 				return true;
 		return false;
 	}
 
-	public void addFilterToUser(AppFilter filter) throws AccessNotAllowedException {
+	public void addFilter(AppFilter filter) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_FILTER_TO_USER")) {
 			UserFilter group = new UserFilter();
 			group.setFilter(filter);
@@ -151,7 +151,7 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't add filter to user");
 	}
 
-	public void removeFilterFromUser(AppFilter filter) throws AccessNotAllowedException {
+	public void removeFilter(AppFilter filter) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_FILTER_FROM_USER")) {
 			for (UserFilter gp : userFilters)
 				if (gp.getFilter().equals(filter)) {
@@ -163,7 +163,7 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't remove filter from user");
 	}
 
-	public boolean userHasFilter(AppFilter filter) {
+	public boolean hasFilter(AppFilter filter) {
 		for (UserFilter elem : userFilters)
 			if (elem.getFilter().equals(filter))
 				return true;
@@ -171,24 +171,24 @@ public class AppUser {
 	}
 
 	public void applyPreFilter(AppFilter filter) throws FatalErrorException {
-		filter.appliPreFilter();
+		filter.executePreFilter();
 	}
 
 	public void applyPostFilter(AppFilter filter) throws FatalErrorException {
-		filter.appliPostFilter();
+		filter.executePostFilter();
 	}
 
-	public void applyUserPreFilters() throws FatalErrorException {
+	public void applyHisPreFilters() throws FatalErrorException {
 		for (UserFilter filter : userFilters)
-			filter.getFilter().appliPreFilter();
+			filter.getFilter().executePreFilter();
 	}
 
-	public void applyUserPostFilters() throws FatalErrorException {
+	public void applyHisPostFilters() throws FatalErrorException {
 		for (UserFilter filter : userFilters)
-			filter.getFilter().appliPostFilter();
+			filter.getFilter().executePostFilter();
 	}
 
-	public void addUserToGroup(AppGroup group) throws AccessNotAllowedException {
+	public void addGroup(AppGroup group) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_USER_TO_GROUP")) {
 			UserGroup groupuser = new UserGroup();
 			groupuser.setGroup(group);
@@ -200,7 +200,7 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't add user to group");
 	}
 
-	public void removeUserFromGroup(AppGroup group) throws AccessNotAllowedException {
+	public void removeGroup(AppGroup group) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_USER_FROM_GROUP")) {
 			for (UserGroup gp : userGroups)
 				if (gp.getGroup().equals(group)) {
@@ -212,14 +212,14 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't remove user from group");
 	}
 
-	public boolean userHasGroup(AppGroup ident) {
+	public boolean hasGroup(AppGroup ident) {
 		for (UserGroup elem : userGroups)
 			if (elem.getGroup().equals(ident))
 				return true;
 		return false;
 	}
 
-	public void addInformationToUser(UserInfo info, AppGroup privacity) throws AccessNotAllowedException {
+	public void addAccess(UserInfo info, AppGroup privacity) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_INFO_TO_OTHER_USER")
 				|| Tools.hasRight("ADD_INFO")) {
 			InfoPrivacity priv = new InfoPrivacity();
@@ -235,7 +235,7 @@ public class AppUser {
 	public UserInfo getInformation(String key) throws ElementNotFoundException {
 		for (InfoPrivacity element : infoPrivacities)
 			if (element.getInfo().getKey().compareTo(key) == 0
-					&& (Tools.getUser().userHasGroup(element.getGroup()) || Tools
+					&& (Tools.getUser().hasGroup(element.getGroup()) || Tools
 							.getUser().isAdmin()))
 				return element.getInfo();
 		throw new ElementNotFoundException("No Information Object found with key: "
@@ -243,7 +243,7 @@ public class AppUser {
 
 	}
 
-	public void removeInformationFromUser(UserInfo info) throws AccessNotAllowedException {
+	public void removeInformation(UserInfo info) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_INFO_FROM_OTHER_USER") || info.isEditable()) {
 			for (InfoPrivacity element : infoPrivacities)
 				if (element.getInfo().equals(info)) {
@@ -255,7 +255,7 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't remove information from user");
 	}
 
-	public void addRightToUser(AppRight right) throws AccessNotAllowedException {
+	public void addRight(AppRight right) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_USER")) {
 			UserRight element = new UserRight();
 			element.setRight(right);
@@ -267,21 +267,21 @@ public class AppUser {
 			throw new AccessNotAllowedException("You can't add right to user");
 	}
 
-	public boolean userHasRight(AppRight right) {
+	public boolean hasRight(AppRight right) {
 		for (UserRight item : userRights)
 			if (item.getRight().equals(right))
 				return true;
 		return false;
 	}
 
-	public boolean userHasRight(String right) {
+	public boolean hasRight(String right) {
 		for (UserRight item : userRights)
 			if (item.getRight().getIdent().compareToIgnoreCase(right) == 0)
 				return true;
 		return false;
 	}
 
-	public void removeRightFromUser(AppRight right) throws AccessNotAllowedException {
+	public void removeRight(AppRight right) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_USER")) {
 			for (UserRight gp : userRights)
 				if (gp.getRight().equals(right)) {
@@ -332,7 +332,7 @@ public class AppUser {
 
 	public boolean isAdmin() {
 		try {
-			return userHasGroup(AppGroup.findGroupByIdent("ADMIN"));
+			return hasGroup(AppGroup.findByIdent("ADMIN"));
 		} catch (ElementNotFoundException e) {
 			//throw new FatalErrorException("ADMIN not present. Please resintall application");
 			return false;

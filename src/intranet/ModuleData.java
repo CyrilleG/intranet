@@ -49,7 +49,7 @@ public class ModuleData {
 	private byte[] data;
 
 	
-	public ModuleData createData(AppModule module, String name, Object data) throws AccessNotAllowedException, FatalErrorException {
+	public ModuleData create(AppModule module, String name, Object data) throws AccessNotAllowedException, FatalErrorException {
 		if (Tools.hasRight("ADD_USER")) {
 			ModuleData element = new ModuleData();
 			element.setName(name);
@@ -61,7 +61,7 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add a data entry");
 	}
 	
-	public static ModuleAction findActionByNameAndModule(AppModule module,
+	public static ModuleAction findByNameAndModule(AppModule module,
 			String name) throws ElementNotFoundException {
 		List<ModuleAction> elements = ModuleAction.findAllModuleActions();
 		for (ModuleAction element : elements)
@@ -72,7 +72,7 @@ public class ModuleData {
 				+ name + " and module: " + module.getName());
 	}
 	
-	public void removeDataFromUser(AppUser user) throws Exception {
+	public void disallowAccess(AppUser user) throws Exception {
 		if (Tools.hasRight("REMOVE_DATA_FROM_OTHER_USER")
 				|| Tools.getUser().equals(user))
 		{
@@ -84,7 +84,7 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't remove data from user");
 	}
 
-	public void addDataToUser(AppUser user) throws Exception {
+	public void allowAccess(AppUser user) throws Exception {
 		if (Tools.hasRight("ADD_DATA_TO_OTHER_USER")
 				|| Tools.getUser().equals(user)) {
 			DataUser elem = new DataUser();
@@ -97,14 +97,14 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add data to user");
 	}
 
-	public boolean userHasData(AppUser user) {
+	public boolean isAccessAllow(AppUser user) {
 		for (DataUser elem : dataUsers)
 			if (elem.getData().equals(user))
 				return true;
 		return false;
 	}
 
-	public void addRightToData(AppRight data) throws AccessNotAllowedException {
+	public void allowAccess(AppRight data) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_DATA")) {
 			DataRight element = new DataRight();
 			element.setRight(data);
@@ -116,7 +116,7 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add right to data");
 	}
 
-	public void removeRightFromData(AppRight data) throws AccessNotAllowedException {
+	public void disallowAccess(AppRight data) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_DATA")) {
 			for (DataRight gp : dataRights)
 				if (gp.getRight().equals(data)) {
@@ -127,14 +127,14 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't remove right from data");
 	}
 
-	public boolean dataHasRight(AppRight element) {
+	public boolean isAccessAllow(AppRight element) {
 		for (DataRight item : dataRights)
 			if (item.getRight().equals(element))
 				return true;
 		return false;
 	}
 
-	public void addGroupToData(AppGroup ident) throws AccessNotAllowedException {
+	public void allowAccess(AppGroup ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_DATA_TO_GROUP")) {
 			DataGroup element = new DataGroup();
 			element.setGroup(ident);
@@ -146,7 +146,7 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add group to data");
 	}
 
-	public void removeGroupFromData(AppGroup ident) throws AccessNotAllowedException {
+	public void disallowAccess(AppGroup ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_DATA_FROM_GROUP")) {
 			for (DataGroup gp : dataGroups)
 				if (gp.getGroup().equals(ident)) {
@@ -158,7 +158,7 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't remove group from data");
 	}
 
-	public boolean dataHasGroup(AppGroup ident) {
+	public boolean isAccessAllow(AppGroup ident) {
 		for (DataGroup g : dataGroups)
 			if (g.getGroup().equals(ident))
 				return true;
@@ -191,7 +191,7 @@ public class ModuleData {
 
 	public Object getData() throws FatalErrorException, AccessNotAllowedException {
 		if (Tools.hasRight("GET_DATA_FROM_OTHER_USER")
-				|| this.userHasData(Tools.getUser())) {
+				|| this.isAccessAllow(Tools.getUser())) {
 			try {
 				return Utils.ByteArrayToObject(data);
 			} catch (Exception e) {
@@ -205,7 +205,7 @@ public class ModuleData {
 
 	public void setData(Object data) throws FatalErrorException {
 		if (Tools.hasRight("EDIT_DATA_FROM_OTHER_USER")
-				|| this.userHasData(Tools.getUser())) {
+				|| this.isAccessAllow(Tools.getUser())) {
 
 			try {
 				this.data = Utils.ObjectToByteArray(data);

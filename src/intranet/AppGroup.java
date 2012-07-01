@@ -64,7 +64,7 @@ public class AppGroup {
 		return rights;
 	}
 
-	public static AppGroup findGroupByIdent(String ident)
+	public static AppGroup findByIdent(String ident)
 			throws ElementNotFoundException {
 		List<AppGroup> elements = AppGroup.findAllAppGroups();
 		for (AppGroup element : elements)
@@ -74,7 +74,7 @@ public class AppGroup {
 				+ ident);
 	}
 
-	public static AppGroup createGroup(String ident, String label,
+	public static AppGroup create(String ident, String label,
 			String description) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_GROUP")) {
 			AppGroup group = new AppGroup();
@@ -87,7 +87,7 @@ public class AppGroup {
 			throw new AccessNotAllowedException("You can't add a group entry");
 	}
 
-	public void addRightToGroup(AppRight right)
+	public void addRight(AppRight right)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_GROUP")) {
 			GroupRight groupright = new GroupRight();
@@ -99,7 +99,7 @@ public class AppGroup {
 			throw new AccessNotAllowedException("You can't add right to group");
 	}
 
-	public void removeRightFromGroup(AppRight right)
+	public void disallowToAccess(AppRight right)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_GROUP")) {
 			for (GroupRight gp : groupRights)
@@ -112,18 +112,18 @@ public class AppGroup {
 					"You can't remove right from group");
 	}
 
-	public boolean groupHasRight(String ident) {
+	public boolean hasRight(String ident) {
 		for (GroupRight gp : groupRights)
 			if (gp.getRight().getIdent().compareTo(ident) == 0)
 				return true;
 		return false;
 	}
 
-	public boolean groupHasRight(AppRight right) {
-		return groupHasRight(right.getIdent());
+	public boolean hasRight(AppRight right) {
+		return hasRight(right.getIdent());
 	}
 
-	public void addGroupToUser(AppUser ident) throws AccessNotAllowedException {
+	public void allowToAccess(AppUser ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_USER_TO_GROUP")
 				|| Tools.hasRight("ADD_HIMSELF_TO_GROUP_")) {
 			UserGroup groupuser = new UserGroup();
@@ -135,7 +135,7 @@ public class AppGroup {
 			throw new AccessNotAllowedException("You can't add user to group");
 	}
 
-	public void removeGroupFromUser(AppUser ident)
+	public void disallowToAccess(AppUser ident)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_USER_FROM_GROUP")) {
 			for (UserGroup gp : userGroups)
@@ -155,7 +155,7 @@ public class AppGroup {
 		return false;
 	}
 
-	public void addGroupToData(ModuleData ident)
+	public void allowToAccess(ModuleData ident)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_DATA_TO_GROUP")) {
 			DataGroup element = new DataGroup();
@@ -167,7 +167,7 @@ public class AppGroup {
 			throw new AccessNotAllowedException("You can't data right to group");
 	}
 
-	public void removeGroupFromData(ModuleData ident)
+	public void disallowToAccess(ModuleData ident)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_DATA_FROM_GROUP")) {
 			for (DataGroup gp : dataGroups)
@@ -180,14 +180,14 @@ public class AppGroup {
 					"You can't remove data from group");
 	}
 
-	public boolean dataHasGroup(ModuleData ident) {
+	public boolean isAccessAllow(ModuleData ident) {
 		for (DataGroup g : dataGroups)
 			if (g.getData().equals(ident))
 				return true;
 		return false;
 	}
 
-	public void addGroupToModule(AppModule ident)
+	public void allowToAccess(AppModule ident)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
 			ModuleGroup groupuser = new ModuleGroup();
@@ -199,7 +199,7 @@ public class AppGroup {
 			throw new AccessNotAllowedException("You can't add module to group");
 	}
 
-	public void removeGroupFromModule(AppModule ident)
+	public void disallowToAccess(AppModule ident)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_MODULE_FROM_GROUP")) {
 			for (ModuleGroup gp : moduleGroups)
@@ -212,11 +212,14 @@ public class AppGroup {
 					"You can't remove module from group");
 	}
 
-	public boolean moduleHasGroup(AppModule ident) {
-		return moduleGroups.contains(ident);
+	public boolean isAccessAllow(AppModule ident) {
+		for (ModuleGroup item : moduleGroups)
+			if (item.getModule().equals(ident))
+				return true;
+		return false;
 	}
 
-	public void addGroupToAction(ModuleAction ident)
+	public void allowToAccess(ModuleAction ident)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_ACTION_TO_GROUP")) {
 			ActionGroup groupaction = new ActionGroup();
@@ -228,7 +231,7 @@ public class AppGroup {
 			throw new AccessNotAllowedException("You can't add action to group");
 	}
 
-	public void removeGroupFromAction(ModuleAction ident)
+	public void disallowToAccess(ModuleAction ident)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_ACTION_FROM_GROUP")) {
 			for (ActionGroup gp : actionGroups)
@@ -241,7 +244,7 @@ public class AppGroup {
 					"You can't remove action from group");
 	}
 
-	public boolean actionHasGroup(ModuleAction ident) {
+	public boolean isAccessAllow(ModuleAction ident) {
 		for (ActionGroup item : actionGroups)
 			if (item.getAction().equals(ident))
 				return true;

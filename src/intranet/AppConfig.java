@@ -22,7 +22,7 @@ public class AppConfig {
     @Column(name = "value", columnDefinition = "TEXT")
     private String value;
 
-	public static AppConfig findConfigByKey(String key) throws ElementNotFoundException {
+	public static AppConfig findByKey(String key) throws ElementNotFoundException {
 		List<AppConfig> confs = AppConfig.findAllAppConfigs();
 		for (AppConfig conf : confs)
 			if (conf.getKey().compareToIgnoreCase(key) == 0)
@@ -31,14 +31,14 @@ public class AppConfig {
 	}
 
 	public static String getConfig(String key) throws ElementNotFoundException {
-		return findConfigByKey(key).getValue();
+		return findByKey(key).getValue();
 	}
 
 	public String getKey() {
 		return key;
 	}
 
-	public AppConfig createConf(String key, String value) throws AccessNotAllowedException{
+	public AppConfig create(String key, String value) throws AccessNotAllowedException{
 		if (Tools.hasRight("ADD_CONF")) {
 			AppConfig conf = new AppConfig();
 			conf.setKey(key);

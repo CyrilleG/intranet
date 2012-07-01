@@ -41,11 +41,11 @@ public class UserInfo {
 	@NotNull
 	private boolean editable;
 
-	public static UserInfo findInfoByKey(String key) throws ElementNotFoundException {
+	public static UserInfo findByKey(String key) throws ElementNotFoundException {
 		List<UserInfo> elements = UserInfo.findAllUserInfoes();
 		for (UserInfo element : elements)
 			if (element.getKey().compareToIgnoreCase(key) == 0
-					&& element.canUserAccess(Tools.getUser()))
+					&& element.isAccessAllow(Tools.getUser()))
 				return element;
 		throw new ElementNotFoundException("No Information Object with key "
 				+ key);
@@ -59,7 +59,7 @@ public class UserInfo {
 			element.setKey(key);
 			element.setValue(value);
 			element.setShow(show);
-			element.setInfoEditable(editable);
+			element.setEditable(editable);
 			element.persist();
 
 			InfoPrivacity priv = new InfoPrivacity();
@@ -86,7 +86,7 @@ public class UserInfo {
 	}
 
 	public String getValue() throws AccessNotAllowedException {
-		if (canUserAccess(Tools.getUser()))
+		if (isAccessAllow(Tools.getUser()))
 			return value;
 		else
 			throw new AccessNotAllowedException(
@@ -116,7 +116,7 @@ public class UserInfo {
 					"You can't set a information visibility as: " + show);
 	}
 
-	public void setInfoEditable(boolean editable) throws AccessNotAllowedException {
+	public void setEditable(boolean editable) throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_INFO_FROM_OTHER_USER_AS_UNEDITABLE"))
 			this.editable = editable;
 		else
@@ -128,7 +128,7 @@ public class UserInfo {
 		return editable;
 	}
 
-	public void addGroupToPrivacities(AppGroup group, AppUser user) throws AccessNotAllowedException {
+	public void allowToAccess(AppGroup group, AppUser user) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_GROUP_TO_INFO")) {
 			InfoPrivacity elem = new InfoPrivacity();
 			elem.setInfo(this);
@@ -142,7 +142,7 @@ public class UserInfo {
 					"You can't allow group to see this information");
 	}
 
-	public void removeGroupFromPrivacities(AppGroup group) throws AccessNotAllowedException {
+	public void disallowAccess(AppGroup group) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_GROUP_FROM_INFO"))
 		{
 			for (InfoPrivacity data : infoPrivacities)
@@ -154,7 +154,7 @@ public class UserInfo {
 					"You can't disallow group to see this information");
 	}
 
-	public boolean canGroupAccess(AppGroup group) {
+	public boolean isAccessAllow(AppGroup group) {
 		for (InfoPrivacity priv : infoPrivacities) {
 			if (group.equals(priv.getGroup()))
 				return true;
@@ -162,12 +162,12 @@ public class UserInfo {
 		return false;
 	}
 
-	public boolean canUserAccess(AppUser user) {
+	public boolean isAccessAllow(AppUser user) {
 		for (InfoPrivacity priv : infoPrivacities) {
 			if (priv.getInfo().show || Tools.hasRight("VIEW_HIDDEN_INFO")) {
 				if (priv.getUser().equals(user)
 						|| Tools.hasRight("GET_INFO_FROM_OTHER_USER"))
-					for (AppGroup group : user.getAllGroups()) {
+					for (AppGroup group : user.getHisGroup()) {
 						if (group.equals(priv.getGroup())
 								|| Tools.hasRight("GET_INFO_FROM_OTHER_USER"))
 							return true;

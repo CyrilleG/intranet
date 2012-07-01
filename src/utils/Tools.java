@@ -67,7 +67,7 @@ public class Tools {
 	{
 		AppUser user = getUser();
 		if(user != null)
-			return user.userHasRight(ident) || user.isAdmin();
+			return user.hasRight(ident) || user.isAdmin();
 		else 
 			return false;
 	}

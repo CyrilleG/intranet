@@ -48,7 +48,7 @@ public class AppModule {
 	@NotNull
 	private boolean enabled;
 
-	public static AppModule findModuleByName(String name)
+	public static AppModule findByName(String name)
 			throws ElementNotFoundException {
 		List<AppModule> elements = AppModule.findAllAppModules();
 		for (AppModule element : elements)
@@ -58,7 +58,7 @@ public class AppModule {
 				+ name);
 	}
 
-	public static AppModule createModule(String name, String description,
+	public static AppModule create(String name, String description,
 			String controller) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_MODULE")) {
 			AppModule module = new AppModule();
@@ -80,7 +80,7 @@ public class AppModule {
 
 	}
 
-	public void addDataToModule(ModuleData ident) throws AccessNotAllowedException {
+	public void addData(ModuleData ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_DATA_TO_MODULE")) {
 			ident.setModule(this);
 			moduleDatas.add(ident);
@@ -88,7 +88,7 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't add data to module");
 	}
 
-	public void removeDataFromModule(ModuleData ident) throws AccessNotAllowedException {
+	public void removeData(ModuleData ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_DATA_FROM_MODULE")) {
 			for (ModuleData gp : moduleDatas)
 				if (gp.equals(ident)) {
@@ -99,11 +99,14 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't remove data from module");
 	}
 
-	public boolean moduleHasData(ModuleData ident) {
-		return moduleActions.contains(ident);
+	public boolean isAffected(ModuleData ident) {
+		for (ModuleData item : moduleDatas)
+			if (item.equals(ident))
+				return true;
+		return false;
 	}
 
-	public void addRightToModule(AppRight ident) throws AccessNotAllowedException {
+	public void allowAccess(AppRight ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_RIGHT_TO_MODULE")) {
 			ModuleRight element = new ModuleRight();
 			element.setModule(this);
@@ -114,10 +117,10 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't add right to module");
 	}
 
-	public void removeRightFromModule(ModuleAction ident) throws AccessNotAllowedException {
+	public void disallowAccess(AppRight ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_MODULE")) {
-			for (ModuleAction gp : moduleActions)
-				if (gp.equals(ident)) {
+			for (ModuleRight gp : moduleRights)
+				if (gp.getRight().equals(ident)) {
 					gp.remove();
 					break;
 				}
@@ -126,11 +129,14 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't remove right from module");
 	}
 
-	public boolean moduleHasRight(ModuleRight ident) {
-		return moduleRights.contains(ident);
+	public boolean isAccessAllow(AppRight ident) {
+		for (ModuleRight item : moduleRights)
+			if (item.getRight().equals(ident))
+				return true;
+		return false;
 	}
 
-	public void addActionToModule(ModuleAction action) throws AccessNotAllowedException {
+	public void addAction(ModuleAction action) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_ACTION_TO_MODULE")) {
 			ModuleAction module = new ModuleAction();
 			module.setModule(this);
@@ -141,7 +147,7 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't add action to module");
 	}
 
-	public void removeActionFromModule(ModuleAction ident) throws AccessNotAllowedException {
+	public void removeAction(ModuleAction ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_ACTION_FROM_MODULE")) {
 			for (ModuleAction gp : moduleActions)
 				if (gp.equals(ident)) {
@@ -153,11 +159,14 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't remove action from module");
 	}
 
-	public boolean moduleHasAction(ModuleAction ident) {
-		return moduleActions.contains(ident);
+	public boolean isAffected(ModuleAction ident) {
+		for (ModuleAction item : moduleActions)
+			if (item.equals(ident))
+				return true;
+		return false;
 	}
 
-	public void addModuleToGroup(AppGroup p) throws AccessNotAllowedException {
+	public void allowAccess(AppGroup p) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
 			ModuleGroup groupuser = new ModuleGroup();
 			groupuser.setGroup(p);
@@ -168,7 +177,7 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't add group to module");
 	}
 
-	public void removeModuleFromGroup(AppGroup ident) throws AccessNotAllowedException {
+	public void disallowAccess(AppGroup ident) throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_MODULE_FROM_GROUP")) {
 			for (ModuleGroup gp : moduleGroups)
 				if (gp.getGroup().equals(ident)) {
@@ -180,8 +189,11 @@ public class AppModule {
 			throw new AccessNotAllowedException("You can't remove group from module");
 	}
 
-	public boolean groupCanAccessToModule(AppGroup ident) {
-		return moduleGroups.contains(ident);
+	public boolean isAccessAllow(AppGroup ident) {
+		for (ModuleGroup item : moduleGroups)
+			if (item.getGroup().equals(ident))
+				return true;
+		return false;
 	}
 
 	public String getName() {

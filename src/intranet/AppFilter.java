@@ -48,7 +48,7 @@ public class AppFilter {
 	@Column(name = "class", columnDefinition = "VARCHAR", length = 75)
 	private String class1;
 
-	public AppFilter createFilter(String name, String description,
+	public AppFilter create(String name, String description,
 			String classname) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_FILTER")) {
 			AppFilter f = new AppFilter();
@@ -61,7 +61,7 @@ public class AppFilter {
 			throw new AccessNotAllowedException("You can't add a filter entry");
 	}
 
-	public static AppFilter findFilterByName(String name)
+	public static AppFilter findByName(String name)
 			throws ElementNotFoundException {
 		List<AppFilter> elements = AppFilter.findAllAppFilters();
 		for (AppFilter element : elements)
@@ -71,7 +71,7 @@ public class AppFilter {
 				+ name);
 	}
 
-	public void addFilterToGroup(AppGroup g) throws AccessNotAllowedException {
+	public void apply(AppGroup g) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_FILTER_TO_GROUP")) {
 			GroupFilter group = new GroupFilter();
 			group.setFilter(this);
@@ -83,7 +83,7 @@ public class AppFilter {
 					"You can't add a filter to group: " + g.getIdent());
 	}
 
-	public void removeFilterFromGroup(AppGroup group)
+	public void unapply(AppGroup group)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_FILTER_FROM_GROUP")) {
 			for (GroupFilter gp : groupFilters)
@@ -96,11 +96,14 @@ public class AppFilter {
 					"You can't remove a filter from group: " + group.getIdent());
 	}
 
-	public boolean filterHasGroup(AppGroup group) {
-		return groupFilters.contains(group);
+	public boolean isApply(AppGroup group) {
+		for (GroupFilter item : groupFilters)
+			if (item.getGroup().equals(group))
+				return true;
+		return false;
 	}
 
-	public void addFilterToUser(AppUser user) throws AccessNotAllowedException {
+	public void apply(AppUser user) throws AccessNotAllowedException {
 		if (Tools.hasRight("ADD_FILTER_TO_USER")) {
 			UserFilter group = new UserFilter();
 			group.setFilter(this);
@@ -112,7 +115,7 @@ public class AppFilter {
 					"You can't add a filter to user: " + user.getLogin());
 	}
 
-	public void removeFilterFromUser(AppUser user)
+	public void unapply(AppUser user)
 			throws AccessNotAllowedException {
 		if (Tools.hasRight("REMOVE_FILTER_FROM_USER")) {
 			for (UserFilter gp : userFilters)
@@ -125,7 +128,7 @@ public class AppFilter {
 					"You can't remove a filter from user: " + user.getLogin());
 	}
 
-	public boolean filterHasUser(AppUser user) {
+	public boolean isApply(AppUser user) {
 		for (UserFilter elem : userFilters)
 			if (elem.getUser().equals(user))
 				return true;
@@ -199,9 +202,9 @@ public class AppFilter {
 		}
 	}
 
-	public void appliPreFilter() throws FatalErrorException {
+	public void executePreFilter() throws FatalErrorException {
 		for (GroupFilter group : groupFilters)
-			if (Tools.getUser().userHasGroup(group.getGroup()))
+			if (Tools.getUser().hasGroup(group.getGroup()))
 				invokeMethod(group.getFilter().getFilterClass(), "preFilter");
 
 		for (UserFilter user : userFilters)
@@ -210,9 +213,9 @@ public class AppFilter {
 
 	}
 
-	public void appliPostFilter() throws FatalErrorException {
+	public void executePostFilter() throws FatalErrorException {
 		for (GroupFilter group : groupFilters)
-			if (Tools.getUser().userHasGroup(group.getGroup()))
+			if (Tools.getUser().hasGroup(group.getGroup()))
 				invokeMethod(group.getFilter().getFilterClass(), "postFilter");
 
 		for (UserFilter user : userFilters)
