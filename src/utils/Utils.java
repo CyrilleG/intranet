@@ -11,16 +11,16 @@ import java.io.ObjectOutputStream;
 public class Utils {
 
 	// Convert an object to a byte array
-	public static byte[] ObjectToByteArray(Object obj) throws IOException
-	{
+	public static byte[] ObjectToByteArray(Object obj) throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = new ObjectOutputStream(bos);   
+		ObjectOutput out = new ObjectOutputStream(bos);
 		out.writeObject(obj);
 		return bos.toByteArray();
 	}
+
 	// Convert a byte array to an Object
-	public static Object ByteArrayToObject(byte[] arrBytes) throws IOException, ClassNotFoundException
-	{
+	public static Object ByteArrayToObject(byte[] arrBytes) throws IOException,
+			ClassNotFoundException {
 		ByteArrayInputStream bis = new ByteArrayInputStream(arrBytes);
 		ObjectInput in = new ObjectInputStream(bis);
 		Object o = in.readObject();
@@ -28,5 +28,8 @@ public class Utils {
 		in.close();
 		return o;
 	}
-	 
+
+	public static boolean regexMatch(String element, String regex) {
+		return element.matches(regex);
+	}
 }

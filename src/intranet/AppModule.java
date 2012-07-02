@@ -14,7 +14,11 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import exceptions.AccessNotAllowedException;
+import exceptions.DataFormatException;
+import exceptions.DataLengthException;
 import exceptions.ElementNotFoundException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
 
 import utils.Tools;
 
@@ -49,7 +53,16 @@ public class AppModule {
 	private boolean enabled;
 
 	public static AppModule findByName(String name)
-			throws ElementNotFoundException {
+			throws ElementNotFoundException, NotEmptyException,
+			DataLengthException {
+
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+
+		if (name.length() > 100)
+			throw new DataLengthException(
+					"ident parameter is too long (max: 100 carac)");
+
 		List<AppModule> elements = AppModule.findAllAppModules();
 		for (AppModule element : elements)
 			if (element.getName().compareToIgnoreCase(name) == 0)
@@ -59,7 +72,23 @@ public class AppModule {
 	}
 
 	public static AppModule create(String name, String description,
-			String controller) throws AccessNotAllowedException {
+			String controller) throws AccessNotAllowedException,
+			NotEmptyException, DataLengthException, NotUniqueException,
+			DataFormatException {
+
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+
+		if (name.length() > 100)
+			throw new DataLengthException(
+					"ident parameter is too long (max: 100 carac)");
+
+		if (controller == null || controller.length() == 0)
+			throw new NotEmptyException("controller cannot be empty");
+
+		if (isNameExist(name))
+			throw new NotUniqueException("name has to be unique");
+
 		if (Tools.hasRight("ADD_MODULE")) {
 			AppModule module = new AppModule();
 			module.setName(name);
@@ -67,9 +96,17 @@ public class AppModule {
 			module.setModuleController(controller);
 			module.persist();
 			return module;
-		}
-		else
+		} else
 			throw new AccessNotAllowedException("You can't add a module entry");
+	}
+
+	public static boolean isNameExist(String name) throws NotEmptyException,
+			DataFormatException, DataLengthException {
+		try {
+			return findByName(name) != null;
+		} catch (ElementNotFoundException e) {
+			return false;
+		}
 	}
 
 	public boolean install() {
@@ -80,118 +117,174 @@ public class AppModule {
 
 	}
 
-	public void addData(ModuleData ident) throws AccessNotAllowedException {
+	public void addData(ModuleData data) throws AccessNotAllowedException,
+			NotEmptyException {
+
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+
 		if (Tools.hasRight("ADD_DATA_TO_MODULE")) {
-			ident.setModule(this);
-			moduleDatas.add(ident);
+			data.setModule(this);
+			moduleDatas.add(data);
 		} else
 			throw new AccessNotAllowedException("You can't add data to module");
 	}
 
-	public void removeData(ModuleData ident) throws AccessNotAllowedException {
+	public void removeData(ModuleData data) throws AccessNotAllowedException,
+			NotEmptyException {
+
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+
 		if (Tools.hasRight("REMOVE_DATA_FROM_MODULE")) {
 			for (ModuleData gp : moduleDatas)
-				if (gp.equals(ident)) {
+				if (gp.equals(data)) {
 					gp.remove();
 					break;
 				}
-		}else
-			throw new AccessNotAllowedException("You can't remove data from module");
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove data from module");
 	}
 
-	public boolean isAffected(ModuleData ident) {
+	public boolean isAffected(ModuleData data) throws NotEmptyException {
+
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+
 		for (ModuleData item : moduleDatas)
-			if (item.equals(ident))
+			if (item.equals(data))
 				return true;
 		return false;
 	}
 
-	public void allowAccess(AppRight ident) throws AccessNotAllowedException {
+	public void allowAccess(AppRight right) throws AccessNotAllowedException,
+			NotEmptyException {
+
+		if (right == null)
+			throw new NotEmptyException("right cannot be empty");
+
 		if (Tools.hasRight("ADD_RIGHT_TO_MODULE")) {
 			ModuleRight element = new ModuleRight();
 			element.setModule(this);
-			element.setRight(ident);
+			element.setRight(right);
 			element.persist();
 			moduleRights.add(element);
-		}else
+		} else
 			throw new AccessNotAllowedException("You can't add right to module");
 	}
 
-	public void disallowAccess(AppRight ident) throws AccessNotAllowedException {
+	public void disallowAccess(AppRight right)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (right == null)
+			throw new NotEmptyException("right cannot be empty");
+
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_MODULE")) {
 			for (ModuleRight gp : moduleRights)
-				if (gp.getRight().equals(ident)) {
+				if (gp.getRight().equals(right)) {
 					gp.remove();
 					break;
 				}
-		}
-		else
-			throw new AccessNotAllowedException("You can't remove right from module");
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove right from module");
 	}
 
-	public boolean isAccessAllow(AppRight ident) {
+	public boolean isAccessAllow(AppRight right) throws NotEmptyException {
+
+		if (right == null)
+			throw new NotEmptyException("right cannot be empty");
+
 		for (ModuleRight item : moduleRights)
-			if (item.getRight().equals(ident))
+			if (item.getRight().equals(right))
 				return true;
 		return false;
 	}
 
-	public void addAction(ModuleAction action) throws AccessNotAllowedException {
+	public void addAction(ModuleAction action)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (action == null)
+			throw new NotEmptyException("action cannot be empty");
+
 		if (Tools.hasRight("ADD_ACTION_TO_MODULE")) {
-			ModuleAction module = new ModuleAction();
-			module.setModule(this);
-			module.persist();
-			moduleActions.add(module);
-		}
-		else
-			throw new AccessNotAllowedException("You can't add action to module");
+			action.setModule(this);
+			action.persist();
+			moduleActions.add(action);
+		} else
+			throw new AccessNotAllowedException(
+					"You can't add action to module");
 	}
 
-	public void removeAction(ModuleAction ident) throws AccessNotAllowedException {
+	public void removeAction(ModuleAction action)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (action == null)
+			throw new NotEmptyException("action cannot be empty");
+
 		if (Tools.hasRight("REMOVE_ACTION_FROM_MODULE")) {
 			for (ModuleAction gp : moduleActions)
-				if (gp.equals(ident)) {
+				if (gp.equals(action)) {
 					gp.remove();
 					break;
 				}
-		}
-		else
-			throw new AccessNotAllowedException("You can't remove action from module");
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove action from module");
 	}
 
-	public boolean isAffected(ModuleAction ident) {
+	public boolean isAffected(ModuleAction action) throws NotEmptyException {
+
+		if (action == null)
+			throw new NotEmptyException("action cannot be empty");
+
 		for (ModuleAction item : moduleActions)
-			if (item.equals(ident))
+			if (item.equals(action))
 				return true;
 		return false;
 	}
 
-	public void allowAccess(AppGroup p) throws AccessNotAllowedException {
+	public void allowAccess(AppGroup group) throws AccessNotAllowedException,
+			NotEmptyException {
+
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+
 		if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
 			ModuleGroup groupuser = new ModuleGroup();
-			groupuser.setGroup(p);
+			groupuser.setGroup(group);
 			groupuser.setModule(this);
 			groupuser.persist();
 			moduleGroups.add(groupuser);
-		}else
+		} else
 			throw new AccessNotAllowedException("You can't add group to module");
 	}
 
-	public void disallowAccess(AppGroup ident) throws AccessNotAllowedException {
+	public void disallowAccess(AppGroup group)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+
 		if (Tools.hasRight("REMOVE_MODULE_FROM_GROUP")) {
 			for (ModuleGroup gp : moduleGroups)
-				if (gp.getGroup().equals(ident)) {
+				if (gp.getGroup().equals(group)) {
 					gp.remove();
 					break;
 				}
-		}
-		else
-			throw new AccessNotAllowedException("You can't remove group from module");
+		} else
+			throw new AccessNotAllowedException(
+					"You can't remove group from module");
 	}
 
-	public boolean isAccessAllow(AppGroup ident) {
+	public boolean isAccessAllow(AppGroup group) throws NotEmptyException {
+
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+
 		for (ModuleGroup item : moduleGroups)
-			if (item.getGroup().equals(ident))
+			if (item.getGroup().equals(group))
 				return true;
 		return false;
 	}
@@ -200,7 +293,19 @@ public class AppModule {
 		return name;
 	}
 
-	public void setName(String name) throws AccessNotAllowedException {
+	public void setName(String name) throws AccessNotAllowedException,
+			NotEmptyException, DataLengthException, DataFormatException, NotUniqueException {
+
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+
+		if (name.length() > 100)
+			throw new DataLengthException(
+					"ident parameter is too long (max: 100 carac)");
+
+		if (isNameExist(name))
+			throw new NotUniqueException("name has to be unique");
+		
 		if (Tools.hasRight("SET_MODULE_NAME"))
 			this.name = name;
 		else
@@ -212,7 +317,8 @@ public class AppModule {
 		return description;
 	}
 
-	public void setDescription(String description) throws AccessNotAllowedException {
+	public void setDescription(String description)
+			throws AccessNotAllowedException {
 		if (Tools.hasRight("SET_MODULE_DESCRIPTION"))
 			this.description = description;
 		else
@@ -224,7 +330,12 @@ public class AppModule {
 		return class1;
 	}
 
-	public void setModuleController(String controller) throws AccessNotAllowedException {
+	public void setModuleController(String controller)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (controller == null || controller.length() == 0)
+			throw new NotEmptyException("controller cannot be empty");
+
 		if (Tools.hasRight("SET_MODULE_CONTROLLER"))
 			this.class1 = controller;
 		else
@@ -237,6 +348,7 @@ public class AppModule {
 	}
 
 	public void setEnabled(boolean enabled) throws AccessNotAllowedException {
+
 		if (Tools.hasRight("SET_MODULE_ENABLED"))
 			this.enabled = enabled;
 		else

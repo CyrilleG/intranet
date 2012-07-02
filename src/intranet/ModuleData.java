@@ -6,8 +6,11 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import exceptions.AccessNotAllowedException;
+import exceptions.DataLengthException;
 import exceptions.ElementNotFoundException;
 import exceptions.FatalErrorException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
 
 import utils.Tools;
 import utils.Utils;
@@ -49,7 +52,20 @@ public class ModuleData {
 	private byte[] data;
 
 	
-	public ModuleData create(AppModule module, String name, Object data) throws AccessNotAllowedException, FatalErrorException {
+	public static ModuleData create(AppModule module, String name, Object data) throws AccessNotAllowedException, FatalErrorException, NotEmptyException, DataLengthException {
+		
+		if (module == null)
+			throw new NotEmptyException("module cannot be empty");
+		
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+		
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+		
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
 		if (Tools.hasRight("ADD_USER")) {
 			ModuleData element = new ModuleData();
 			element.setName(name);
@@ -62,7 +78,17 @@ public class ModuleData {
 	}
 	
 	public static ModuleAction findByNameAndModule(AppModule module,
-			String name) throws ElementNotFoundException {
+			String name) throws ElementNotFoundException, NotEmptyException, DataLengthException {
+		
+		if (module == null)
+			throw new NotEmptyException("module cannot be empty");
+		
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+		
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
 		List<ModuleAction> elements = ModuleAction.findAllModuleActions();
 		for (ModuleAction element : elements)
 			if (element.getMethod().compareToIgnoreCase(name) == 0
@@ -76,6 +102,9 @@ public class ModuleData {
 		if (Tools.hasRight("REMOVE_DATA_FROM_OTHER_USER")
 				|| Tools.getUser().equals(user))
 		{
+			if (user == null)
+				throw new NotEmptyException("user cannot be empty");
+			
 			for (DataUser data : dataUsers)
 				if (data.getUser().equals(user))
 					data.remove();
@@ -83,8 +112,11 @@ public class ModuleData {
 		else
 			throw new AccessNotAllowedException("You can't remove data from user");
 	}
-
 	public void allowAccess(AppUser user) throws Exception {
+		
+		if (user == null)
+			throw new NotEmptyException("user cannot be empty");
+		
 		if (Tools.hasRight("ADD_DATA_TO_OTHER_USER")
 				|| Tools.getUser().equals(user)) {
 			DataUser elem = new DataUser();
@@ -97,14 +129,22 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add data to user");
 	}
 
-	public boolean isAccessAllow(AppUser user) {
+	public boolean isAccessAllow(AppUser user) throws NotEmptyException {
+		
+		if (user == null)
+			throw new NotEmptyException("user cannot be empty");
+		
 		for (DataUser elem : dataUsers)
 			if (elem.getData().equals(user))
 				return true;
 		return false;
 	}
 
-	public void allowAccess(AppRight data) throws AccessNotAllowedException {
+	public void allowAccess(AppRight data) throws AccessNotAllowedException, NotEmptyException {
+		
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+		
 		if (Tools.hasRight("ADD_RIGHT_TO_DATA")) {
 			DataRight element = new DataRight();
 			element.setRight(data);
@@ -116,7 +156,11 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add right to data");
 	}
 
-	public void disallowAccess(AppRight data) throws AccessNotAllowedException {
+	public void disallowAccess(AppRight data) throws AccessNotAllowedException, NotEmptyException {
+		
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+		
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_DATA")) {
 			for (DataRight gp : dataRights)
 				if (gp.getRight().equals(data)) {
@@ -127,17 +171,25 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't remove right from data");
 	}
 
-	public boolean isAccessAllow(AppRight element) {
+	public boolean isAccessAllow(AppRight right) throws NotEmptyException {
+		
+		if (right == null)
+			throw new NotEmptyException("right cannot be empty");
+		
 		for (DataRight item : dataRights)
-			if (item.getRight().equals(element))
+			if (item.getRight().equals(right))
 				return true;
 		return false;
 	}
 
-	public void allowAccess(AppGroup ident) throws AccessNotAllowedException {
+	public void allowAccess(AppGroup group) throws AccessNotAllowedException, NotEmptyException {
+		
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+		
 		if (Tools.hasRight("ADD_DATA_TO_GROUP")) {
 			DataGroup element = new DataGroup();
-			element.setGroup(ident);
+			element.setGroup(group);
 			element.setData(this);
 			element.persist();
 			dataGroups.add(element);
@@ -146,10 +198,14 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add group to data");
 	}
 
-	public void disallowAccess(AppGroup ident) throws AccessNotAllowedException {
+	public void disallowAccess(AppGroup group) throws AccessNotAllowedException, NotEmptyException {
+		
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+		
 		if (Tools.hasRight("REMOVE_DATA_FROM_GROUP")) {
 			for (DataGroup gp : dataGroups)
-				if (gp.getGroup().equals(ident)) {
+				if (gp.getGroup().equals(group)) {
 					gp.remove();
 					break;
 				}
@@ -158,9 +214,13 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't remove group from data");
 	}
 
-	public boolean isAccessAllow(AppGroup ident) {
+	public boolean isAccessAllow(AppGroup group) throws NotEmptyException {
+		
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+		
 		for (DataGroup g : dataGroups)
-			if (g.getGroup().equals(ident))
+			if (g.getGroup().equals(group))
 				return true;
 		return false;
 	}
@@ -169,7 +229,11 @@ public class ModuleData {
 		return module;
 	}
 
-	public void setModule(AppModule module) throws AccessNotAllowedException {
+	public void setModule(AppModule module) throws AccessNotAllowedException, NotEmptyException {
+		
+		if (module == null)
+			throw new NotEmptyException("module cannot be empty");
+		
 		if (Tools.hasRight("SET_DATA_MODULE"))
 			this.module = module;
 		else
@@ -181,7 +245,14 @@ public class ModuleData {
 		return name;
 	}
 
-	public void setName(String name) throws AccessNotAllowedException {
+	public void setName(String name) throws AccessNotAllowedException, NotEmptyException, DataLengthException {
+		
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+		
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
 		if (Tools.hasRight("SET_DATA_NAME"))
 			this.name = name;
 		else
@@ -189,7 +260,7 @@ public class ModuleData {
 					"You can't edit a data name as: " + name);
 	}
 
-	public Object getData() throws FatalErrorException, AccessNotAllowedException {
+	public Object getData() throws FatalErrorException, AccessNotAllowedException, NotEmptyException {
 		if (Tools.hasRight("GET_DATA_FROM_OTHER_USER")
 				|| this.isAccessAllow(Tools.getUser())) {
 			try {
@@ -203,7 +274,11 @@ public class ModuleData {
 					"You can't access to this data");
 	}
 
-	public void setData(Object data) throws FatalErrorException {
+	public void setData(Object data) throws FatalErrorException, NotEmptyException {
+		
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+		
 		if (Tools.hasRight("EDIT_DATA_FROM_OTHER_USER")
 				|| this.isAccessAllow(Tools.getUser())) {
 

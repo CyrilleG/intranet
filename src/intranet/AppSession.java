@@ -14,6 +14,10 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import exceptions.AccessNotAllowedException;
+import exceptions.DataLengthException;
+import exceptions.ElementNotFoundException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
 
 @RooJavaBean
 @RooToString
@@ -34,7 +38,14 @@ public class AppSession {
 	@DateTimeFormat(style = "M-")
 	private Date lastAction;
 
-	public static AppSession findByLogin(String login) {
+	public static AppSession findByLogin(String login) throws NotEmptyException, DataLengthException {
+		
+		if (login == null || login.length() == 0)
+			throw new NotEmptyException("login cannot be empty");
+		
+		if (login.length() > 100)
+			throw new DataLengthException("login parameter is too long (max: 100 carac)");
+		
 		List<AppSession> elements = AppSession.findAllAppSessions();
 		for (AppSession element : elements)
 			if (element.getLogin().compareToIgnoreCase(login) == 0)
@@ -46,7 +57,22 @@ public class AppSession {
 		return login;
 	}
 
-	public void setLogin(String login) throws AccessNotAllowedException {
+	public boolean isLoginExist(String login) throws DataLengthException, NotEmptyException
+	{
+		return findByLogin(login) != null;
+	}
+	
+	public void setLogin(String login) throws AccessNotAllowedException, NotEmptyException, DataLengthException, ElementNotFoundException, NotUniqueException {
+		
+		if (login == null || login.length() == 0)
+			throw new NotEmptyException("login cannot be empty");
+		
+		if (login.length() > 100)
+			throw new DataLengthException("login parameter is too long (max: 100 carac)");
+		
+		if (isLoginExist(login))
+			throw new NotUniqueException("login has to be unique");
+		
 		if (this.login == null)
 			this.login = login;
 		else

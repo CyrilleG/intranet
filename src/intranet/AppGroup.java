@@ -15,9 +15,14 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import exceptions.AccessNotAllowedException;
+import exceptions.DataFormatException;
+import exceptions.DataLengthException;
 import exceptions.ElementNotFoundException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
 
 import utils.Tools;
+import utils.Utils;
 
 @RooJavaBean
 @RooToString
@@ -65,7 +70,19 @@ public class AppGroup {
 	}
 
 	public static AppGroup findByIdent(String ident)
-			throws ElementNotFoundException {
+			throws ElementNotFoundException, NotEmptyException,
+			DataFormatException, DataLengthException {
+
+		if (ident == null || ident.length() == 0)
+			throw new NotEmptyException("ident cannot be empty");
+
+		if (ident.length() > 70)
+			throw new DataLengthException("ident parameter is too long (max: 70 carac)");
+		
+		if (!Utils.regexMatch(ident, "[a-zA-Z0-9-_]+"))
+			throw new DataFormatException(
+					"ident parameter has to match with ([a-zA-Z0-9]+)");
+
 		List<AppGroup> elements = AppGroup.findAllAppGroups();
 		for (AppGroup element : elements)
 			if (element.getIdent().compareToIgnoreCase(ident) == 0)
@@ -74,8 +91,27 @@ public class AppGroup {
 				+ ident);
 	}
 
-	public static AppGroup create(String ident, String label,
-			String description) throws AccessNotAllowedException {
+	public static AppGroup create(String ident, String label, String description)
+			throws AccessNotAllowedException, NotEmptyException,
+			DataFormatException, DataLengthException, NotUniqueException {
+
+		if (ident == null || ident.length() == 0)
+			throw new NotEmptyException("ident cannot be empty");
+		if (label == null || ident.length() == 0)
+			throw new NotEmptyException("label cannot be empty");
+		if (!Utils.regexMatch(ident, "[a-zA-Z0-9-_]+"))
+			throw new DataFormatException(
+					"ident parameter has to match with ([a-zA-Z0-9]+)");
+
+		if (ident.length() > 70)
+			throw new DataLengthException("ident parameter is too long (max: 70 carac)");
+		
+		if (label.length() > 100)
+			throw new DataLengthException("label parameter is too long (max: 100 carac)");
+		
+		if (isIdentExist(ident))
+			throw new NotUniqueException("ident has to be unique");
+		
 		if (Tools.hasRight("ADD_GROUP")) {
 			AppGroup group = new AppGroup();
 			group.setIdent(ident);
@@ -87,8 +123,21 @@ public class AppGroup {
 			throw new AccessNotAllowedException("You can't add a group entry");
 	}
 
-	public void addRight(AppRight right)
-			throws AccessNotAllowedException {
+	
+	public static boolean isIdentExist(String ident) throws NotEmptyException, DataFormatException, DataLengthException
+	{
+		try {
+			return findByIdent(ident) != null;
+		} catch (ElementNotFoundException e) {
+			return false;
+		}
+	}
+	
+	public void addRight(AppRight right) throws AccessNotAllowedException,
+			NotEmptyException {
+		if (right == null)
+			throw new NotEmptyException("right cannot be null");
+		
 		if (Tools.hasRight("ADD_RIGHT_TO_GROUP")) {
 			GroupRight groupright = new GroupRight();
 			groupright.setGroup(this);
@@ -100,7 +149,11 @@ public class AppGroup {
 	}
 
 	public void disallowToAccess(AppRight right)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (right == null)
+			throw new NotEmptyException("right cannot be null");
+
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_GROUP")) {
 			for (GroupRight gp : groupRights)
 				if (gp.getRight().equals(right)) {
@@ -112,34 +165,55 @@ public class AppGroup {
 					"You can't remove right from group");
 	}
 
-	public boolean hasRight(String ident) {
+	public boolean hasRight(String ident) throws DataFormatException,
+			NotEmptyException, DataLengthException {
+
+		if (ident == null || ident.length() == 0)
+			throw new NotEmptyException("ident cannot be empty");
+		if (!Utils.regexMatch(ident, "[a-zA-Z0-9-_]+"))
+			throw new DataFormatException(
+					"ident parameter has to match with ([a-zA-Z0-9]+)");
+
+		if (ident.length() > 70)
+			throw new DataLengthException("ident parameter is too long (max: 70 carac)");
+		
 		for (GroupRight gp : groupRights)
 			if (gp.getRight().getIdent().compareTo(ident) == 0)
 				return true;
 		return false;
 	}
 
-	public boolean hasRight(AppRight right) {
+	public boolean hasRight(AppRight right) throws DataFormatException,
+			NotEmptyException, DataLengthException {
 		return hasRight(right.getIdent());
 	}
 
-	public void allowToAccess(AppUser ident) throws AccessNotAllowedException {
+	public void allowToAccess(AppUser user) throws AccessNotAllowedException,
+			NotEmptyException {
 		if (Tools.hasRight("ADD_USER_TO_GROUP")
 				|| Tools.hasRight("ADD_HIMSELF_TO_GROUP_")) {
+
+			if (user == null)
+				throw new NotEmptyException("user cannot be null");
+
 			UserGroup groupuser = new UserGroup();
 			groupuser.setGroup(this);
-			groupuser.setUser(ident);
+			groupuser.setUser(user);
 			groupuser.persist();
 			userGroups.add(groupuser);
 		} else
 			throw new AccessNotAllowedException("You can't add user to group");
 	}
 
-	public void disallowToAccess(AppUser ident)
-			throws AccessNotAllowedException {
+	public void disallowToAccess(AppUser user)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (user == null)
+			throw new NotEmptyException("user cannot be null");
+
 		if (Tools.hasRight("REMOVE_USER_FROM_GROUP")) {
 			for (UserGroup gp : userGroups)
-				if (gp.getUser().equals(ident)) {
+				if (gp.getUser().equals(user)) {
 					gp.remove();
 					break;
 				}
@@ -148,30 +222,41 @@ public class AppGroup {
 					"You can't remove right from group");
 	}
 
-	public boolean userHasGroup(AppUser ident) {
+	public boolean userHasGroup(AppUser user) throws NotEmptyException {
+		if (user == null)
+			throw new NotEmptyException("user cannot be null");
+
 		for (UserGroup elem : userGroups)
-			if (elem.getUser().equals(ident))
+			if (elem.getUser().equals(user))
 				return true;
 		return false;
 	}
 
-	public void allowToAccess(ModuleData ident)
-			throws AccessNotAllowedException {
+	public void allowToAccess(ModuleData data)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (data == null)
+			throw new NotEmptyException("data cannot be null");
+
 		if (Tools.hasRight("ADD_DATA_TO_GROUP")) {
 			DataGroup element = new DataGroup();
 			element.setGroup(this);
-			element.setData(ident);
+			element.setData(data);
 			element.persist();
 			dataGroups.add(element);
 		} else
 			throw new AccessNotAllowedException("You can't data right to group");
 	}
 
-	public void disallowToAccess(ModuleData ident)
-			throws AccessNotAllowedException {
+	public void disallowToAccess(ModuleData data)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (data == null)
+			throw new NotEmptyException("data cannot be null");
+
 		if (Tools.hasRight("REMOVE_DATA_FROM_GROUP")) {
 			for (DataGroup gp : dataGroups)
-				if (gp.getData().equals(ident)) {
+				if (gp.getData().equals(data)) {
 					gp.remove();
 					break;
 				}
@@ -180,30 +265,41 @@ public class AppGroup {
 					"You can't remove data from group");
 	}
 
-	public boolean isAccessAllow(ModuleData ident) {
+	public boolean isAccessAllow(ModuleData data) throws NotEmptyException {
+		if (data == null)
+			throw new NotEmptyException("data cannot be null");
+
 		for (DataGroup g : dataGroups)
-			if (g.getData().equals(ident))
+			if (g.getData().equals(data))
 				return true;
 		return false;
 	}
 
-	public void allowToAccess(AppModule ident)
-			throws AccessNotAllowedException {
+	public void allowToAccess(AppModule module)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (module == null)
+			throw new NotEmptyException("module cannot be null");
+
 		if (Tools.hasRight("ADD_MODULE_TO_GROUP")) {
 			ModuleGroup groupuser = new ModuleGroup();
 			groupuser.setGroup(this);
-			groupuser.setModule(ident);
+			groupuser.setModule(module);
 			groupuser.persist();
 			moduleGroups.add(groupuser);
 		} else
 			throw new AccessNotAllowedException("You can't add module to group");
 	}
 
-	public void disallowToAccess(AppModule ident)
-			throws AccessNotAllowedException {
+	public void disallowToAccess(AppModule module)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (module == null)
+			throw new NotEmptyException("module cannot be null");
+
 		if (Tools.hasRight("REMOVE_MODULE_FROM_GROUP")) {
 			for (ModuleGroup gp : moduleGroups)
-				if (gp.getModule().equals(ident)) {
+				if (gp.getModule().equals(module)) {
 					gp.remove();
 					break;
 				}
@@ -212,30 +308,41 @@ public class AppGroup {
 					"You can't remove module from group");
 	}
 
-	public boolean isAccessAllow(AppModule ident) {
+	public boolean isAccessAllow(AppModule module) throws NotEmptyException {
+
+		if (module == null)
+			throw new NotEmptyException("module cannot be null");
+
 		for (ModuleGroup item : moduleGroups)
-			if (item.getModule().equals(ident))
+			if (item.getModule().equals(module))
 				return true;
 		return false;
 	}
 
-	public void allowToAccess(ModuleAction ident)
-			throws AccessNotAllowedException {
+	public void allowToAccess(ModuleAction action)
+			throws AccessNotAllowedException, NotEmptyException {
+
+		if (action == null)
+			throw new NotEmptyException("action cannot be null");
+
 		if (Tools.hasRight("ADD_ACTION_TO_GROUP")) {
 			ActionGroup groupaction = new ActionGroup();
 			groupaction.setGroup(this);
-			groupaction.setAction(ident);
+			groupaction.setAction(action);
 			groupaction.persist();
 			actionGroups.add(groupaction);
 		} else
 			throw new AccessNotAllowedException("You can't add action to group");
 	}
 
-	public void disallowToAccess(ModuleAction ident)
-			throws AccessNotAllowedException {
+	public void disallowToAccess(ModuleAction action)
+			throws AccessNotAllowedException, NotEmptyException {
+		if (action == null)
+			throw new NotEmptyException("action cannot be null");
+
 		if (Tools.hasRight("REMOVE_ACTION_FROM_GROUP")) {
 			for (ActionGroup gp : actionGroups)
-				if (gp.getAction().equals(ident)) {
+				if (gp.getAction().equals(action)) {
 					gp.remove();
 					break;
 				}
@@ -244,9 +351,13 @@ public class AppGroup {
 					"You can't remove action from group");
 	}
 
-	public boolean isAccessAllow(ModuleAction ident) {
+	public boolean isAccessAllow(ModuleAction action) throws NotEmptyException {
+
+		if (action == null)
+			throw new NotEmptyException("action cannot be null");
+
 		for (ActionGroup item : actionGroups)
-			if (item.getAction().equals(ident))
+			if (item.getAction().equals(action))
 				return true;
 		return false;
 	}
@@ -255,7 +366,15 @@ public class AppGroup {
 		return label;
 	}
 
-	public void setLabel(String label) throws AccessNotAllowedException {
+	public void setLabel(String label) throws AccessNotAllowedException,
+			NotEmptyException, DataLengthException {
+
+		if (label == null || label.length() == 0)
+			throw new NotEmptyException("label cannot be empty");
+
+		if (label.length() > 100)
+			throw new DataLengthException("ident parameter is too long (max: 100 carac)");
+		
 		if (Tools.hasRight("SET_GROUP_LABEL"))
 			this.label = label;
 		else
@@ -267,7 +386,22 @@ public class AppGroup {
 		return ident;
 	}
 
-	public void setIdent(String ident) throws AccessNotAllowedException {
+	public void setIdent(String ident) throws AccessNotAllowedException,
+			NotEmptyException, DataFormatException, DataLengthException, NotUniqueException {
+
+		if (ident == null || ident.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+
+		if (ident.length() > 70)
+			throw new DataLengthException("ident parameter is too long (max: 70 carac)");
+		
+		if (!Utils.regexMatch(ident, "[a-zA-Z0-9-_]+"))
+			throw new DataFormatException(
+					"ident parameter has to match with ([a-zA-Z0-9]+)");
+
+		if (isIdentExist(ident))
+			throw new NotUniqueException("ident has to be unique");
+		
 		if (Tools.hasRight("SET_GROUP_IDENT"))
 			this.ident = ident;
 		else

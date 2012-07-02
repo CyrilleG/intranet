@@ -18,6 +18,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 
 import exceptions.AccessNotAllowedException;
+import exceptions.NotEmptyException;
 
 privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService {
     
@@ -205,6 +206,10 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
                 try {
 					return new StringBuilder().append(userInfo.getKey()).append(" ").append(userInfo.getValue()).toString();
 				} catch (AccessNotAllowedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				} catch (NotEmptyException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return null;

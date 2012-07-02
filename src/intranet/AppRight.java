@@ -15,9 +15,14 @@ import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import exceptions.AccessNotAllowedException;
+import exceptions.DataFormatException;
+import exceptions.DataLengthException;
 import exceptions.ElementNotFoundException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
 
 import utils.Tools;
+import utils.Utils;
 
 @RooJavaBean
 @RooToString
@@ -62,7 +67,15 @@ public class AppRight implements GrantedAuthority {
 	private String description;
 
 	public static AppRight findByName(String name)
-			throws ElementNotFoundException {
+			throws ElementNotFoundException, NotEmptyException, DataLengthException {
+		
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+		
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
+	
 		List<AppRight> elements = AppRight.findAllAppRights();
 		for (AppRight element : elements)
 			if (element.getName().compareToIgnoreCase(name) == 0)
@@ -72,7 +85,19 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public static AppRight findByIdent(String ident)
-			throws ElementNotFoundException {
+			throws ElementNotFoundException, NotEmptyException, DataFormatException, DataLengthException {
+		
+		
+		if (ident == null || ident.length() == 0)
+			throw new NotEmptyException("ident cannot be empty");
+
+		if (!Utils.regexMatch(ident, "[a-zA-Z0-9-_]+"))
+			throw new DataFormatException(
+					"ident parameter has to match with ([a-zA-Z0-9]+)");
+		
+		if (ident.length() > 70)
+			throw new DataLengthException("ident parameter is too long (max: 70 carac)");
+		
 		List<AppRight> elements = AppRight.findAllAppRights();
 		for (AppRight element : elements)
 			if (element.getIdent().compareToIgnoreCase(ident) == 0)
@@ -82,7 +107,27 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public static AppRight create(String name, String ident,
-			String description) throws AccessNotAllowedException {
+			String description) throws AccessNotAllowedException, NotEmptyException, DataFormatException, DataLengthException, NotUniqueException {
+		
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+		
+		if (ident == null || ident.length() == 0)
+			throw new NotEmptyException("key cannot be empty");
+
+		if (!Utils.regexMatch(ident, "[a-zA-Z0-9-_]+"))
+			throw new DataFormatException(
+					"key parameter has to match with ([a-zA-Z0-9]+)");
+		
+		if (ident.length() > 70)
+			throw new DataLengthException("ident parameter is too long (max: 70 carac)");
+		
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
+		if (isIdentExist(ident))
+			throw new NotUniqueException("ident has to be unique");
+		
 		if (Tools.hasRight("ADD_RIGHT")) {
 			AppRight right = new AppRight();
 			right.setName(name);
@@ -94,8 +139,20 @@ public class AppRight implements GrantedAuthority {
 			throw new AccessNotAllowedException("You can't add a Right entry");
 	}
 
+	public static boolean isIdentExist(String ident) throws NotEmptyException, DataFormatException, DataLengthException
+	{
+		try {
+			return findByIdent(ident) != null;
+		} catch (ElementNotFoundException e) {
+			return false;
+		}
+	}
 	public void allowAccess(ModuleAction action)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (action == null)
+			throw new NotEmptyException("action cannot be empty");
+		
 		if (Tools.hasRight("ADD_RIGHT_TO_ACTION")) {
 			ActionRight element = new ActionRight();
 			element.setRight(this);
@@ -107,7 +164,11 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public void disallowAccess(ModuleAction action)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (action == null)
+			throw new NotEmptyException("action cannot be empty");
+		
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_ACTION")) {
 			for (ActionRight gp : actionRights)
 				if (gp.getAction().equals(ident)) {
@@ -119,7 +180,11 @@ public class AppRight implements GrantedAuthority {
 					"You can't remove right from action");
 	}
 
-	public boolean isAccessAllow(ModuleAction element) {
+	public boolean isAccessAllow(ModuleAction element) throws NotEmptyException {
+		
+		if (element == null)
+			throw new NotEmptyException("element cannot be empty");
+		
 		for (ActionRight item : actionRights)
 			if (item.getAction().equals(element))
 				return true;
@@ -127,7 +192,11 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public void allowAccess(AppGroup group)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+		
 		if (Tools.hasRight("ADD_RIGHT_TO_GROUP")) {
 			GroupRight groupright = new GroupRight();
 			groupright.setGroup(group);
@@ -139,7 +208,11 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public void disallowAccess(AppGroup group)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+		
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_GROUP")) {
 			for (GroupRight gp : groupRights)
 				if (gp.getGroup().equals(group)) {
@@ -152,15 +225,23 @@ public class AppRight implements GrantedAuthority {
 
 	}
 
-	public boolean isAccessAllow(AppGroup ident) {
+	public boolean isAccessAllow(AppGroup group) throws NotEmptyException {
+		
+		if (group == null)
+			throw new NotEmptyException("group cannot be empty");
+		
 		for (GroupRight item : groupRights)
-			if (item.getGroup().equals(ident))
+			if (item.getGroup().equals(group))
 				return true;
 		return false;
 	}
 
 	public void allowAccess(AppModule module)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (module == null)
+			throw new NotEmptyException("module cannot be empty");
+		
 		if (Tools.hasRight("ADD_RIGHT_TO_MODULE")) {
 			ModuleRight element = new ModuleRight();
 			element.setRight(this);
@@ -172,7 +253,11 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public void disallowAccess(AppModule module)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (module == null)
+			throw new NotEmptyException("module cannot be empty");
+		
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_MODULE")) {
 			for (ModuleRight gp : moduleRights)
 				if (gp.getModule().equals(module)) {
@@ -184,14 +269,22 @@ public class AppRight implements GrantedAuthority {
 					"You can't remove right from module");
 	}
 
-	public boolean isAccessAllow(AppModule element) {
+	public boolean isAccessAllow(AppModule element) throws NotEmptyException {
+		
+		if (element == null)
+			throw new NotEmptyException("element cannot be empty");
+		
 		for (ModuleRight item : moduleRights)
 			if (item.getModule().equals(element))
 				return true;
 		return false;
 	}
 
-	public void addToUser(AppUser user) throws AccessNotAllowedException {
+	public void addToUser(AppUser user) throws AccessNotAllowedException, NotEmptyException {
+		
+		if (user == null)
+			throw new NotEmptyException("user cannot be empty");
+		
 		if (Tools.hasRight("ADD_RIGHT_TO_USER")) {
 			UserRight element = new UserRight();
 			element.setRight(this);
@@ -203,7 +296,11 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public void disallowAccess(AppUser user)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (user == null)
+			throw new NotEmptyException("user cannot be empty");
+		
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_USER")) {
 			for (UserRight gp : userRights)
 				if (gp.getUser().equals(user)) {
@@ -215,15 +312,23 @@ public class AppRight implements GrantedAuthority {
 					"You can't remove right from user");
 	}
 
-	public boolean userHasRight(AppUser element) {
+	public boolean userHasRight(AppUser user) throws NotEmptyException {
+		
+		if (user == null)
+			throw new NotEmptyException("user cannot be empty");
+		
 		for (UserRight item : userRights)
-			if (item.getUser().equals(element))
+			if (item.getUser().equals(user))
 				return true;
 		return false;
 	}
 
 	public void allowAccess(ModuleData data)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+		
 		if (Tools.hasRight("ADD_RIGHT_TO_DATA")) {
 			DataRight element = new DataRight();
 			element.setRight(this);
@@ -235,7 +340,11 @@ public class AppRight implements GrantedAuthority {
 	}
 
 	public void disallowAccess(ModuleData data)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException {
+		
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+		
 		if (Tools.hasRight("REMOVE_RIGHT_FROM_DATA")) {
 			for (DataRight gp : dataRights)
 				if (gp.getData().equals(data)) {
@@ -247,9 +356,13 @@ public class AppRight implements GrantedAuthority {
 					"You can't remove right from data");
 	}
 
-	public boolean isAccessAllow(ModuleData element) {
+	public boolean isAccessAllow(ModuleData data) throws NotEmptyException {
+		
+		if (data == null)
+			throw new NotEmptyException("data cannot be empty");
+		
 		for (DataRight item : dataRights)
-			if (item.getData().equals(element))
+			if (item.getData().equals(data))
 				return true;
 		return false;
 	}
@@ -258,7 +371,21 @@ public class AppRight implements GrantedAuthority {
 		return ident;
 	}
 
-	public void setIdent(String ident) throws AccessNotAllowedException {
+	public void setIdent(String ident) throws AccessNotAllowedException, DataFormatException, NotEmptyException, DataLengthException, NotUniqueException {
+		
+		if (ident == null || ident.length() == 0)
+			throw new NotEmptyException("ident cannot be empty");
+
+		if (!Utils.regexMatch(ident, "[a-zA-Z0-9-_]+"))
+			throw new DataFormatException(
+					"ident parameter has to match with ([a-zA-Z0-9]+)");
+		
+		if (ident.length() > 70)
+			throw new DataLengthException("ident parameter is too long (max: 70 carac)");
+		
+		if (isIdentExist(ident))
+			throw new NotUniqueException("ident has to be unique");
+		
 		if (Tools.hasRight("SET_RIGHT_IDENT"))
 			this.ident = ident;
 		else
@@ -270,7 +397,14 @@ public class AppRight implements GrantedAuthority {
 		return name;
 	}
 
-	public void setName(String name) throws AccessNotAllowedException {
+	public void setName(String name) throws AccessNotAllowedException, NotEmptyException, DataLengthException {
+		
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+		
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
 		if (Tools.hasRight("SET_RIGHT_NAME"))
 			this.name = name;
 		else

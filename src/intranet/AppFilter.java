@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 import exceptions.AccessNotAllowedException;
+import exceptions.DataFormatException;
+import exceptions.DataLengthException;
 import exceptions.ElementNotFoundException;
 import exceptions.FatalErrorException;
+import exceptions.NotEmptyException;
 import filters.*; // This import is useful to access to filter types. DO NOT DELETE
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +25,7 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import utils.Tools;
+import utils.Utils;
 import intranet.AppFilter;
 import intranet.GroupFilter;
 import intranet.UserFilter;
@@ -48,8 +52,21 @@ public class AppFilter {
 	@Column(name = "class", columnDefinition = "VARCHAR", length = 75)
 	private String class1;
 
-	public AppFilter create(String name, String description,
-			String classname) throws AccessNotAllowedException {
+	public AppFilter create(String name, String description, String classname)
+			throws AccessNotAllowedException, NotEmptyException, DataLengthException {
+
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+
+		if (classname == null || classname.length() == 0)
+			throw new NotEmptyException("classname cannot be empty");
+
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
+		if (classname.length() > 75)
+			throw new DataLengthException("classname parameter is too long (max: 75 carac)");
+		
 		if (Tools.hasRight("ADD_FILTER")) {
 			AppFilter f = new AppFilter();
 			f.setDescription(description);
@@ -62,7 +79,15 @@ public class AppFilter {
 	}
 
 	public static AppFilter findByName(String name)
-			throws ElementNotFoundException {
+			throws ElementNotFoundException, NotEmptyException, DataLengthException {
+
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
+		
 		List<AppFilter> elements = AppFilter.findAllAppFilters();
 		for (AppFilter element : elements)
 			if (element.getName().compareToIgnoreCase(name) == 0)
@@ -71,7 +96,12 @@ public class AppFilter {
 				+ name);
 	}
 
-	public void apply(AppGroup g) throws AccessNotAllowedException {
+	public void apply(AppGroup g) throws AccessNotAllowedException,
+			NotEmptyException {
+
+		if (g == null)
+			throw new NotEmptyException("group cannot be null");
+
 		if (Tools.hasRight("ADD_FILTER_TO_GROUP")) {
 			GroupFilter group = new GroupFilter();
 			group.setFilter(this);
@@ -83,8 +113,11 @@ public class AppFilter {
 					"You can't add a filter to group: " + g.getIdent());
 	}
 
-	public void unapply(AppGroup group)
-			throws AccessNotAllowedException {
+	public void unapply(AppGroup group) throws AccessNotAllowedException,
+			NotEmptyException {
+		if (group == null)
+			throw new NotEmptyException("group cannot be null");
+
 		if (Tools.hasRight("REMOVE_FILTER_FROM_GROUP")) {
 			for (GroupFilter gp : groupFilters)
 				if (gp.getGroup().equals(group)) {
@@ -96,14 +129,23 @@ public class AppFilter {
 					"You can't remove a filter from group: " + group.getIdent());
 	}
 
-	public boolean isApply(AppGroup group) {
+	public boolean isApply(AppGroup group) throws NotEmptyException {
+
+		if (group == null)
+			throw new NotEmptyException("group cannot be null");
+
 		for (GroupFilter item : groupFilters)
 			if (item.getGroup().equals(group))
 				return true;
 		return false;
 	}
 
-	public void apply(AppUser user) throws AccessNotAllowedException {
+	public void apply(AppUser user) throws AccessNotAllowedException,
+			NotEmptyException {
+
+		if (user == null)
+			throw new NotEmptyException("user cannot be null");
+
 		if (Tools.hasRight("ADD_FILTER_TO_USER")) {
 			UserFilter group = new UserFilter();
 			group.setFilter(this);
@@ -115,8 +157,12 @@ public class AppFilter {
 					"You can't add a filter to user: " + user.getLogin());
 	}
 
-	public void unapply(AppUser user)
-			throws AccessNotAllowedException {
+	public void unapply(AppUser user) throws AccessNotAllowedException,
+			NotEmptyException {
+
+		if (user == null)
+			throw new NotEmptyException("user cannot be null");
+
 		if (Tools.hasRight("REMOVE_FILTER_FROM_USER")) {
 			for (UserFilter gp : userFilters)
 				if (gp.getUser().equals(user)) {
@@ -128,7 +174,11 @@ public class AppFilter {
 					"You can't remove a filter from user: " + user.getLogin());
 	}
 
-	public boolean isApply(AppUser user) {
+	public boolean isApply(AppUser user) throws NotEmptyException {
+
+		if (user == null)
+			throw new NotEmptyException("user cannot be null");
+
 		for (UserFilter elem : userFilters)
 			if (elem.getUser().equals(user))
 				return true;
@@ -155,7 +205,15 @@ public class AppFilter {
 		return name;
 	}
 
-	public void setName(String name) throws AccessNotAllowedException {
+	public void setName(String name) throws AccessNotAllowedException,
+			NotEmptyException, DataLengthException {
+		if (name == null || name.length() == 0)
+			throw new NotEmptyException("name cannot be empty");
+
+		if (name.length() > 100)
+			throw new DataLengthException("name parameter is too long (max: 100 carac)");
+		
+		
 		if (Tools.hasRight("SET_FILTERS_NAME"))
 			this.name = name;
 		else
@@ -181,7 +239,13 @@ public class AppFilter {
 	}
 
 	public void setFilterClass(String type_name)
-			throws AccessNotAllowedException {
+			throws AccessNotAllowedException, NotEmptyException, DataLengthException {
+		if (type_name == null || type_name.length() == 0)
+			throw new NotEmptyException("type_name cannot be empty");
+
+		if (type_name.length() > 75)
+			throw new DataLengthException("type_name parameter is too long (max: 75 carac)");
+		
 		if (Tools.hasRight("SET_FILTERS_CLASS"))
 			this.class1 = type_name;
 		else
@@ -190,7 +254,17 @@ public class AppFilter {
 	}
 
 	private void invokeMethod(String typeName, String methodname)
-			throws FatalErrorException {
+			throws FatalErrorException, NotEmptyException, DataLengthException {
+
+		if (methodname == null || methodname.length() == 0)
+			throw new NotEmptyException("methodname cannot be empty");
+
+		if (typeName == null || typeName.length() == 0)
+			throw new NotEmptyException("typeName cannot be empty");
+
+		if (typeName.length() > 75)
+			throw new DataLengthException("typename parameter is too long (max: 75 carac)");
+		
 		Class<?> c;
 		try {
 			c = Class.forName(typeName);
@@ -202,7 +276,8 @@ public class AppFilter {
 		}
 	}
 
-	public void executePreFilter() throws FatalErrorException {
+	public void executePreFilter() throws FatalErrorException,
+			NotEmptyException, DataLengthException {
 		for (GroupFilter group : groupFilters)
 			if (Tools.getUser().hasGroup(group.getGroup()))
 				invokeMethod(group.getFilter().getFilterClass(), "preFilter");
@@ -213,7 +288,8 @@ public class AppFilter {
 
 	}
 
-	public void executePostFilter() throws FatalErrorException {
+	public void executePostFilter() throws FatalErrorException,
+			NotEmptyException, DataLengthException {
 		for (GroupFilter group : groupFilters)
 			if (Tools.getUser().hasGroup(group.getGroup()))
 				invokeMethod(group.getFilter().getFilterClass(), "postFilter");

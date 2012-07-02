@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import exceptions.NotEmptyException;
+
 
 public class Tools {
 
@@ -67,7 +69,11 @@ public class Tools {
 	{
 		AppUser user = getUser();
 		if(user != null)
-			return user.hasRight(ident) || user.isAdmin();
+			try {
+				return user.hasRight(ident) || user.isAdmin();
+			} catch (NotEmptyException e) {
+				return false;
+			}
 		else 
 			return false;
 	}
