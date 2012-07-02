@@ -1,12 +1,13 @@
 package controllers;
 
-import intranet.AppModule;
-import intranet.ModuleAction;
 
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import models.AppModule;
+import models.ModuleAction;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

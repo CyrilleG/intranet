@@ -4,15 +4,16 @@
 package controllers;
 
 
-import intranet.AppFilter;
-import intranet.AppGroup;
-import intranet.AppModule;
-import intranet.AppRight;
-import intranet.AppSession;
-import intranet.AppUser;
-import intranet.ModuleAction;
-import intranet.UserInfo;
 import controllers.ApplicationConversionServiceFactoryBean;
+import models.AppFilter;
+import models.AppGroup;
+import models.AppModule;
+import models.AppRight;
+import models.AppSession;
+import models.AppUser;
+import models.ModuleAction;
+import models.UserInfo;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
@@ -27,7 +28,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     
     public Converter<AppFilter, String> ApplicationConversionServiceFactoryBean.getAppFilterToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.AppFilter, java.lang.String>() {
+        return new org.springframework.core.convert.converter.Converter<models.AppFilter, java.lang.String>() {
             public String convert(AppFilter appFilter) {
                 return new StringBuilder().append(appFilter.getName()).append(" ").append(appFilter.getDescription()).append(" ").append(appFilter.getFilterClass()).toString();
             }
@@ -35,23 +36,23 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public Converter<Integer, AppFilter> ApplicationConversionServiceFactoryBean.getIdToAppFilterConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.AppFilter>() {
-            public intranet.AppFilter convert(java.lang.Integer id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.AppFilter>() {
+            public models.AppFilter convert(java.lang.Integer id) {
                 return AppFilter.findAppFilter(id);
             }
         };
     }
     
     public Converter<String, AppFilter> ApplicationConversionServiceFactoryBean.getStringToAppFilterConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.AppFilter>() {
-            public intranet.AppFilter convert(String id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, models.AppFilter>() {
+            public models.AppFilter convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), AppFilter.class);
             }
         };
     }
     
     public Converter<AppGroup, String> ApplicationConversionServiceFactoryBean.getAppGroupToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.AppGroup, java.lang.String>() {
+        return new org.springframework.core.convert.converter.Converter<models.AppGroup, java.lang.String>() {
             public String convert(AppGroup appGroup) {
                 return new StringBuilder().append(appGroup.getIdent()).append(" ").append(appGroup.getDescription()).toString();
             }
@@ -59,23 +60,23 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public Converter<Integer, AppGroup> ApplicationConversionServiceFactoryBean.getIdToAppGroupConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.AppGroup>() {
-            public intranet.AppGroup convert(java.lang.Integer id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.AppGroup>() {
+            public models.AppGroup convert(java.lang.Integer id) {
                 return AppGroup.findAppGroup(id);
             }
         };
     }
     
     public Converter<String, AppGroup> ApplicationConversionServiceFactoryBean.getStringToAppGroupConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.AppGroup>() {
-            public intranet.AppGroup convert(String id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, models.AppGroup>() {
+            public models.AppGroup convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), AppGroup.class);
             }
         };
     }
     
     public Converter<AppModule, String> ApplicationConversionServiceFactoryBean.getAppModuleToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.AppModule, java.lang.String>() {
+        return new org.springframework.core.convert.converter.Converter<models.AppModule, java.lang.String>() {
             public String convert(AppModule appModule) {
                 return new StringBuilder().append(appModule.getName()).append(" ").append(appModule.getDescription()).append(" ").append(appModule.getModuleController()).toString();
             }
@@ -83,23 +84,23 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public Converter<Integer, AppModule> ApplicationConversionServiceFactoryBean.getIdToAppModuleConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.AppModule>() {
-            public intranet.AppModule convert(java.lang.Integer id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.AppModule>() {
+            public models.AppModule convert(java.lang.Integer id) {
                 return AppModule.findAppModule(id);
             }
         };
     }
     
     public Converter<String, AppModule> ApplicationConversionServiceFactoryBean.getStringToAppModuleConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.AppModule>() {
-            public intranet.AppModule convert(String id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, models.AppModule>() {
+            public models.AppModule convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), AppModule.class);
             }
         };
     }
     
     public Converter<AppRight, String> ApplicationConversionServiceFactoryBean.getAppRightToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.AppRight, java.lang.String>() {
+        return new org.springframework.core.convert.converter.Converter<models.AppRight, java.lang.String>() {
             public String convert(AppRight appRight) {
                 return new StringBuilder().append(appRight.getIdent()).append(" ").append(appRight.getName()).append(" ").append(appRight.getDescription()).toString();
             }
@@ -107,23 +108,23 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public Converter<Integer, AppRight> ApplicationConversionServiceFactoryBean.getIdToAppRightConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.AppRight>() {
-            public intranet.AppRight convert(java.lang.Integer id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.AppRight>() {
+            public models.AppRight convert(java.lang.Integer id) {
                 return AppRight.findAppRight(id);
             }
         };
     }
     
     public Converter<String, AppRight> ApplicationConversionServiceFactoryBean.getStringToAppRightConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.AppRight>() {
-            public intranet.AppRight convert(String id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, models.AppRight>() {
+            public models.AppRight convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), AppRight.class);
             }
         };
     }
     
     public Converter<AppSession, String> ApplicationConversionServiceFactoryBean.getAppSessionToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.AppSession, java.lang.String>() {
+        return new org.springframework.core.convert.converter.Converter<models.AppSession, java.lang.String>() {
             public String convert(AppSession appSession) {
                 return new StringBuilder().append(appSession.getLoginDate()).append(" ").append(appSession.getLastAction()).toString();
             }
@@ -132,7 +133,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     
     public Converter<AppUser, String> ApplicationConversionServiceFactoryBean.getAppUserToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.AppUser, java.lang.String>() {
+        return new org.springframework.core.convert.converter.Converter<models.AppUser, java.lang.String>() {
             public String convert(AppUser appUser) {
                 return new StringBuilder().append(appUser.getLogin()).append(" ").append(appUser.getPassword()).toString();
             }
@@ -140,16 +141,16 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public Converter<Integer, AppUser> ApplicationConversionServiceFactoryBean.getIdToAppUserConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.AppUser>() {
-            public intranet.AppUser convert(java.lang.Integer id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.AppUser>() {
+            public models.AppUser convert(java.lang.Integer id) {
                 return AppUser.findAppUser(id);
             }
         };
     }
     
     public Converter<String, AppUser> ApplicationConversionServiceFactoryBean.getStringToAppUserConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.AppUser>() {
-            public intranet.AppUser convert(String id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, models.AppUser>() {
+            public models.AppUser convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), AppUser.class);
             }
         };
@@ -157,16 +158,16 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
 
     public Converter<Integer, ModuleAction> ApplicationConversionServiceFactoryBean.getIdToModuleActionConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.ModuleAction>() {
-            public intranet.ModuleAction convert(java.lang.Integer id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.ModuleAction>() {
+            public models.ModuleAction convert(java.lang.Integer id) {
                 return ModuleAction.findModuleAction(id);
             }
         };
     }
     
     public Converter<String, ModuleAction> ApplicationConversionServiceFactoryBean.getStringToModuleActionConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.ModuleAction>() {
-            public intranet.ModuleAction convert(String id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, models.ModuleAction>() {
+            public models.ModuleAction convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), ModuleAction.class);
             }
         };
@@ -201,7 +202,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     
     public Converter<UserInfo, String> ApplicationConversionServiceFactoryBean.getUserInfoToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<intranet.UserInfo, java.lang.String>() {
+        return new org.springframework.core.convert.converter.Converter<models.UserInfo, java.lang.String>() {
             public String convert(UserInfo userInfo) {
                 try {
 					return new StringBuilder().append(userInfo.getKey()).append(" ").append(userInfo.getValue()).toString();
@@ -219,16 +220,16 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public Converter<Integer, UserInfo> ApplicationConversionServiceFactoryBean.getIdToUserInfoConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, intranet.UserInfo>() {
-            public intranet.UserInfo convert(java.lang.Integer id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.UserInfo>() {
+            public models.UserInfo convert(java.lang.Integer id) {
                 return UserInfo.findUserInfo(id);
             }
         };
     }
     
     public Converter<String, UserInfo> ApplicationConversionServiceFactoryBean.getStringToUserInfoConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, intranet.UserInfo>() {
-            public intranet.UserInfo convert(String id) {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, models.UserInfo>() {
+            public models.UserInfo convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), UserInfo.class);
             }
         };

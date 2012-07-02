@@ -2,10 +2,11 @@ package utils;
 
 
 
-import intranet.AppSession;
-import intranet.AppUser;
 
 import javax.servlet.http.HttpSession;
+
+import models.AppSession;
+import models.AppUser;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

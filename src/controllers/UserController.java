@@ -1,13 +1,14 @@
 package controllers;
 
-import intranet.AppSession;
-import intranet.AppUser;
-import intranet.UserInfo;
 
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import models.AppSession;
+import models.AppUser;
+import models.UserInfo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

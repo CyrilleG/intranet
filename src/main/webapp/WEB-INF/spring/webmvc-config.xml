@@ -60,7 +60,7 @@
     </bean>
     
     <!-- Session manager -->
-	<bean id="userPreferences" class="intranet.UserParameters" scope="globalSession"/>
+	<bean id="userPreferences" class="models.UserParameters" scope="globalSession"/>
     <!-- Enable this for integration of file upload functionality -->
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"/>
 <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">

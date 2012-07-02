@@ -1,11 +1,12 @@
 package controllers;
 
-import intranet.AppFilter;
 
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import models.AppFilter;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

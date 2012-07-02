@@ -1,8 +1,9 @@
 package modules;
 
-import intranet.UserInfo;
 
 import java.util.Set;
+
+import models.UserInfo;
 
 import utils.Tools;
 
