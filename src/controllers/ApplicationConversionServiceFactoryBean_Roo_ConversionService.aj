@@ -222,7 +222,15 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Integer, UserInfo> ApplicationConversionServiceFactoryBean.getIdToUserInfoConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Integer, models.UserInfo>() {
             public models.UserInfo convert(java.lang.Integer id) {
-                return UserInfo.findUserInfo(id);
+                try {
+					return UserInfo.findUserInfo(id);
+				} catch (AccessNotAllowedException e) {
+					// TODO Auto-generated catch block
+					return null;
+				} catch (NotEmptyException e) {
+					// TODO Auto-generated catch block
+					return null;
+				}
             }
         };
     }

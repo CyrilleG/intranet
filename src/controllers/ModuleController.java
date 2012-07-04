@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.DataFormatException;
+import exceptions.DataLengthException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
+
 @Controller
 @RequestMapping("/module")
 public class ModuleController {
@@ -30,7 +36,24 @@ public class ModuleController {
             return "appmodules/create";
         }
         uiModel.asMap().clear();
-        appModule.persist();
+        try {
+			AppModule.create(appModule.getName(), appModule.getDescription(), appModule.getModuleController());
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotUniqueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/appmodules/" + encodeUrlPathSegment(appModule.getModule().toString(), httpServletRequest);
     }
 
@@ -68,7 +91,12 @@ public class ModuleController {
             return "appmodules/update";
         }
         uiModel.asMap().clear();
-        appModule.merge();
+        try {
+			appModule.update();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/appmodules/" + encodeUrlPathSegment(appModule.getModule().toString(), httpServletRequest);
     }
 
@@ -81,7 +109,12 @@ public class ModuleController {
 	@RequestMapping(value = "/{idmodule}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@PathVariable("idmodule") Integer idmodule, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         AppModule appModule = AppModule.findAppModule(idmodule);
-        appModule.remove();
+        try {
+			appModule.delete();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -90,7 +123,7 @@ public class ModuleController {
 
 	void populateEditForm(Model uiModel, AppModule appModule) {
         uiModel.addAttribute("appModule", appModule);
-        uiModel.addAttribute("moduleactions", ModuleAction.findAllModuleActions());
+        //uiModel.addAttribute("moduleactions", ModuleAction.findAllModuleActions());
         //uiModel.addAttribute("modulegroupses", ModuleGroups.findAllModuleGroupses());
     }
 

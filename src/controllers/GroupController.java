@@ -18,6 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.DataFormatException;
+import exceptions.DataLengthException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
+
 @Controller
 @RequestMapping("/group")
 public class GroupController {
@@ -28,7 +34,24 @@ public class GroupController {
             return "appgroups/create";
         }
         uiModel.asMap().clear();
-        appGroup.persist();
+        try {
+			AppGroup.create(appGroup.getIdent(), appGroup.getLabel(), appGroup.getDescription());
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotUniqueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/appgroups/" + encodeUrlPathSegment(appGroup.getGroup().toString(), httpServletRequest);
     }
 
@@ -66,7 +89,12 @@ public class GroupController {
             return "appgroups/update";
         }
         uiModel.asMap().clear();
-        appGroup.merge();
+        try {
+			appGroup.update();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/appgroups/" + encodeUrlPathSegment(appGroup.getGroup().toString(), httpServletRequest);
     }
 
@@ -79,7 +107,12 @@ public class GroupController {
 	@RequestMapping(value = "/{idgroup}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@PathVariable("idgroup") Integer idgroup, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         AppGroup appGroup = AppGroup.findAppGroup(idgroup);
-        appGroup.remove();
+        try {
+			appGroup.delete();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

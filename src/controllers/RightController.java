@@ -18,6 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.DataFormatException;
+import exceptions.DataLengthException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
+
 @Controller
 @RequestMapping("/right")
 public class RightController {
@@ -29,7 +35,24 @@ public class RightController {
             return "apprights/create";
         }
         uiModel.asMap().clear();
-        appRight.persist();
+        try {
+			AppRight.create(appRight.getName(), appRight.getIdent(), appRight.getDescription());
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotUniqueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/apprights/" + encodeUrlPathSegment(appRight.getRight().toString(), httpServletRequest);
     }
 
@@ -67,7 +90,12 @@ public class RightController {
             return "apprights/update";
         }
         uiModel.asMap().clear();
-        appRight.merge();
+        try {
+			appRight.update();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/apprights/" + encodeUrlPathSegment(appRight.getRight().toString(), httpServletRequest);
     }
 
@@ -80,7 +108,12 @@ public class RightController {
 	@RequestMapping(value = "/{idright}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@PathVariable("idright") Integer idright, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         AppRight appRight = AppRight.findAppRight(idright);
-        appRight.remove();
+        try {
+			appRight.delete();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

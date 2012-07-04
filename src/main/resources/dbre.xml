@@ -3,8 +3,8 @@
 <database name="deprecated">
     <option key="moduleName" value=""/>
     <option key="activeRecord" value="true"/>
-    <option key="includeNonPortableAttributes" value="false"/>
-    <option key="testAutomatically" value="false"/>
+    <option key="includeNonPortableAttributes" value="true"/>
+    <option key="testAutomatically" value="true"/>
     <table name="action_group">
         <column name="action_group" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="action" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
@@ -210,15 +210,15 @@
             <option key="exported" value="true"/>
             <reference foreign="user" local="user"/>
         </foreign-key>
-        <foreign-key foreignTable="info_privacity" name="user" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="true"/>
-            <reference foreign="user" local="user"/>
-        </foreign-key>
         <foreign-key foreignTable="user_filter" name="user_filter_user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="user" local="user"/>
         </foreign-key>
         <foreign-key foreignTable="user_group" name="iduser" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="true"/>
+            <reference foreign="user" local="user"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_info" name="user" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="user" local="user"/>
         </foreign-key>
@@ -367,7 +367,6 @@
         <column name="privacity" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
         <column name="info" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="group" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
-        <column name="user" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <foreign-key foreignTable="app_group" name="group" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="false"/>
             <reference foreign="group" local="group"/>
@@ -376,26 +375,18 @@
             <option key="exported" value="false"/>
             <reference foreign="info" local="info"/>
         </foreign-key>
-        <foreign-key foreignTable="app_user" name="user" onDelete="cascade" onUpdate="cascade">
-            <option key="exported" value="false"/>
-            <reference foreign="user" local="user"/>
-        </foreign-key>
         <unique name="PRIMARY">
             <unique-column name="privacity"/>
         </unique>
-        <unique name="uniqgroupinfouser">
+        <unique name="uniqinfogroup">
             <unique-column name="info"/>
             <unique-column name="group"/>
-            <unique-column name="user"/>
         </unique>
         <index name="group">
             <index-column name="group"/>
         </index>
         <index name="info">
             <index-column name="info"/>
-        </index>
-        <index name="user">
-            <index-column name="user"/>
         </index>
     </table>
     <table name="module_action">
@@ -567,10 +558,15 @@
     </table>
     <table name="user_info">
         <column name="info" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>
+        <column name="user" primaryKey="false" required="true" scale="0" size="10" type="4,INT"/>
         <column name="key" primaryKey="false" required="true" scale="0" size="100" type="12,VARCHAR"/>
         <column name="value" primaryKey="false" required="false" scale="0" size="65535" type="-1,TEXT"/>
         <column name="show" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
         <column name="editable" primaryKey="false" required="true" scale="0" size="0" type="-7,BIT"/>
+        <foreign-key foreignTable="app_user" name="user" onDelete="cascade" onUpdate="cascade">
+            <option key="exported" value="false"/>
+            <reference foreign="user" local="user"/>
+        </foreign-key>
         <foreign-key foreignTable="info_privacity" name="info" onDelete="cascade" onUpdate="cascade">
             <option key="exported" value="true"/>
             <reference foreign="info" local="info"/>
@@ -578,9 +574,13 @@
         <unique name="PRIMARY">
             <unique-column name="info"/>
         </unique>
-        <unique name="key_UNIQUE">
+        <unique name="uniquserkey">
+            <unique-column name="user"/>
             <unique-column name="key"/>
         </unique>
+        <index name="user">
+            <index-column name="user"/>
+        </index>
     </table>
     <table name="user_right">
         <column name="user_rights" primaryKey="true" required="true" scale="0" size="10" type="4,INT"/>

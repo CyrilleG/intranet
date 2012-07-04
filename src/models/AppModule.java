@@ -74,6 +74,24 @@ public class AppModule {
 				+ name);
 	}
 
+	public void delete() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("REMOVE_MODULE"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a filter entry");
+	}
+	
+	public void update() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("UPDATE_MODULE"))
+			this.merge();
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a filter entry");
+	}
+	
 	public static AppModule create(String name, String description,
 			String controller) throws AccessNotAllowedException,
 			NotEmptyException, DataLengthException, NotUniqueException,
@@ -376,39 +394,39 @@ public class AppModule {
 	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+    public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
+	public static final EntityManager entityManager() {
         EntityManager em = new AppModule().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	static long countAppModules() {
+	public static long countAppModules() {
         return entityManager().createQuery("SELECT COUNT(o) FROM AppModule o", Long.class).getSingleResult();
     }
 
-	static List<AppModule> findAllAppModules() {
+	public static List<AppModule> findAllAppModules() {
         return entityManager().createQuery("SELECT o FROM AppModule o", AppModule.class).getResultList();
     }
 
-	static AppModule findAppModule(Integer module) {
+	public static AppModule findAppModule(Integer module) {
         if (module == null) return null;
         return entityManager().find(AppModule.class, module);
     }
 
-	static List<AppModule> findAppModuleEntries(int firstResult, int maxResults) {
+	public static List<AppModule> findAppModuleEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM AppModule o", AppModule.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
 	@Transactional
-	void persist() {
+	public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
 	@Transactional
-	void remove() {
+	public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -419,19 +437,19 @@ public class AppModule {
     }
 
 	@Transactional
-	void flush() {
+	public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
 	@Transactional
-	void clear() {
+	public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
 	@Transactional
-	AppModule merge() {
+	public AppModule merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         AppModule merged = this.entityManager.merge(this);
         this.entityManager.flush();

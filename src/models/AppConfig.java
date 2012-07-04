@@ -33,6 +33,14 @@ public class AppConfig {
 	@Column(name = "value", columnDefinition = "TEXT")
 	private String value;
 
+	public void delete() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("REMOVE_CONF"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a configuration entry");
+	}
 	public static AppConfig findByKey(String key)
 			throws ElementNotFoundException, DataFormatException,
 			NotEmptyException {
@@ -126,39 +134,39 @@ public class AppConfig {
 	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
+	public static final EntityManager entityManager() {
         EntityManager em = new AppConfig().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	static long countAppConfigs() {
+	public static long countAppConfigs() {
         return entityManager().createQuery("SELECT COUNT(o) FROM AppConfig o", Long.class).getSingleResult();
     }
 
-	static List<AppConfig> findAllAppConfigs() {
+	public static List<AppConfig> findAllAppConfigs() {
         return entityManager().createQuery("SELECT o FROM AppConfig o", AppConfig.class).getResultList();
     }
 
-	static AppConfig findAppConfig(Integer appConfig) {
+	public static AppConfig findAppConfig(Integer appConfig) {
         if (appConfig == null) return null;
         return entityManager().find(AppConfig.class, appConfig);
     }
 
-	static List<AppConfig> findAppConfigEntries(int firstResult, int maxResults) {
+	public static List<AppConfig> findAppConfigEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM AppConfig o", AppConfig.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
 	@Transactional
-    void persist() {
+	public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
 	@Transactional
-    void remove() {
+	public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -169,19 +177,19 @@ public class AppConfig {
     }
 
 	@Transactional
-    void flush() {
+	public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
 	@Transactional
-    void clear() {
+	public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
 	@Transactional
-    AppConfig merge() {
+	public AppConfig merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         AppConfig merged = this.entityManager.merge(this);
         this.entityManager.flush();

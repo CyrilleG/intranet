@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.DataLengthException;
+import exceptions.ElementNotFoundException;
+import exceptions.NotEmptyException;
+import exceptions.NotUniqueException;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -51,7 +57,12 @@ public class UserController {
             return "appusers/update";
         }
         uiModel.asMap().clear();
-        appUser.merge();
+        try {
+			appUser.update();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/appusers/" + encodeUrlPathSegment(appUser.getUser().toString(), httpServletRequest);
     }
     
@@ -65,12 +76,12 @@ public class UserController {
     
     void populateEditForm(Model uiModel, AppUser appUser) {
         uiModel.addAttribute("appUser", appUser);
-        uiModel.addAttribute("appsessions", AppSession.findAllAppSessions());
+        //uiModel.addAttribute("appsessions", AppSession.findAllAppSessions());
         //uiModel.addAttribute("infoprivacitieses", InfoPrivacities.findAllInfoPrivacitieses());
         //uiModel.addAttribute("userdatas", UserData.findAllUserDatas());
         //uiModel.addAttribute("userfilterses", UserFilters.findAllUserFilterses());
         //uiModel.addAttribute("usergroupses", UserGroups.findAllUserGroupses());
-        uiModel.addAttribute("userinfoes", UserInfo.findAllUserInfoes());
+        //uiModel.addAttribute("userinfoes", UserInfo.findAllUserInfoes());
         //uiModel.addAttribute("userrightses", UserRights.findAllUserRightses());
     }
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
@@ -80,14 +91,36 @@ public class UserController {
             return "appusers/create";
         }
         uiModel.asMap().clear();
-        appUser.persist();
+        try {
+			AppUser.create(appUser.getLogin(), appUser.getPassword(), appUser.isEnabled());
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ElementNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotUniqueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/appusers/" + encodeUrlPathSegment(appUser.getUser().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{iduser}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@PathVariable("iduser") Integer iduser, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         AppUser appUser = AppUser.findAppUser(iduser);
-        appUser.remove();
+        try {
+			appUser.delete();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

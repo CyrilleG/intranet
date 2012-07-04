@@ -79,6 +79,14 @@ public class ModuleData {
 			throw new AccessNotAllowedException("You can't add a data entry");
 	}
 	
+	public void delete() throws AccessNotAllowedException {
+		if (Tools.hasRight("REMOVE_DATA"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a data entry");
+	}
+	
 	public static ModuleAction findByNameAndModule(AppModule module,
 			String name) throws ElementNotFoundException, NotEmptyException, DataLengthException {
 		
@@ -294,9 +302,9 @@ public class ModuleData {
 
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
+	public static final EntityManager entityManager() {
         EntityManager em = new ModuleData().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
@@ -320,12 +328,13 @@ public class ModuleData {
     }
 
 	@Transactional
-	void persist() {
+	public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
-	@Transactional void remove() {
+	@Transactional 
+	public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -336,19 +345,19 @@ public class ModuleData {
     }
 
 	@Transactional
-	void flush() {
+	public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
 	@Transactional
-	void clear() {
+	public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
 	@Transactional
-	ModuleData merge() {
+	public ModuleData merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         ModuleData merged = this.entityManager.merge(this);
         this.entityManager.flush();

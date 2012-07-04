@@ -166,6 +166,24 @@ public class AppRight implements GrantedAuthority {
 			throw new AccessNotAllowedException("You can't add right to action");
 	}
 
+	public void delete() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("REMOVE_RIGHT"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a right entry");
+	}
+	
+	public void update() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("UPDATE_RIGHT"))
+			this.merge();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a right entry");
+	}
+	
 	public void disallowAccess(ModuleAction action)
 			throws AccessNotAllowedException, NotEmptyException {
 		
@@ -435,39 +453,39 @@ public class AppRight implements GrantedAuthority {
 	
 	   
     @PersistenceContext
-    transient EntityManager entityManager;
+    public transient EntityManager entityManager;
     
-    static final EntityManager entityManager() {
+    public static final EntityManager entityManager() {
         EntityManager em = new AppRight().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    static long countAppRights() {
+    public static long countAppRights() {
         return entityManager().createQuery("SELECT COUNT(o) FROM AppRight o", Long.class).getSingleResult();
     }
     
-    static List<AppRight> findAllAppRights() {
+    public static List<AppRight> findAllAppRights() {
         return entityManager().createQuery("SELECT o FROM AppRight o", AppRight.class).getResultList();
     }
     
-    static AppRight findAppRight(Integer right) {
+    public static AppRight findAppRight(Integer right) {
         if (right == null) return null;
         return entityManager().find(AppRight.class, right);
     }
     
-    static List<AppRight> findAppRightEntries(int firstResult, int maxResults) {
+    public static List<AppRight> findAppRightEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM AppRight o", AppRight.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
-    void persist() {
+    public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
     
     @Transactional
-    void remove() {
+    public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -478,19 +496,19 @@ public class AppRight implements GrantedAuthority {
     }
     
     @Transactional
-    void flush() {
+    public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
     
     @Transactional
-    void clear() {
+    public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
     
     @Transactional
-    AppRight merge() {
+    public AppRight merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         AppRight merged = this.entityManager.merge(this);
         this.entityManager.flush();

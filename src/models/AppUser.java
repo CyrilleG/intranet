@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
+
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -36,7 +37,7 @@ public class AppUser {
 	private Set<DataUser> dataUsers;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<InfoPrivacity> infoPrivacities;
+    private Set<UserInfo> userInfoes;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<UserFilter> userFilters;
@@ -76,6 +77,23 @@ public class AppUser {
 				+ login);
 	}
 
+	
+	public void delete() throws AccessNotAllowedException {
+		if (Tools.hasRight("REMOVE_USER"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a user entry");
+	}
+	
+	public void update() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("UPDATE_USER"))
+			this.merge();
+		else
+			throw new AccessNotAllowedException(
+					"You can't edit a user entry");
+	}
 	public static AppUser create(String login, String password, boolean enabled)
 			throws AccessNotAllowedException, NotEmptyException, DataLengthException, ElementNotFoundException, NotUniqueException {
 		
@@ -333,7 +351,6 @@ public class AppUser {
 			InfoPrivacity priv = new InfoPrivacity();
 			priv.setInfo(info);
 			priv.setGroup(privacity);
-			priv.setUser(this);
 			priv.persist();
 		} else
 			throw new AccessNotAllowedException(
@@ -352,24 +369,30 @@ public class AppUser {
 			throw new DataFormatException(
 					"key parameter has to match with ([a-zA-Z0-9]+)");
 		
-		for (InfoPrivacity element : infoPrivacities)
-			if (element.getInfo().getKey().compareTo(key) == 0
-					&& (Tools.getUser().hasGroup(element.getGroup()) || Tools
-							.getUser().isAdmin()))
-				return element.getInfo();
+		for (UserInfo element : userInfoes)
+		{
+			if (element.getKey().compareTo(key) == 0)
+			{
+				for (InfoPrivacity priv : element.getPrivacities())
+				{
+					if (Tools.getUser().hasGroup(priv.getGroup()) || Tools.getUser().isAdmin())
+						return element;
+				}
+			}
+		}
 		throw new ElementNotFoundException(
 				"No Information Object found with key: " + key
 						+ " for this user");
 
 	}
 
-	public void removeInformation(UserInfo info)
+	/*public void removeInformation(UserInfo info)
 			throws AccessNotAllowedException, NotEmptyException {
 		
 		if (info == null)
 			throw new NotEmptyException("info cannot be empty");
 		
-		if (Tools.hasRight("REMOVE_INFO_FROM_OTHER_USER") || info.isEditable()) {
+		/*if (Tools.hasRight("REMOVE_INFO_FROM_OTHER_USER") || info.isEditable()) {
 			for (InfoPrivacity element : infoPrivacities)
 				if (element.getInfo().equals(info)) {
 					element.remove();
@@ -378,7 +401,7 @@ public class AppUser {
 		} else
 			throw new AccessNotAllowedException(
 					"You can't remove information from user");
-	}
+	}*/
 
 	public void addRight(AppRight right) throws AccessNotAllowedException, NotEmptyException {
 		
@@ -503,39 +526,39 @@ public class AppUser {
 	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
+	public static final EntityManager entityManager() {
         EntityManager em = new AppUser().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	static long countAppUsers() {
+	public static long countAppUsers() {
         return entityManager().createQuery("SELECT COUNT(o) FROM AppUser o", Long.class).getSingleResult();
     }
 
-	static List<AppUser> findAllAppUsers() {
+	public static List<AppUser> findAllAppUsers() {
         return entityManager().createQuery("SELECT o FROM AppUser o", AppUser.class).getResultList();
     }
 
-	static AppUser findAppUser(Integer user) {
+	public static AppUser findAppUser(Integer user) {
         if (user == null) return null;
         return entityManager().find(AppUser.class, user);
     }
 
-	static List<AppUser> findAppUserEntries(int firstResult, int maxResults) {
+	public static List<AppUser> findAppUserEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM AppUser o", AppUser.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
 	@Transactional
-	void persist() {
+	public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
 	@Transactional
-	void remove() {
+	public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -546,19 +569,19 @@ public class AppUser {
     }
 
 	@Transactional
-	void flush() {
+	public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
 	@Transactional
-	void clear() {
+	public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
 	@Transactional
-	AppUser merge() {
+	public AppUser merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         AppUser merged = this.entityManager.merge(this);
         this.entityManager.flush();

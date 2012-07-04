@@ -70,6 +70,14 @@ public class ModuleAction {
 				+ method + " and module: " + module.getName());
 	}
 
+	public void delete() throws AccessNotAllowedException {
+		if (Tools.hasRight("REMOVE_ACTION"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a action entry");
+	}
+	
 	public static ModuleAction create(AppModule module, String method, boolean enabled) throws AccessNotAllowedException, NotEmptyException, DataLengthException {
 		
 		if (module == null)
@@ -249,39 +257,39 @@ public class ModuleAction {
 	
 	
 	 @PersistenceContext
-	    transient EntityManager entityManager;
+	 public transient EntityManager entityManager;
 	    
-	    static final EntityManager entityManager() {
+	 public static final EntityManager entityManager() {
 	        EntityManager em = new ModuleAction().entityManager;
 	        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 	        return em;
 	    }
 	    
-	    static long countModuleActions() {
+	    public static long countModuleActions() {
 	        return entityManager().createQuery("SELECT COUNT(o) FROM ModuleAction o", Long.class).getSingleResult();
 	    }
 	    
-	    static List<ModuleAction> findAllModuleActions() {
+	    public static List<ModuleAction> findAllModuleActions() {
 	        return entityManager().createQuery("SELECT o FROM ModuleAction o", ModuleAction.class).getResultList();
 	    }
 	    
-	    static ModuleAction findModuleAction(Integer action) {
+	    public static ModuleAction findModuleAction(Integer action) {
 	        if (action == null) return null;
 	        return entityManager().find(ModuleAction.class, action);
 	    }
 	    
-	    static List<ModuleAction> findModuleActionEntries(int firstResult, int maxResults) {
+	    public static List<ModuleAction> findModuleActionEntries(int firstResult, int maxResults) {
 	        return entityManager().createQuery("SELECT o FROM ModuleAction o", ModuleAction.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	    }
 	    
 	    @Transactional
-	    void persist() {
+	    public void persist() {
 	        if (this.entityManager == null) this.entityManager = entityManager();
 	        this.entityManager.persist(this);
 	    }
 	    
 	    @Transactional
-	    void remove() {
+	    public void remove() {
 	        if (this.entityManager == null) this.entityManager = entityManager();
 	        if (this.entityManager.contains(this)) {
 	            this.entityManager.remove(this);
@@ -292,19 +300,19 @@ public class ModuleAction {
 	    }
 	    
 	    @Transactional
-	    void flush() {
+	    public void flush() {
 	        if (this.entityManager == null) this.entityManager = entityManager();
 	        this.entityManager.flush();
 	    }
 	    
 	    @Transactional
-	    void clear() {
+	    public void clear() {
 	        if (this.entityManager == null) this.entityManager = entityManager();
 	        this.entityManager.clear();
 	    }
 	    
 	    @Transactional
-	    ModuleAction merge() {
+	    public ModuleAction merge() {
 	        if (this.entityManager == null) this.entityManager = entityManager();
 	        ModuleAction merged = this.entityManager.merge(this);
 	        this.entityManager.flush();

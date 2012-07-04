@@ -21,10 +21,6 @@ privileged aspect InfoPrivacity_Roo_DbManaged {
     @JoinColumn(name = "info", referencedColumnName = "info", nullable = false)
     private UserInfo InfoPrivacity.info;
     
-    @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "user", nullable = false)
-    private AppUser InfoPrivacity.user;
-    
     public AppGroup InfoPrivacity.getGroup() {
         return group;
     }
@@ -41,12 +37,6 @@ privileged aspect InfoPrivacity_Roo_DbManaged {
         this.info = info;
     }
     
-    public AppUser InfoPrivacity.getUser() {
-        return user;
-    }
     
-    public void InfoPrivacity.setUser(AppUser user) {
-        this.user = user;
-    }
     
 }

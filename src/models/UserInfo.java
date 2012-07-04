@@ -6,9 +6,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
+
 
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -34,6 +37,10 @@ public class UserInfo {
 	@OneToMany(mappedBy = "info", cascade = CascadeType.ALL)
 	private Set<InfoPrivacity> infoPrivacities;
 
+	@ManyToOne
+    @JoinColumn(name = "user", referencedColumnName = "user", nullable = false)
+    private AppUser user;
+	
 	@Column(name = "key", columnDefinition = "VARCHAR", length = 100, unique = true)
 	@NotNull
 	private String key;
@@ -70,6 +77,14 @@ public class UserInfo {
 				+ key);
 	}
 
+	public void delete() throws AccessNotAllowedException {
+		if (Tools.hasRight("REMOVE_INFO") || Tools.hasRight("REMOVE_INFO_FROM_OTHER_USER") || this.isEditable())
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a data entry");
+	}
+	
 	public static UserInfo create(AppUser user, String key, String value,
 			boolean editable, boolean show, AppGroup privacity) throws AccessNotAllowedException, NotEmptyException, DataFormatException, DataLengthException, NotUniqueException, ElementNotFoundException {
 		
@@ -97,12 +112,12 @@ public class UserInfo {
 			element.setValue(value);
 			element.setShow(show);
 			element.setEditable(editable);
+			element.setUser(user);
 			element.persist();
 
 			InfoPrivacity priv = new InfoPrivacity();
 			priv.setInfo(element);
 			priv.setGroup(privacity);
-			priv.setUser(user);
 			priv.persist();
 			return element;
 		}
@@ -201,7 +216,6 @@ public class UserInfo {
 		if (Tools.hasRight("ADD_GROUP_TO_INFO")) {
 			InfoPrivacity elem = new InfoPrivacity();
 			elem.setInfo(this);
-			elem.setUser(user);
 			elem.setGroup(group);
 			elem.persist();
 			infoPrivacities.add(elem);
@@ -246,7 +260,7 @@ public class UserInfo {
 		
 		for (InfoPrivacity priv : infoPrivacities) {
 			if (priv.getInfo().show || Tools.hasRight("VIEW_HIDDEN_INFO")) {
-				if (priv.getUser().equals(user)
+				if (priv.getInfo().getUser().equals(user)
 						|| Tools.hasRight("GET_INFO_FROM_OTHER_USER"))
 					for (AppGroup group : user.getHisGroup()) {
 						if (group.equals(priv.getGroup())
@@ -259,39 +273,57 @@ public class UserInfo {
 	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
+	public static final EntityManager entityManager() {
         EntityManager em = new UserInfo().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	static long countUserInfoes() {
+	public static long countUserInfoes() {
         return entityManager().createQuery("SELECT COUNT(o) FROM UserInfo o", Long.class).getSingleResult();
     }
 
-	static List<UserInfo> findAllUserInfoes() {
+	public static List<UserInfo> findAllUserInfoes() {
         return entityManager().createQuery("SELECT o FROM UserInfo o", UserInfo.class).getResultList();
     }
 
-	static UserInfo findUserInfo(Integer info) {
+	public static UserInfo findUserInfo(Integer info) throws AccessNotAllowedException, NotEmptyException {
         if (info == null) return null;
-        return entityManager().find(UserInfo.class, info);
+        UserInfo in  = entityManager().find(UserInfo.class, info);
+        if (in.isAccessAllow(Tools.getUser()))
+        	return in;
+        else
+        	throw new AccessNotAllowedException("You can't get this information");
+        		
     }
 
-	static List<UserInfo> findUserInfoEntries(int firstResult, int maxResults) {
+	public static List<UserInfo> findUserInfoEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM UserInfo o", UserInfo.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
+	
+	public AppUser getUser() {
+        return user;
+    }
+
+	public Set<InfoPrivacity> getPrivacities() {
+        return infoPrivacities; 
+    }
+    public void setUser(AppUser user){
+        if (user == null)
+        	this.user = user;
+    }
+	
 	@Transactional
-    void persist() {
+	public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
 	@Transactional
-    void remove() {
+	public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -302,19 +334,19 @@ public class UserInfo {
     }
 
 	@Transactional
-    void flush() {
+	public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
 	@Transactional
-    void clear() {
+    public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
 	@Transactional
-    UserInfo merge() {
+	public UserInfo merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         UserInfo merged = this.entityManager.merge(this);
         this.entityManager.flush();

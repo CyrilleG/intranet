@@ -4,16 +4,44 @@ import static org.junit.Assert.*;
 
 import models.AppFilter;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-public class AppFilterTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"/META-INF/spring/applicationContext.xml"})
+public class AppFilterTest{
 
+	//private static ClassPathXmlApplicationContext context;
+	//@Autowired   
+	//private AppFilter filter = null;
+	
+	/*@Before
+	public void setUp() throws Exception {
+		//context = new ClassPathXmlApplicationContext("/applicationContext.xml");
+	    //filter = (AppFilter)context.getBean("AppFilter");
+		
+		/*user = AppUser.create("test", "test", true);
+		user.addGroup(AppGroup.findByIdent("ADMIN"));
+	}
 	@Test
 	public void create() {
-		AppFilter f;
-	
-		fail("Not yet implemented");
-	}
+		
+		
+		/*try {
+			f = AppFilter.create("test42", "this is a test", "string");
+			assertTrue(f != null);				
+		} catch (AccessNotAllowedException e) {
+			fail();
+		} catch (NotEmptyException e) {
+			fail();
+		} catch (DataLengthException e) {
+			fail();
+		}
+	}*/
 	@Test
 	public void find() {
 		fail("Not yet implemented");

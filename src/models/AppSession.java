@@ -16,6 +16,8 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
 
+import utils.Tools;
+
 import exceptions.AccessNotAllowedException;
 import exceptions.DataLengthException;
 import exceptions.ElementNotFoundException;
@@ -41,41 +43,70 @@ public class AppSession {
 	@DateTimeFormat(style = "M-")
 	private Date lastAction;
 
-	public static AppSession findByLogin(String login) throws NotEmptyException, DataLengthException {
-		
+	public static AppSession findByLogin(String login)
+			throws NotEmptyException, DataLengthException,
+			ElementNotFoundException {
+
 		if (login == null || login.length() == 0)
 			throw new NotEmptyException("login cannot be empty");
-		
+
 		if (login.length() > 100)
-			throw new DataLengthException("login parameter is too long (max: 100 carac)");
-		
+			throw new DataLengthException(
+					"login parameter is too long (max: 100 carac)");
+
 		List<AppSession> elements = AppSession.findAllAppSessions();
 		for (AppSession element : elements)
 			if (element.getLogin().compareToIgnoreCase(login) == 0)
 				return element;
-		return null;
+		throw new ElementNotFoundException("this login is not registred");
 	}
 
 	public String getLogin() {
 		return login;
 	}
 
-	public boolean isLoginExist(String login) throws DataLengthException, NotEmptyException
-	{
-		return findByLogin(login) != null;
+	public static AppSession create(String login)
+			throws AccessNotAllowedException, NotEmptyException,
+			DataLengthException, NotUniqueException {
+		AppSession session = new AppSession();
+		session.setLogin(login);
+		session.setLoginDate(new Date());
+		session.setLastAction(new Date());
+		session.persist();
+		return session;
 	}
-	
-	public void setLogin(String login) throws AccessNotAllowedException, NotEmptyException, DataLengthException, ElementNotFoundException, NotUniqueException {
-		
+
+	public void delete() throws AccessNotAllowedException {
+		if (Tools.hasRight("REMOVE_SESSION"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a session entry");
+	}
+
+	public boolean isLoginExist(String login) throws NotEmptyException,
+			DataLengthException {
+
+		try {
+			return findByLogin(login) != null;
+		} catch (ElementNotFoundException e) {
+			return false;
+		}
+	}
+
+	public void setLogin(String login) throws AccessNotAllowedException,
+			NotEmptyException, DataLengthException, NotUniqueException {
+
 		if (login == null || login.length() == 0)
 			throw new NotEmptyException("login cannot be empty");
-		
+
 		if (login.length() > 100)
-			throw new DataLengthException("login parameter is too long (max: 100 carac)");
-		
+			throw new DataLengthException(
+					"login parameter is too long (max: 100 carac)");
+
 		if (isLoginExist(login))
 			throw new NotUniqueException("login has to be unique");
-		
+
 		if (this.login == null)
 			this.login = login;
 		else
@@ -91,7 +122,8 @@ public class AppSession {
 		if (this.loginDate == null)
 			this.loginDate = loginDate;
 		else
-			throw new AccessNotAllowedException("Session loginDate can't be reset");
+			throw new AccessNotAllowedException(
+					"Session loginDate can't be reset");
 	}
 
 	public Date getLastAction() {
@@ -103,64 +135,77 @@ public class AppSession {
 	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
-        EntityManager em = new AppSession().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+	public static final EntityManager entityManager() {
+		EntityManager em = new AppSession().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
-	static long countAppSessions() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM AppSession o", Long.class).getSingleResult();
-    }
+	public static long countAppSessions() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM AppSession o",
+				Long.class).getSingleResult();
+	}
 
-	static List<AppSession> findAllAppSessions() {
-        return entityManager().createQuery("SELECT o FROM AppSession o", AppSession.class).getResultList();
-    }
+	public static List<AppSession> findAllAppSessions() {
+		return entityManager().createQuery("SELECT o FROM AppSession o",
+				AppSession.class).getResultList();
+	}
 
-	static AppSession findAppSession(Integer session) {
-        return entityManager().find(AppSession.class, session);
-    }
+	public static AppSession findAppSession(Integer session) {
+		return entityManager().find(AppSession.class, session);
+	}
 
-	static List<AppSession> findAppSessionEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM AppSession o", AppSession.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
-
-	@Transactional
-	void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
-
-	@Transactional
-	void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            AppSession attached = this;
-            this.entityManager.remove(attached);
-        }
-    }
+	public static List<AppSession> findAppSessionEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM AppSession o", AppSession.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
+	}
 
 	@Transactional
-	void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-	void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			AppSession attached = this;
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-	AppSession merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        AppSession merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public AppSession merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		AppSession merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 }

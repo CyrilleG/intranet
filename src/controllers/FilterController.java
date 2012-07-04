@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
+import exceptions.AccessNotAllowedException;
+import exceptions.DataLengthException;
+import exceptions.NotEmptyException;
+
 @Controller
 @RequestMapping("/filter")
 public class FilterController {
@@ -28,7 +32,19 @@ public class FilterController {
             return "appfilters/create";
         }
         uiModel.asMap().clear();
-        appFilter.persist();
+        try {
+			AppFilter.create(appFilter.getName(), appFilter.getDescription(), appFilter.getFilterClass());
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotEmptyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         return "redirect:/appfilters/" + encodeUrlPathSegment(appFilter.getFilter().toString(), httpServletRequest);
     }
 
@@ -66,7 +82,12 @@ public class FilterController {
             return "appfilters/update";
         }
         uiModel.asMap().clear();
-        appFilter.merge();
+        try {
+			appFilter.update();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "redirect:/appfilters/" + encodeUrlPathSegment(appFilter.getFilter().toString(), httpServletRequest);
     }
 
@@ -79,7 +100,12 @@ public class FilterController {
 	@RequestMapping(value = "/{idfilter}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@PathVariable("idfilter") Integer idfilter, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         AppFilter appFilter = AppFilter.findAppFilter(idfilter);
-        appFilter.remove();
+        try {
+			appFilter.delete();
+		} catch (AccessNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

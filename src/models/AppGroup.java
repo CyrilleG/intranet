@@ -72,6 +72,22 @@ public class AppGroup {
 		return rights;
 	}
 
+	public void delete() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("REMOVE_GROUP"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a group entry");
+	}
+	public void update() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("UPDATE_GROUP"))
+			this.update();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a group entry");
+	}
 	public static AppGroup findByIdent(String ident)
 			throws ElementNotFoundException, NotEmptyException,
 			DataFormatException, DataLengthException {
@@ -433,39 +449,39 @@ public class AppGroup {
 
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
+	public static final EntityManager entityManager() {
         EntityManager em = new AppGroup().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	static long countAppGroups() {
+	public static long countAppGroups() {
         return entityManager().createQuery("SELECT COUNT(o) FROM AppGroup o", Long.class).getSingleResult();
     }
 
-	static List<AppGroup> findAllAppGroups() {
+	public static List<AppGroup> findAllAppGroups() {
         return entityManager().createQuery("SELECT o FROM AppGroup o", AppGroup.class).getResultList();
     }
 
-	static AppGroup findAppGroup(Integer group) {
+	public static AppGroup findAppGroup(Integer group) {
         if (group == null) return null;
         return entityManager().find(AppGroup.class, group);
     }
 
-	static List<AppGroup> findAppGroupEntries(int firstResult, int maxResults) {
+	public static List<AppGroup> findAppGroupEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM AppGroup o", AppGroup.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
 	@Transactional
-	void persist() {
+	public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
 	@Transactional
-	void remove() {
+	public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -476,19 +492,19 @@ public class AppGroup {
     }
 
 	@Transactional
-	void flush() {
+	public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
 	@Transactional
-	void clear() {
+	public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
 	@Transactional
-    AppGroup merge() {
+	public AppGroup merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         AppGroup merged = this.entityManager.merge(this);
         this.entityManager.flush();

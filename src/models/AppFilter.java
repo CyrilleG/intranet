@@ -56,7 +56,24 @@ public class AppFilter {
 	@Column(name = "class", columnDefinition = "VARCHAR", length = 75)
 	private String class1;
 
-	public AppFilter create(String name, String description, String classname)
+	
+	public void delete() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("REMOVE_FILTER"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a filter entry");
+	}
+	public void update() throws AccessNotAllowedException
+	{
+		if (Tools.hasRight("UPDATE_FILTER"))
+			this.remove();
+		else
+			throw new AccessNotAllowedException(
+					"You can't delete a filter entry");
+	}
+	public static AppFilter create(String name, String description, String classname)
 			throws AccessNotAllowedException, NotEmptyException, DataLengthException {
 
 		if (name == null || name.length() == 0)
@@ -309,39 +326,39 @@ public class AppFilter {
 
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	public transient EntityManager entityManager;
 
-	static final EntityManager entityManager() {
+	public static final EntityManager entityManager() {
         EntityManager em = new AppFilter().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	static long countAppFilters() {
+	public static long countAppFilters() {
         return entityManager().createQuery("SELECT COUNT(o) FROM AppFilter o", Long.class).getSingleResult();
     }
 
-	static List<AppFilter> findAllAppFilters() {
+	public static List<AppFilter> findAllAppFilters() {
         return entityManager().createQuery("SELECT o FROM AppFilter o", AppFilter.class).getResultList();
     }
 
-	static AppFilter findAppFilter(Integer filter) {
+	public static AppFilter findAppFilter(Integer filter) {
         if (filter == null) return null;
         return entityManager().find(AppFilter.class, filter);
     }
 
-	static List<AppFilter> findAppFilterEntries(int firstResult, int maxResults) {
+	public static List<AppFilter> findAppFilterEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM AppFilter o", AppFilter.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
 	@Transactional
-    void persist() {
+	public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
 	@Transactional
-    void remove() {
+	public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
@@ -352,19 +369,19 @@ public class AppFilter {
     }
 
 	@Transactional
-    void flush() {
+	public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
 	@Transactional
-    void clear() {
+	public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
 	@Transactional
-    AppFilter merge() {
+	public AppFilter merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         AppFilter merged = this.entityManager.merge(this);
         this.entityManager.flush();
